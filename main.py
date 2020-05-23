@@ -2,8 +2,9 @@
 # import pygame # library to generate the graphic interface
 import numpy as np # library to handle matrices
 import time # to set a delay between each iteration
+import math as m
 
-import functions.py
+import functions as tool
 
 # https://www.conceptispuzzles.com/index.aspx?uri=puzzle/sudoku/techniques
 
@@ -24,7 +25,8 @@ import functions.py
 
 
 # Sudoku vars:
-grid = [Cell(x, y) for x in range(9) for y in range(9)]
+# grid = np.matrix([[tool.Cell(x, y) for y in range(9)] for x in range(9)])
+grid = [[tool.Cell(x, y) for y in range(9)] for x in range(9)]
 data = [ #canonical
     [9, 8, 4, 0, 3, 1, 0, 7, 2],
     [6, 1, 0, 0, 0, 7, 0, 0, 0],
@@ -59,17 +61,45 @@ data = [ #canonical
 #     [0, 0, 5, 4, 0, 8, 6, 0, 0],
 # ]
 
+# --------------------------    CODE    --------------------------
+
+#-------    Update matrices    -------
+cells = set() # Set with all undone cells
+# data = np.matrix(data)
+for i in range(9):
+    for j in range(9):
+        if data[i][j] == 0:
+            cells.add(grid[i][j])
+        else:
+            grid[i][j].setValue(data[i][j])
+
+
 # Vars:
 gameRunning = True
 
 while gameRunning:
-    for event in pygame.event.get(): # for each event
-        if event.type == pygame.QUIT: # if quit btn pressed
-            gameRunning = False # no longer running game
-        elif event.type == pygame.KEYDOWN:
-            if event.key == 32: # Space pressed
-                printArray(grid)
-    
+    # ------------------------------    actual algorithm   ------------------------------
+    for cell in cells:
+        values = []
+        for i in range(3): # 3 by 3 sectors
+            for j in range(3):
+                x = m.floor(cell.x / 3) * 3 + i
+                y = m.floor(cell.y / 3) * 3 + j
+                otherValue = grid[x][y].getValue()
+                if otherValue > 0 and (otherValue in cell.getPosVal()):
+                    cell.getPosVal().remove(otherValue)
+                    values = values + [otherValue] 
+        if len(values) > 0: 
+            cell.addData(["3 by 3", values])
+            print(*cell.data, sep = "\n")
+        # Rows and col doc can be together
+
+    response = input("Continue?")
+    if response == "exit":
+        gameRunning = False
+
+tool.printArray(grid)
+tool.printArray(data)
 
 
 #     //***************************    actual algorithm    ***************************

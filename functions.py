@@ -21,17 +21,44 @@ class Cell():
         self.x = x
         self.y = y
         self.value = None
-        self.posVal = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        self.posVal = set([1, 2, 3, 4, 5, 6, 7, 8, 9])
+        self.data = ["Let's focus on the cell on the position (" + str(x) + ", " + str(y) + ")"]
+    
+    def __str__(self):
+        return str(self.getValue())
 
     def __eq__(self, other):
-        return self.x == other.x and self.y == other.y and self.value == other.value and self.posVal == other.posVal
+        if self.x == other.x and self.y == other.y:
+            if self.value == other.value and self.posVal == other.posVal:
+                if self.data == other.data:
+                    return True
+
+        return False
+        # return  and  and 
+    
+    def __hash__(self):
+        return hash(self.x) ^ hash(self.y) # Because there is not 2 cells on the same coord
 
     def setValue(self, value):
-        self.value = value if value else self.posVal[0]
-        self.posVal = []
+        self.value = value
+        self.posVal = None
+        if(len(self.data) > 1):
+            print(*self.data, sep = "\n")
     
     def getValue(self):
         return self.value if self.value != None else 0
+
+    def getPosVal(self):
+        return self.posVal
+    
+    def setPosVal(self, set):
+        self.posVal = set
+
+    def addData(self, dataArr):
+        dataToAdd = ""
+        if dataArr[0] == "3 by 3":
+            dataToAdd = "If we look at the 3 by 3 sector containing this cell, we can know that this cell can not be " + str(dataArr[1])
+        self.data.append(dataToAdd)
 
 class color():
     def __init__(self):
