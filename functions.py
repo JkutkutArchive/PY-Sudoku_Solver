@@ -1,3 +1,16 @@
+sol = [
+    [9, 8, 4, 5, 3, 1, 6, 7, 2],
+    [6, 1, 3, 8, 2, 7, 5, 4, 9],
+    [2, 5, 7, 6, 4, 9, 8, 3, 1],
+    [3, 7, 8, 9, 6, 2, 4, 1, 5],
+    [5, 6, 1, 3, 7, 4, 9, 2, 8],
+    [4, 2, 9, 1, 8, 5, 7, 6, 3],
+    [8, 3, 2, 4, 9, 6, 1, 5, 7],
+    [7, 4, 5, 2, 1, 8, 3, 9, 6],
+    [1, 9, 6, 7, 5, 3, 2, 8, 4]
+]
+
+
 def printArray(arr, *delimeter):
     print(arrayToString(arr, *delimeter))
 
@@ -17,22 +30,23 @@ def arrayToString(arr, *delimeter):
     return s[0:-(1 + len(d))] + "]"
 
 def printSudoku(arr):
-    print(*["+"] + ["-" for i in range(23)] + ["+"], sep = "");#start
+    print(*["  Y "] + [str(i) + " " for i in range(3)] + ["  "] + [str(3+i) + " " for i in range(3)] + ["  "] + [str(6+i) + " " for i in range(3)], sep = "")
+    print(*["X +"] + ["-" for i in range(23)] + ["+"], sep = "");#start
 
     for i in range(3): #rows
-        t = ["|"] + arr[i][0:3] + ["|"] + arr[i][3:6] + ["|"] + arr[i][6:9] + ["|"]
+        t = [str(i) + " |"] + arr[i][0:3] + ["|"] + arr[i][3:6] + ["|"] + arr[i][6:9] + ["|"]
         print(*t, sep = " ")
 
-    print(*["".join(["+"] + ["-" for i in range(7)]) for j in range(3)] + ["+"], sep = "");#3 by 3 separators
+    print(*["  "]+["".join(["+"] + ["-" for i in range(7)]) for j in range(3)] + ["+"], sep = "");#3 by 3 separators
 
     for i in range(3, 6): #rows
-        t = ["|"] + arr[i][0:3] + ["|"] + arr[i][3:6] + ["|"] + arr[i][6:9] + ["|"]
+        t = [str(i) + " |"] + arr[i][0:3] + ["|"] + arr[i][3:6] + ["|"] + arr[i][6:9] + ["|"]
         print(*t, sep = " ")
 
-    print(*["".join(["+"] + ["-" for i in range(7)]) for j in range(3)] + ["+"], sep = "");#3 by 3 separators
+    print(*["  "]+["".join(["+"] + ["-" for i in range(7)]) for j in range(3)] + ["+"], sep = "");#3 by 3 separators
 
     for i in range(6, 9): #rows
-        t = ["|"] + arr[i][0:3] + ["|"] + arr[i][3:6] + ["|"] + arr[i][6:9] + ["|"]
+        t = [str(i) + " |"] + arr[i][0:3] + ["|"] + arr[i][3:6] + ["|"] + arr[i][6:9] + ["|"]
         print(*t, sep = " ")
 
     print(*["+"] + ["-" for i in range(23)] + ["+"], sep = "");#end
@@ -74,6 +88,10 @@ class Cell():
         self.addData(["therefore"])
         if not noPrint:
             print(*self.data, sep = "\n")
+            if self.value == sol[self.x][self.y]:
+                print("\n" + "CORRECT".center(40) + "\n")
+            else:
+                print("\n" + "ERROR, NOT CORRECT VALUE".center(40) + "\n")
     
     def getValue(self):
         return self.value if self.value != None else 0
