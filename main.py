@@ -113,7 +113,7 @@ while gameRunning:
             cell.addData(["basic col", values])
             print(*cell.data, sep = "\n")
 
-        #------------------------------
+        #----------------------------
 
         values = []
         unique = set([i for i in range(1, 9, 1)])
