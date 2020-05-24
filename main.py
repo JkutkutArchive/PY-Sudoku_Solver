@@ -79,7 +79,7 @@ gameRunning = True
 
 while gameRunning:
     # ------------------------------    actual algorithm   ------------------------------
-    for cell in cells:
+    for cell in cells: # Check 3 by 3, row and col
         values = []
         for i in range(3): # 3 by 3 sectors
             for j in range(3):
@@ -91,8 +91,25 @@ while gameRunning:
                     values = values + [otherValue] 
         if len(values) > 0: 
             cell.addData(["3 by 3", values])
-            print(*cell.data, sep = "\n")
-        # Rows and col doc can be together
+        values = []
+        for i in range(9): # Rows
+            if i != cell.x: # If not the same cell
+                otherValue = grid[i][cell.y].getValue()
+                if otherValue > 0 and (otherValue in cell.getPosVal()):
+                    cell.getPosVal().remove(otherValue)
+                    values = values + [otherValue]
+        if len(values) > 0: 
+            cell.addData(["row", values])
+
+        values = []
+        for i in range(9): # Cols
+            if i != cell.y: # If not the same cell
+                otherValue = grid[cell.x][i].getValue()
+                if otherValue > 0 and (otherValue in cell.getPosVal()):
+                    cell.getPosVal().remove(otherValue)
+                    values = values + [otherValue]
+        if len(values) > 0: 
+            cell.addData(["col", values])
 
     response = input("Continue?")
     if response == "exit":
