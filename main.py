@@ -5,6 +5,7 @@ import time # to set a delay between each iteration
 import math as m
 
 import functions as tool
+import sudokuTools as sT
 
 # https://www.conceptispuzzles.com/index.aspx?uri=puzzle/sudoku/techniques
 
@@ -38,6 +39,26 @@ data = [ #canonical
     [0, 4, 5, 0, 1, 8, 0, 9, 6],
     [1, 9, 6, 7, 0, 0, 2, 8, 0]
 ]
+# sol = [
+#     [9, 8, 4, 5, 3, 1, 6, 7, 2],
+#     [6, 1, 3, 8, 2, 7, 5, 4, 9],
+#     [2, 5, 7, 6, 4, 9, 8, 3, 1],
+#     [],
+#     [],
+#     [],
+#     [],
+#     [],
+#     []
+# ]
+# | 3 7 8 | 9 6 2 | 4 1 5 |
+# | 5 6 1 | 3 7 4 | 9 2 8 |
+# | 4 2 9 | 1 8 5 | 7 6 3 |
+# +-------+-------+-------+
+# | 8 3 2 | 4 9 6 | 1 5 7 |
+# | 7 4 5 | 2 1 8 | 3 9 6 |
+# | 1 9 6 | 7 5 3 | 2 8 4 |
+# +-----------------------+
+
 # data = [ #contiune adding techniques
 #     [3, 8, 9, 4, 6, 1, 0, 0, 0],
 #     [7, 1, 5, 8, 0, 2, 4, 3, 6],
@@ -64,13 +85,9 @@ data = [ #canonical
 # --------------------------    CODE    --------------------------
 
 #-------    Update matrices    -------
-cells = set() # Set with all undone cells
-# data = np.matrix(data)
 for i in range(9):
     for j in range(9):
-        if data[i][j] == 0:
-            cells.add(grid[i][j])
-        else:
+        if data[i][j] != 0:
             grid[i][j].setValue(data[i][j], False)
 
 
@@ -80,8 +97,16 @@ gameRunning = True
 while gameRunning:
     print("    Iteration    ".center(40,"-"))
     print()
-    tool.printArray(grid)
+    tool.printSudoku(grid)
     print()
+
+    #-------    Update matrix    -------
+    cells = set() # Set with all undone cells
+    for i in range(9):
+        for j in range(9):
+            if grid[i][j].getValue() == 0:
+                cells.add(grid[i][j])
+
     # ------------------------------    actual algorithm   ------------------------------
     for cell in cells: # Check 3 by 3, row and col
         values = []
@@ -137,7 +162,7 @@ while gameRunning:
                 unique = unique.difference(valueToFilter) # All common are not unique => del them
         if len(unique) == 1: # If only one value is unique -> should be the value
             uniqueValue = list(unique)[0]
-            if uniqueValue in cell.posVal(): # if this value is a possible one, make it the value of the cell (This should always be true)
+            if uniqueValue in cell.getPosVal(): # if this value is a possible one, make it the value of the cell (This should always be true)
                 cell.addData(["unique row", uniqueValue])
                 cell.setValue(uniqueValue)
                 break
@@ -155,7 +180,7 @@ while gameRunning:
                 unique = unique.difference(valueToFilter) # All common are not unique => del them
         if len(unique) == 1: # If only one value is unique -> should be the value
             uniqueValue = list(unique)[0]
-            if uniqueValue in cell.posVal(): # if this value is a possible one, make it the value of the cell (This should always be true)
+            if uniqueValue in cell.getPosVal(): # if this value is a possible one, make it the value of the cell (This should always be true)
                 cell.addData(["unique col", uniqueValue])
                 cell.setValue(uniqueValue)
                 break
@@ -174,18 +199,12 @@ while gameRunning:
                     unique = unique.difference(valueToFilter) # All common are not unique => del them
         if len(unique) == 1: # If only one value is unique -> should be the value
             uniqueValue = list(unique)[0]
-            if uniqueValue in cell.posVal(): # if this value is a possible one, make it the value of the cell (This should always be true)
+            if uniqueValue in cell.getPosVal(): # if this value is a possible one, make it the value of the cell (This should always be true)
                 cell.addData(["unique 3 by 3", uniqueValue])
                 cell.setValue(uniqueValue)
                 break
             else:
                 print("ERROR at unique 3 by 3")
-
-    cells = set() # Set with all undone cells
-    for i in range(9):
-        for j in range(9):
-            if data[i][j] == 0:
-                cells.add(grid[i][j])
 
     if len(cells) == 0: # All cells filled => DONE :D
         print("Sudoku finished")

@@ -16,6 +16,35 @@ def arrayToString(arr, *delimeter):
         s = s + ((d + " " if True else "") + end)
     return s[0:-(1 + len(d))] + "]"
 
+def printSudoku(arr):
+    print(*["+"] + ["-" for i in range(23)] + ["+"], sep = "");#start
+
+    for i in range(3): #rows
+        t = ["|"] + arr[i][0:3] + ["|"] + arr[i][3:6] + ["|"] + arr[i][6:9] + ["|"]
+        print(*t, sep = " ")
+
+    print(*["".join(["+"] + ["-" for i in range(7)]) for j in range(3)] + ["+"], sep = "");#3 by 3 separators
+
+    for i in range(3, 6): #rows
+        t = ["|"] + arr[i][0:3] + ["|"] + arr[i][3:6] + ["|"] + arr[i][6:9] + ["|"]
+        print(*t, sep = " ")
+
+    print(*["".join(["+"] + ["-" for i in range(7)]) for j in range(3)] + ["+"], sep = "");#3 by 3 separators
+
+    for i in range(6, 9): #rows
+        t = ["|"] + arr[i][0:3] + ["|"] + arr[i][3:6] + ["|"] + arr[i][6:9] + ["|"]
+        print(*t, sep = " ")
+
+    print(*["+"] + ["-" for i in range(23)] + ["+"], sep = "");#end
+
+## Prints the status of the arguments (errors)
+def pError(**kwargs):
+    print("***ERROR***".center(30))
+    print(kwargs)
+    print("***END ERROR***".center(30))
+
+
+#   --------------------------------    CLASSES     --------------------------------
 class Cell():
     def __init__(self, x, y):
         self.x = x
