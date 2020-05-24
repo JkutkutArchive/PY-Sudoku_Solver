@@ -56,18 +56,20 @@ class Cell():
 
     def addData(self, dataArr):
         dataToAdd = ""
+        print(dataArr[0])
         if "basic" in dataArr[0]:
             tipo = "3 by 3 sector"
             if "row" in dataArr[0]:
                 tipo = "row"
-            elif dataArr[0] == "col":
+            elif "col" in dataArr[0]:
                 tipo = "col"
+            # ELSE ERROR
             dataToAdd = "If we look at the " + tipo + " containing this cell, we know that this cell can not be " + str(dataArr[1]) + "."
         if "unique" in dataArr[0]:
             tipo = "3 by 3 sector"
             if "row" in dataArr[0]:
                 tipo = "row"
-            elif dataArr[0] == "col":
+            elif "col" in dataArr[0]:
                 tipo = "col"
             dataToAdd = "If we look at the " + tipo + " containing this cell, we know that this cell should be " + str(dataArr[1]) + "."
             
