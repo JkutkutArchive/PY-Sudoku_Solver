@@ -56,8 +56,21 @@ class Cell():
 
     def addData(self, dataArr):
         dataToAdd = ""
-        if dataArr[0] == "3 by 3":
-            dataToAdd = "If we look at the 3 by 3 sector containing this cell, we can know that this cell can not be " + str(dataArr[1])
+        if "basic" in dataArr[0]:
+            tipo = "3 by 3 sector"
+            if "row" in dataArr[0]:
+                tipo = "row"
+            elif dataArr[0] == "col":
+                tipo = "col"
+            dataToAdd = "If we look at the " + tipo + " containing this cell, we know that this cell can not be " + str(dataArr[1]) + "."
+        if "unique" in dataArr[0]:
+            tipo = "3 by 3 sector"
+            if "row" in dataArr[0]:
+                tipo = "row"
+            elif dataArr[0] == "col":
+                tipo = "col"
+            dataToAdd = "If we look at the " + tipo + " containing this cell, we know that this cell should be " + str(dataArr[1]) + "."
+            
         self.data.append(dataToAdd)
 
 class color():
