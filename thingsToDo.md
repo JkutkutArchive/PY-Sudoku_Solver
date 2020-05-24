@@ -7,3 +7,4 @@
 - revise Eq method
 - at addData, no need to use array
 - at AddData, handle erros
+- at AddData, use Set and update already created elemets
