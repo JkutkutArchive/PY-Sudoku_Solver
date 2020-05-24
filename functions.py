@@ -39,10 +39,11 @@ class Cell():
     def __hash__(self):
         return hash(self.x) ^ hash(self.y) # Because there is not 2 cells on the same coord
 
-    def setValue(self, value):
+    def setValue(self, value, *noPrint):
         self.value = value
         self.posVal = None
-        if(len(self.data) > 1):
+        self.addData(["therefore"])
+        if not noPrint:
             print(*self.data, sep = "\n")
     
     def getValue(self):
@@ -56,8 +57,10 @@ class Cell():
 
     def addData(self, dataArr):
         dataToAdd = ""
-        print(dataArr[0])
-        if "basic" in dataArr[0]:
+        # print(dataArr[0])
+        if "therefore" in dataArr[0]:
+            dataToAdd = "Therefore, the value of this cell is " + str(self.value) + "."
+        elif "basic" in dataArr[0]:
             tipo = "3 by 3 sector"
             if "row" in dataArr[0]:
                 tipo = "row"
@@ -65,7 +68,7 @@ class Cell():
                 tipo = "col"
             # ELSE ERROR
             dataToAdd = "If we look at the " + tipo + " containing this cell, we know that this cell can not be " + str(dataArr[1]) + "."
-        if "unique" in dataArr[0]:
+        elif "unique" in dataArr[0]:
             tipo = "3 by 3 sector"
             if "row" in dataArr[0]:
                 tipo = "row"

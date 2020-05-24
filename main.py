@@ -71,13 +71,17 @@ for i in range(9):
         if data[i][j] == 0:
             cells.add(grid[i][j])
         else:
-            grid[i][j].setValue(data[i][j])
+            grid[i][j].setValue(data[i][j], False)
 
 
 # Vars:
 gameRunning = True
 
 while gameRunning:
+    print("    Iteration    ".center(40,"-"))
+    print()
+    tool.printArray(grid)
+    print()
     # ------------------------------    actual algorithm   ------------------------------
     for cell in cells: # Check 3 by 3, row and col
         values = []
@@ -91,7 +95,7 @@ while gameRunning:
                     values = values + [otherValue] 
         if len(values) > 0: 
             cell.addData(["basic 3 by 3", values])
-            print(*cell.data, sep = "\n")
+            # print(*cell.data, sep = "\n")
         values = []
         for i in range(9): # Rows
             if i != cell.x: # If not the same cell
@@ -101,7 +105,7 @@ while gameRunning:
                     values = values + [otherValue]
         if len(values) > 0: 
             cell.addData(["basic row", values])
-            print(*cell.data, sep = "\n")
+            # print(*cell.data, sep = "\n")
         values = []
         for i in range(9): # Cols
             if i != cell.y: # If not the same cell
@@ -111,7 +115,14 @@ while gameRunning:
                     values = values + [otherValue]
         if len(values) > 0: 
             cell.addData(["basic col", values])
-            print(*cell.data, sep = "\n")
+            # print(*cell.data, sep = "\n")
+
+
+        if len(cell.getPosVal()) == 1: # We got the value
+            cell.setValue(list(cell.getPosVal())[0])
+            break
+
+
 
         #----------------------------
 
@@ -129,6 +140,7 @@ while gameRunning:
             if uniqueValue in cell.posVal(): # if this value is a possible one, make it the value of the cell (This should always be true)
                 cell.addData(["unique row", uniqueValue])
                 cell.setValue(uniqueValue)
+                break
             else:
                 print("ERROR at unique row")
 
@@ -146,6 +158,7 @@ while gameRunning:
             if uniqueValue in cell.posVal(): # if this value is a possible one, make it the value of the cell (This should always be true)
                 cell.addData(["unique col", uniqueValue])
                 cell.setValue(uniqueValue)
+                break
             else:
                 print("ERROR at unique col")
 
@@ -164,9 +177,21 @@ while gameRunning:
             if uniqueValue in cell.posVal(): # if this value is a possible one, make it the value of the cell (This should always be true)
                 cell.addData(["unique 3 by 3", uniqueValue])
                 cell.setValue(uniqueValue)
+                break
             else:
                 print("ERROR at unique 3 by 3")
 
+    cells = set() # Set with all undone cells
+    for i in range(9):
+        for j in range(9):
+            if data[i][j] == 0:
+                cells.add(grid[i][j])
+
+    if len(cells) == 0: # All cells filled => DONE :D
+        print("Sudoku finished")
+        print("Here is the solution")
+        tool.printArray(grid)
+        gameRunning = False
 
 
     response = input("Continue?")
@@ -178,48 +203,6 @@ tool.printArray(data)
 
 
 #     //***************************    actual algorithm    ***************************
-
-#       //check if piece is the only with unique value => true value is u
-
-#       let unique = [
-#         [1, 2, 3, 4, 5, 6, 7, 8, 9],
-#         [1, 2, 3, 4, 5, 6, 7, 8, 9],
-#         [1, 2, 3, 4, 5, 6, 7, 8, 9]
-#       ];
-
-#       //3by3
-#       for (let j = 0; j < 3; j++) {
-#         for (let k = 0; k < 3; k++) {
-#           let x = Math.floor(setS[i].x / 3) * 3 + j;
-#           let y = Math.floor(setS[i].y / 3) * 3 + k;
-#           if (setS[i] != grid[x][y] && grid[x][y].value == undefined) {
-#             //not same spot && neig without value defined &&
-#             unique[2] = filterArray(unique[2], grid[x][y].posVal);
-#           } else if (grid[x][y].value != undefined) { //also remove already used values
-#             unique[2] = filterArray(unique[2], [grid[x][y].value]);
-#           }
-
-#         }
-#       }
-
-      
-#       //if unique value in row or col or 3by3 => show value
-#       for(let j = 0; j < 3; j++){
-#         if (unique[j].length == 1 && setS[i].posVal.indexOf(unique[j][0]) != -1) {
-#           // if(printCoords(setS[i]) == "(4, 8)") console.log(printCoords(setS[i], unique[j][0]) + " with unique type " + j + " in " + i + " index");
-#           // if(printCoords(setS[i]) == "(4, 6)") console.log(printCoords(setS[i], unique[j][0]) + " with unique type " + j + " in " + i + " index");
-#           // if(printCoords(setS[i]) == "(6, 7)") console.log(printCoords(setS[i], unique[j][0]) + " with unique type " + j + " in " + i + " index");
-#           // if(printCoords(setS[i]) == "(6, 1)") console.log(printCoords(setS[i], unique[j][0]) + " with unique type " + j + " in " + i + " index");
-#           setS = setValueInArray(setS, i, unique[j][0]);
-#           i = (i == 0) ? i : i - 1; //if I remove nº element, all >n elements shift
-#         }
-#         /*if (unique[j].length == 1){
-#           console.log();
-#           console.log(unique[j]);
-#           console.log(setS[i].posVal);
-#           console.log();
-#         }*/
-#       }
       
 #       //if posVal.length == 1 -> show value
 #       if (setS.length > 0 && setS[i].posVal.length == 1) { //if posVal.length == 1 -> show value
