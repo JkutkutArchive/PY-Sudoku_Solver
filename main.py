@@ -90,7 +90,7 @@ while gameRunning:
                     cell.getPosVal().remove(otherValue)
                     values = values + [otherValue] 
         if len(values) > 0: 
-            cell.addData(["3 by 3", values])
+            cell.addData(["basic 3 by 3", values])
         values = []
         for i in range(9): # Rows
             if i != cell.x: # If not the same cell
@@ -99,7 +99,7 @@ while gameRunning:
                     cell.getPosVal().remove(otherValue)
                     values = values + [otherValue]
         if len(values) > 0: 
-            cell.addData(["row", values])
+            cell.addData(["basic row", values])
 
         values = []
         for i in range(9): # Cols
@@ -109,7 +109,28 @@ while gameRunning:
                     cell.getPosVal().remove(otherValue)
                     values = values + [otherValue]
         if len(values) > 0: 
-            cell.addData(["col", values])
+            cell.addData(["basic col", values])
+
+
+        #------------------------------
+
+        values = []
+        unique = set([i for i in range(1, 9, 1)])
+        for i in range(9): # for each piece on the row 
+            if i != cell.x: # if not same cell
+                valueToFilter = grid[i][cell.y].getValue() # Set with values on other cell
+                if grid[i][cell.y].getValue() == None: # If looking at cell with defined value, valueToFilter should be the actual value
+                    valueToFilter = set([grid[i][cell.y].value])                    
+                # valueToFilter => numbers here are not unique on our cell
+                unique = unique.difference(valueToFilter) # All common are not unique => del them
+        if len(unique) == 1: # If only one value is unique -> should be the value
+            if list(unique)[0] in cell.posVal(): # if this value is a possible one, make it the value of the cell (This should always be true)
+                cell.addData("unique row")
+                cell.setValue(list(unique)[0])
+                
+            else:
+                print("ERROR")
+
 
     response = input("Continue?")
     if response == "exit":
@@ -120,35 +141,6 @@ tool.printArray(data)
 
 
 #     //***************************    actual algorithm    ***************************
-
-#     for (let i = 0; i < setS.length; i++) { //for every spot without value
-#       //3-by-3
-#       for (let j = 0; j < 3; j++) {
-#         for (let k = 0; k < 3; k++) { //check 3 by 3 sector (WORKS)
-#           let x = Math.floor(setS[i].x / 3) * 3 + j;
-#           let y = Math.floor(setS[i].y / 3) * 3 + k;
-#           if (grid[x][y].value != undefined &&
-#             setS[i].posVal.includes(grid[x][y].value)) { //if nei with value, not my value
-#             setS[i].posVal.splice(setS[i].posVal.indexOf(grid[x][y].value), 1);
-#             // if(debugS(setS[i].x, setS[i].y)){  console.log("3by3 " + printCoord(x, y, printArray(grid[setS[i].x][setS[i].y].posVal)))}
-            
-#           }
-#         }
-#       }
-#       //rows and cols
-#       for (let j = 0; j < 9; j++) { //check rows and cols (WORKS)
-#         let neighbour = [grid[j][setS[i].y], grid[setS[i].x][j]]; //x and y
-#         for (let k = 0; k < 2; k++) {
-#           //if(debugS(setS[i].x, setS[i].y)){  console.log(((k == 0)?"row":"col") + printCoord(neighbour[k].x, neighbour[k].y, printArray(grid[setS[i].x][setS[i].y].posVal)))}
-          
-#           if (neighbour[k].value != undefined &&
-#             setS[i].posVal.includes(neighbour[k].value)) {
-#             setS[i].posVal.splice(setS[i].posVal.indexOf(neighbour[k].value), 1);
-#           }
-#         }
-#       }
-
-
 
 #       //check if piece is the only with unique value => true value is u
 
