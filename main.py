@@ -149,6 +149,25 @@ while gameRunning:
             else:
                 print("ERROR at unique col")
 
+        for i in range(3):
+            for j in range(3):
+                x = m.floor(cell.x / 3) * 3 + i
+                y = m.floor(cell.y / 3) * 3 + j
+                if cell.x != x or cell.y != y:
+                    valueToFilter = grid[x][y].getPosVal() # Set with values on other cell
+                    if grid[x][y].getValue() != None: # If looking at cell with defined value, valueToFilter should be the actual value
+                        valueToFilter = set([grid[x][y].value])                    
+                    # valueToFilter => numbers here are not unique on our cell
+                    unique = unique.difference(valueToFilter) # All common are not unique => del them
+        if len(unique) == 1: # If only one value is unique -> should be the value
+            uniqueValue = list(unique)[0]
+            if uniqueValue in cell.posVal(): # if this value is a possible one, make it the value of the cell (This should always be true)
+                cell.addData(["unique 3 by 3", uniqueValue])
+                cell.setValue(uniqueValue)
+            else:
+                print("ERROR at unique 3 by 3")
+
+
 
     response = input("Continue?")
     if response == "exit":
@@ -167,54 +186,7 @@ tool.printArray(data)
 #         [1, 2, 3, 4, 5, 6, 7, 8, 9],
 #         [1, 2, 3, 4, 5, 6, 7, 8, 9]
 #       ];
-      
-#       // if(printCoords(setS[i]) == "(4, 6)") console.log(printCoords(setS[i]) + " --------------------");
-#       //cols and rows
-#       for (let j = 0; j < 9; j++) { //keep only unique
-#         //let uni = unique[0];//debug
-#         //row
-#         if (setS[i].x != j){
-#           let valToFilter = [];
-#           if(grid[j][setS[i].y].value == undefined) {
-#             //not same spot && neig without value defined
-#             valToFilter = grid[j][setS[i].y].posVal;
-#             //if(printCoords(setS[i]) == "(4, 6)") console.log(j + "º nei with posVal: " + printArray(grid[j][setS[i].y].posVal));
-#           } 
-#           else if (grid[j][setS[i].y].value != undefined) { //also remove already used values
-#             valToFilter = [grid[j][setS[i].y].value];
-#             //if(printCoords(setS[i]) == "(4, 6)") console.log(j + "º already used value");
-#           }
-#           unique[0] = filterArray(unique[0], valToFilter);
-          
-#           /*if(printCoords(setS[i]) == "(4, 6)"){ 
-#             console.log(printCoords(grid[j][setS[i].y]) + ": ");
-#             console.log(printArray(uni) + " fA " + printArray((grid[j][setS[i].y].value == undefined)? grid[j][setS[i].y].posVal : [grid[j][setS[i].y].value]) + " -> __" + printArray(unique[0]) + "__");
-#           }*/
-#         }
-        
-#         // let uni = unique[1];//debug
-#         //col
-#         if (setS[i].y != j){
-#           let valToFilter = [];
-#           if(grid[setS[i].x][j].value == undefined) {
-#             //not same spot && neig without value defined
-#             valToFilter =  grid[setS[i].x][j].posVal;
-#             // if(printCoords(setS[i]) == "(4, 6)") console.log(j + "º nei with posVal: " + printArray(grid[setS[i].x][j].posVal));
-#           } 
-#           else if (grid[setS[i].x][j].value != undefined) { //also remove already used values
-#             valToFilter = [grid[setS[i].x][j].value];
-#             // if(printCoords(setS[i]) == "(4, 6)") console.log(j + "º already used value");
-#           }
-#           unique[1] = filterArray(unique[1], valToFilter);
-        
-#           /*if(printCoords(setS[i]) == "(4, 6)"){ 
-#             console.log(printCoords(grid[setS[i].x][j]) + ": ");
-#             console.log(printArray(uni) + " fA " + printArray((grid[setS[i].x][j].value == undefined)? grid[setS[i].x][j].posVal : [grid[setS[i].x][j].value]) + " -> __" + printArray(unique[1]) + "__");
-#           }*/
-#         }
-        
-        
-#       }
+
 #       //3by3
 #       for (let j = 0; j < 3; j++) {
 #         for (let k = 0; k < 3; k++) {
