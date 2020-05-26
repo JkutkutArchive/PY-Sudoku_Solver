@@ -208,6 +208,15 @@ while gameRunning:
     response = input("Continue?")
     if response == "exit":
         gameRunning = False
+    elif "viewData" in response: 
+        while True:
+            response = input("Cell?")
+            if "e" in response: # exit, e, ex
+                break
+            else: # 58 => view data on the cell (5,8)
+                print(*grid[int(response[0])][int(response[1])].data, sep="\n")
+                print(*grid[int(response[0])][int(response[1])].posVal, sep=", ")
+                print(grid[int(response[0])][int(response[1])].value)
 
 tool.printArray(grid)
 tool.printArray(data)
