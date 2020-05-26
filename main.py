@@ -144,7 +144,7 @@ while gameRunning:
         #----------------------------
 
         values = []
-        unique = set([i for i in range(1, 9, 1)])
+        unique = set([i for i in range(1, 10, 1)])
         for i in range(9): # for each piece on the row (x=cte)
             if i != cell.x: # if not same cell
                 valueToFilter = grid[cell.x][i].getPosVal() # Set with values on other cell
@@ -162,7 +162,7 @@ while gameRunning:
                 print("ERROR at unique row")
 
         values = []
-        unique = set([i for i in range(1, 9, 1)])
+        unique = set([i for i in range(1, 10, 1)])
         for i in range(9): # for each piece on the Col (y=cte)
             if i != cell.x: # if not same cell
                 valueToFilter = grid[i][cell.y].getPosVal() # Set with possible values of other cell
@@ -180,16 +180,11 @@ while gameRunning:
                 print("ERROR at unique col")
 
         values = []
-        unique = set([i for i in range(1, 9, 1)])
+        unique = set([i for i in range(1, 10, 1)])
         for i in range(3):
             for j in range(3):
                 x = m.floor(cell.x / 3) * 3 + i
                 y = m.floor(cell.y / 3) * 3 + j
-                # if cell.x == 3 and cell.y == 3:
-                #     print("at " + str((x,y)))
-                #     print(grid[x][y].getPosVal())
-                #     print(grid[x][y].getValue())
-                #     print(unique)
                 if cell.x != x or cell.y != y:
                     valueToFilter = grid[x][y].getPosVal() # Set with values on other cell
                     if grid[x][y].getValue() != None: # If looking at cell with defined value, valueToFilter should be the actual value
@@ -209,7 +204,7 @@ while gameRunning:
     if len(cells) == 0: # All cells filled => DONE :D
         print("Sudoku finished")
         print("Here is the solution")
-        tool.printArray(grid)
+        tool.printSudoku(grid)
         gameRunning = False
 
 

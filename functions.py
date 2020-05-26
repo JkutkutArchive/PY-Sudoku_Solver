@@ -104,7 +104,7 @@ class Cell():
 
     def addData(self, dataArr):
         dataToAdd = ""
-        # print(dataArr[0])
+        # print("TYPE: " + dataArr[0])
         if "therefore" in dataArr[0]:
             dataToAdd = "Therefore, the value of this cell is " + str(self.value) + "."
         elif "basic" in dataArr[0]:
