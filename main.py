@@ -86,17 +86,27 @@ for i in range(9):
 gameRunning = True
 
 while gameRunning:
-    print("    Iteration    ".center(40,"-"))
-    print()
-    tool.printSudoku(grid)
-    print()
-
     #-------    Update matrix    -------
     cells = set() # Set with all undone cells
     for i in range(9):
         for j in range(9):
             if grid[i][j].getValue() == 0:
                 cells.add(grid[i][j])
+    
+    if len(cells) == 0: # All cells filled => DONE :D
+        print("\n")
+        print(" Sudoku finished  ".center(40, "-"))
+        print("\nHere is the solution:")
+        tool.printSudoku(grid)
+        print("\nThe solution is " + ("" if tool.checkSol(grid) else "IN") + "CORRECT")
+        gameRunning = False
+        break
+
+    print()
+    print("    Iteration    ".center(40,"-"))
+    print()
+    tool.printSudoku(grid)
+    print()
 
     # ------------------------------    actual algorithm   ------------------------------
     for cell in cells: # Check 3 by 3, row and col
@@ -201,15 +211,8 @@ while gameRunning:
                 print("ERROR at unique 3 by 3")
 
 
-    if len(cells) == 0: # All cells filled => DONE :D
-        print(" Sudoku finished  ".center(40, "-"))
-        print("\nHere is the solution:")
-        tool.printSudoku(grid)
-        print("\nThe solution is " + ("" if tool.checkSudokuSolution(grid, sol) else "IN") + "CORRECT")
-        gameRunning = False
-
-
-    response = input("Continue?")
+    # response = input("Continue?")
+    response = ""
     if response == "exit":
         gameRunning = False
     elif "viewData" in response: 
@@ -222,8 +225,6 @@ while gameRunning:
                 print(*grid[int(response[0])][int(response[1])].posVal, sep=", ")
                 print(grid[int(response[0])][int(response[1])].value)
 
-tool.printArray(grid)
-tool.printArray(data)
 
 
 #     //***************************    actual algorithm    ***************************

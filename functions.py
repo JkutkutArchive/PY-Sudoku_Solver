@@ -60,17 +60,17 @@ def checkSol(arr):
             ele = []
             for k in range(3):
                 for l in range(3):
-                    suma = suma + arr[k + i][l + j]
-                    ele = ele + [arr[k + i][l + j]]
+                    suma = suma + arr[k + i][l + j].getValue()
+                    ele = ele + [arr[k + i][l + j].getValue()]
             if(suma != 45):
-                # pError(zone="3b3", i=i, j=j, k=k, l=l, ele=ele)
                 return False
     for l in range(9):#lines:
-        solC = 0
+        solCc = 0
+        solCr = 0
         for i in range(9):
-            solC = solC + arr[i][l]
-        if sum(arr[l]) != 45 or solC != 45:
-            # pError(zone="lines", i=i, l=l)
+            solCc = solCc + arr[i][l].getValue()
+            solCr = solCr + arr[l][i].getValue()
+        if solCc != 45 or solCr != 45:
             return False
     return True
 
