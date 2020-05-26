@@ -64,7 +64,7 @@ class Cell():
         self.x = x
         self.y = y
         self.value = None
-        self.posVal = set([1, 2, 3, 4, 5, 6, 7, 8, 9])
+        self.posVal = set([i for i in range(1, 10, 1)])
         self.data = ["Let's focus on the cell on the position (" + str(x) + ", " + str(y) + ")"]
     
     def __str__(self):
@@ -109,12 +109,6 @@ class Cell():
             dataToAdd = "Therefore, the value of this cell is " + str(self.value) + "."
         elif "basic" in dataArr[0]:
             tipo = dataArr[0][6:]
-            # tipo = "3 by 3 sector"
-            # if "row" in dataArr[0]:
-            #     tipo = "row"
-            # elif "col" in dataArr[0]:
-            #     tipo = "col"
-            # ELSE ERROR
             dataToAdd = "If we look at the " + tipo + " containing this cell, we know that this cell can not be " + str(dataArr[1]) + "."
         elif "unique" in dataArr[0]:
             tipo = "3 by 3 sector"
