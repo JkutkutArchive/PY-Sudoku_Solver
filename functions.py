@@ -49,7 +49,7 @@ def printSudoku(arr):
         t = [str(i) + " |"] + arr[i][0:3] + ["|"] + arr[i][3:6] + ["|"] + arr[i][6:9] + ["|"]
         print(*t, sep = " ")
 
-    print(*["+"] + ["-" for i in range(23)] + ["+"], sep = "");#end
+    print(*["  +"] + ["-" for i in range(23)] + ["+"], sep = "");#end
 
 ## Prints the status of the arguments (errors)
 def pError(**kwargs):
