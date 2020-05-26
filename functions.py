@@ -108,11 +108,12 @@ class Cell():
         if "therefore" in dataArr[0]:
             dataToAdd = "Therefore, the value of this cell is " + str(self.value) + "."
         elif "basic" in dataArr[0]:
-            tipo = "3 by 3 sector"
-            if "row" in dataArr[0]:
-                tipo = "row"
-            elif "col" in dataArr[0]:
-                tipo = "col"
+            tipo = dataArr[0][6:]
+            # tipo = "3 by 3 sector"
+            # if "row" in dataArr[0]:
+            #     tipo = "row"
+            # elif "col" in dataArr[0]:
+            #     tipo = "col"
             # ELSE ERROR
             dataToAdd = "If we look at the " + tipo + " containing this cell, we know that this cell can not be " + str(dataArr[1]) + "."
         elif "unique" in dataArr[0]:
