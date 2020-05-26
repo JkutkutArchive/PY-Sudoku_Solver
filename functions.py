@@ -12,25 +12,25 @@ sol = [
 
 def printSudoku(arr):
     print(*["  Y "] + [str(i) + " " for i in range(3)] + ["  "] + [str(3+i) + " " for i in range(3)] + ["  "] + [str(6+i) + " " for i in range(3)], sep = "")
-    print(*["X +"] + ["-" for i in range(23)] + ["+"], sep = "");#start
+    print(*["X +"] + ["-" for i in range(23)] + ["+"], sep = "")#start
 
     for i in range(3): #rows
         t = [str(i) + " |"] + arr[i][0:3] + ["|"] + arr[i][3:6] + ["|"] + arr[i][6:9] + ["|"]
         print(*t, sep = " ")
 
-    print(*["  "]+["".join(["+"] + ["-" for i in range(7)]) for j in range(3)] + ["+"], sep = "");#3 by 3 separators
+    print(*["  "]+["".join(["+"] + ["-" for i in range(7)]) for j in range(3)] + ["+"], sep = "")#3 by 3 separators
 
     for i in range(3, 6): #rows
         t = [str(i) + " |"] + arr[i][0:3] + ["|"] + arr[i][3:6] + ["|"] + arr[i][6:9] + ["|"]
         print(*t, sep = " ")
 
-    print(*["  "]+["".join(["+"] + ["-" for i in range(7)]) for j in range(3)] + ["+"], sep = "");#3 by 3 separators
+    print(*["  "]+["".join(["+"] + ["-" for i in range(7)]) for j in range(3)] + ["+"], sep = "")#3 by 3 separators
 
     for i in range(6, 9): #rows
         t = [str(i) + " |"] + arr[i][0:3] + ["|"] + arr[i][3:6] + ["|"] + arr[i][6:9] + ["|"]
         print(*t, sep = " ")
 
-    print(*["  +"] + ["-" for i in range(23)] + ["+"], sep = "");#end
+    print(*["  +"] + ["-" for i in range(23)] + ["+"], sep = "")#end
 
 def sudokuSolution(data, solutions):
     for x in range(9):
