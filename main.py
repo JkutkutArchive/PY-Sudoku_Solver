@@ -145,13 +145,13 @@ while gameRunning:
 
         values = []
         unique = set([i for i in range(1, 9, 1)])
-        for i in range(9): # for each piece on the row 
+        for i in range(9): # for each piece on the row (x=cte)
             if i != cell.x: # if not same cell
-                valueToFilter = grid[i][cell.y].getPosVal() # Set with possible values of other cell
-                if grid[i][cell.y].getValue() != None: # If looking at cell with defined value, valueToFilter should be the actual value
-                    valueToFilter = set([grid[i][cell.y].value])                    
+                valueToFilter = grid[cell.x][i].getPosVal() # Set with values on other cell
+                if grid[cell.x][i].getValue() != None: # If looking at cell with defined value, valueToFilter should be the actual value
+                    valueToFilter = set([grid[cell.x][i].value])                    
                 # valueToFilter => numbers here are not unique on our cell
-                unique = unique.difference(valueToFilter) # All common are not unique => del them
+                unique = unique.difference(valueToFilter) # All common are not unique => del them            
         if len(unique) == 1: # If only one value is unique -> should be the value
             uniqueValue = list(unique)[0]
             if uniqueValue in cell.getPosVal(): # if this value is a possible one, make it the value of the cell (This should always be true)
@@ -163,11 +163,11 @@ while gameRunning:
 
         values = []
         unique = set([i for i in range(1, 9, 1)])
-        for i in range(9): # for each piece on the Col
+        for i in range(9): # for each piece on the Col (y=cte)
             if i != cell.x: # if not same cell
-                valueToFilter = grid[cell.x][i].getPosVal() # Set with values on other cell
-                if grid[cell.x][i].getValue() != None: # If looking at cell with defined value, valueToFilter should be the actual value
-                    valueToFilter = set([grid[cell.x][i].value])                    
+                valueToFilter = grid[i][cell.y].getPosVal() # Set with possible values of other cell
+                if grid[i][cell.y].getValue() != None: # If looking at cell with defined value, valueToFilter should be the actual value
+                    valueToFilter = set([grid[i][cell.y].value])                    
                 # valueToFilter => numbers here are not unique on our cell
                 unique = unique.difference(valueToFilter) # All common are not unique => del them
         if len(unique) == 1: # If only one value is unique -> should be the value
