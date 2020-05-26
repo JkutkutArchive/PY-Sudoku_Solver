@@ -179,10 +179,17 @@ while gameRunning:
             else:
                 print("ERROR at unique col")
 
+        values = []
+        unique = set([i for i in range(1, 9, 1)])
         for i in range(3):
             for j in range(3):
                 x = m.floor(cell.x / 3) * 3 + i
                 y = m.floor(cell.y / 3) * 3 + j
+                # if cell.x == 3 and cell.y == 3:
+                #     print("at " + str((x,y)))
+                #     print(grid[x][y].getPosVal())
+                #     print(grid[x][y].getValue())
+                #     print(unique)
                 if cell.x != x or cell.y != y:
                     valueToFilter = grid[x][y].getPosVal() # Set with values on other cell
                     if grid[x][y].getValue() != None: # If looking at cell with defined value, valueToFilter should be the actual value
@@ -197,6 +204,7 @@ while gameRunning:
                 break
             else:
                 print("ERROR at unique 3 by 3")
+
 
     if len(cells) == 0: # All cells filled => DONE :D
         print("Sudoku finished")
