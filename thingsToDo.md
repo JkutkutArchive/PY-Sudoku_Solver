@@ -2,6 +2,8 @@
 - Rows and col doc can be together
 - handle Errors
 - Error with cols and rows
+- COLORS
+- Difficult sudokus
 
 ## functions:
 - revise Eq method

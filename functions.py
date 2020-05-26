@@ -51,6 +51,13 @@ def printSudoku(arr):
 
     print(*["  +"] + ["-" for i in range(23)] + ["+"], sep = "");#end
 
+def checkSudokuSolution(grid, solution):
+    for i in range(9):
+        for j in range(9):
+            if grid[i][j].getValue() != solution[i][j]:
+                return False
+    return True
+
 ## Prints the status of the arguments (errors)
 def pError(**kwargs):
     print("***ERROR***".center(30))
@@ -88,10 +95,10 @@ class Cell():
         self.addData(["therefore"])
         if not noPrint:
             print(*self.data, sep = "\n")
-            if self.value == sol[self.x][self.y]:
-                print("\n" + "CORRECT".center(40) + "\n")
-            else:
-                print("\n" + "ERROR, NOT CORRECT VALUE".center(40) + "\n")
+            # if self.value == sol[self.x][self.y]:
+            #     print("\n" + "CORRECT".center(40) + "\n")
+            # else:
+            #     print("\n" + "ERROR, NOT CORRECT VALUE".center(40) + "\n")
     
     def getValue(self):
         return self.value if self.value != None else 0

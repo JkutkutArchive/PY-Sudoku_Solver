@@ -202,9 +202,10 @@ while gameRunning:
 
 
     if len(cells) == 0: # All cells filled => DONE :D
-        print("Sudoku finished")
-        print("Here is the solution")
+        print(" Sudoku finished  ".center(40, "-"))
+        print("\nHere is the solution:")
         tool.printSudoku(grid)
+        print("\nThe solution is " + ("" if tool.checkSudokuSolution(grid, sol) else "IN") + "CORRECT")
         gameRunning = False
 
 
