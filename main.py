@@ -113,19 +113,20 @@ while gameRunning:
             cell.addData(["basic 3 by 3", values])
             # print(*cell.data, sep = "\n")
         values = []
-        for i in range(9): # Rows
-            if i != cell.x: # If not the same cell
-                otherValue = grid[i][cell.y].getValue()
+        for i in range(9): # Rows (x=cte)
+            if i != cell.y: # If not the same cell
+                otherValue = grid[cell.x][i].getValue()
                 if otherValue > 0 and (otherValue in cell.getPosVal()):
                     cell.getPosVal().remove(otherValue)
                     values = values + [otherValue]
+            
         if len(values) > 0: 
             cell.addData(["basic row", values])
             # print(*cell.data, sep = "\n")
         values = []
-        for i in range(9): # Cols
-            if i != cell.y: # If not the same cell
-                otherValue = grid[cell.x][i].getValue()
+        for i in range(9): # Cols (y=cte)
+            if i != cell.x: # If not the same cell
+                otherValue = grid[i][cell.y].getValue()
                 if otherValue > 0 and (otherValue in cell.getPosVal()):
                     cell.getPosVal().remove(otherValue)
                     values = values + [otherValue]
