@@ -11,10 +11,10 @@ import functions as tool
 # add:
 
 # -Scanning techniques
-# 1. Scanning in one direction:()
-# 2. Scanning in two directions:()
-# 3. Searching for Single Candidates: ()
-# 4. Eliminating numbers from rows, columns and boxes: ()
+# 1. Scanning in one direction:(basic + unique)
+# 2. Scanning in two directions:(basic + unique)
+# 3. Searching for Single Candidates: (unique)
+# 4. Eliminating numbers from rows, columns and boxes: (pairs)
 # 5. Searching for missing numbers in rows and columns: ()
 
 # -Analyzing techniques:
@@ -100,6 +100,7 @@ for i in range(9):
         if data[i][j] != 0:
             grid[i][j].setValue(data[i][j], False)
 
+#-------    Analice data    -------
 if len(sol) == 0:
     print("There is no possible solution to this data :(")
     gameRunning = False
@@ -139,9 +140,7 @@ while gameRunning:
         gameRunning = False
         break
 
-    print()
-    print("    Iteration    ".center(40,"-"))
-    print()
+    print("\n\n-----------    Iteration    ------------\n")
     tool.printSudoku(grid)
     print()
 
@@ -227,9 +226,31 @@ while gameRunning:
             else:
                 print("ERROR at unique 3 by 3")
 
+    # ----------    PAIRS   ----------
+    #     What i know about pairs:
+    # - have unique values in sector
+    # - have unique values in row if pair in row
+    # - have unique values in col if pair in col
+    # - Pair can be at max 12 23 34 45 56 67 78 89 19
+    #     [12, 78, 23]
+    #     [19, 89, 34]
+    #     [56, 67, 45]
+        
+    # - if i search for each number in sector and only 2 spots with that value -> new candidate
+    # - if candidate is in row && also candidate in row -> new pair
+    # Sectors:  0 | 1 | 2 
+    #          ---+---+---
+    #           3 | 4 | 5 
+    #          ---+---+---
+    #           6 | 7 | 8 
+    for sector in range(9): # For each sector
+        candidates = []
+        for i in range(1, 10, 1): # For each posible value 
+            spotsIn3b3 = [] # store in i index the spot with i val in posVal
 
-    # response = input("Continue?")
-    response = ""
+
+    response = input("Continue?")
+    # response = ""
     if response == "exit":
         gameRunning = False
     elif "viewData" in response: 
@@ -245,31 +266,6 @@ while gameRunning:
 
 
 #     //***************************    actual algorithm    ***************************
-
-
-#     //++++++++++++++++++++  analyze  ++++++++++++++++++++
-#     //when all checked and trivial moves done,
-
-#     //console.log("ANALYZE");
-
-#     //get pairs
-#     //also if 3 or more like 13 34 14-> 2 pairs
-
-#     //~~~~~~~~~~~~~~~~~~~~ get Pairs V2 ~~~~~~~~~~~~~~~~~~~~
-#     /*
-#     What i know about pairs:
-#       - have unique values in sector
-#       - have unique values in row if pair in row
-#       - have unique values in col if pair in col
-#       - Pair can be at max 12 23 34 45 56 67 78 89 19
-#         [12, 78, 23]
-#         [19, 89, 34]
-#         [56, 67, 45]
-        
-#       - if i search for each number in sector and only 2 spots with that value -> new candidate
-#       - if candidate is in row && also candidate in row -> new pair
-#     */
-    
     
 #     let pairs = [];//to store candidates (2D -> [[spot, spot], [spot, spot]...])
     
