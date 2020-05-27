@@ -136,8 +136,9 @@ while gameRunning:
 
     # ------------------------------    actual algorithm   ------------------------------
     for cell in cells: # Check 3 by 3, row and col
+        # ----------    BASIC   ----------
         values = [[], [], []] # Values in row, col, 3by3
-        
+
         for i in range(9):
             if i != cell.y: # Rows (x=cte) -- If not the same cell
                 otherValue = grid[cell.x][i].getValue()
@@ -168,34 +169,27 @@ while gameRunning:
             cell.setValue(list(cell.getPosVal())[0])
             break
 
-        #----------------------------
-
+        # ----------    UNIQUE   ----------
         unique = [set([i for i in range(1, 10, 1)]) for i in range(3)] # unique row, col, 3by3
 
         for i in range(9):
-            if i != cell.x: # for each piece on the row (x=cte) -- if not same cell
+            if i != cell.y: # for each piece on the row (x=cte) -- if not same cell
                 valueToFilter = grid[cell.x][i].getPosVal() # Set with values on other cell
                 if grid[cell.x][i].getValue() != None: # If looking at cell with defined value, valueToFilter should be the actual value
-                    valueToFilter = set([grid[cell.x][i].value])                    
-                # valueToFilter => numbers here are not unique on our cell
+                    valueToFilter = set([grid[cell.x][i].value]) # valueToFilter => numbers here are not unique on our cell
                 unique[0] = unique[0].difference(valueToFilter) # All common are not unique => del them
-
             if i != cell.x: # for each piece on the Col (y=cte) -- if not same cell
                 valueToFilter = grid[i][cell.y].getPosVal() # Set with possible values of other cell
                 if grid[i][cell.y].getValue() != None: # If looking at cell with defined value, valueToFilter should be the actual value
-                    valueToFilter = set([grid[i][cell.y].value])                    
-                # valueToFilter => numbers here are not unique on our cell
+                    valueToFilter = set([grid[i][cell.y].value]) # valueToFilter => numbers here are not unique on our cell                
                 unique[1] = unique[1].difference(valueToFilter) # All common are not unique => del them
-
             x = (cell.x // 3) * 3 + (i // 3)
             y = (cell.y // 3) * 3 + (i % 3)
             if cell.x != x or cell.y != y:
                 valueToFilter = grid[x][y].getPosVal() # Set with values on other cell
                 if grid[x][y].getValue() != None: # If looking at cell with defined value, valueToFilter should be the actual value
-                    valueToFilter = set([grid[x][y].value])                    
-                # valueToFilter => numbers here are not unique on our cell
+                    valueToFilter = set([grid[x][y].value]) # valueToFilter => numbers here are not unique on our cell
                 unique[2] = unique[2].difference(valueToFilter) # All common are not unique => del them
-
 
         if len(unique[0]) == 1: # If only one value is unique -> should be the value
             uniqueValue = list(unique[0])[0]
@@ -240,19 +234,6 @@ while gameRunning:
 
 
 #     //***************************    actual algorithm    ***************************
-      
-#       //if posVal.length == 1 -> show value
-#       if (setS.length > 0 && setS[i].posVal.length == 1) { //if posVal.length == 1 -> show value
-#         // if(printCoords(setS[i]) == "(7, 8)") console.log(printCoords(setS[i], setS[i].posVal[0]) + " with setS[i].posVal.length in " + i + " index");
-        
-#         setS = setValueInArray(setS, i, setS[i].posVal[0]);
-#         i = (i == 0) ? i : i - 1; //if I remove nº element, all >n elements shift
-#       }
-      
-      
-#       //debug
-#       if (setS.length > 0) setS[i].show(color(0, 200, 100)); //debug
-#     }
 
 
 #     //++++++++++++++++++++  analyze  ++++++++++++++++++++
