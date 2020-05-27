@@ -38,17 +38,19 @@ data = [ #canonical
     [0, 4, 5, 0, 1, 8, 0, 9, 6],
     [1, 9, 6, 7, 0, 0, 2, 8, 0]
 ]
-sol = [
-    [9, 8, 4, 5, 3, 1, 6, 7, 2],
-    [6, 1, 3, 8, 2, 7, 5, 4, 9],
-    [2, 5, 7, 6, 4, 9, 8, 3, 1],
-    [3, 7, 8, 9, 6, 2, 4, 1, 5],
-    [5, 6, 1, 3, 7, 4, 9, 2, 8],
-    [4, 2, 9, 1, 8, 5, 7, 6, 3],
-    [8, 3, 2, 4, 9, 6, 1, 5, 7],
-    [7, 4, 5, 2, 1, 8, 3, 9, 6],
-    [1, 9, 6, 7, 5, 3, 2, 8, 4]
-]
+
+# sol = [
+#     [9, 8, 4, 5, 3, 1, 6, 7, 2],
+#     [6, 1, 3, 8, 2, 7, 5, 4, 9],
+#     [2, 5, 7, 6, 4, 9, 8, 3, 1],
+#     [3, 7, 8, 9, 6, 2, 4, 1, 5],
+#     [5, 6, 1, 3, 7, 4, 9, 2, 8],
+#     [4, 2, 9, 1, 8, 5, 7, 6, 3],
+#     [8, 3, 2, 4, 9, 6, 1, 5, 7],
+#     [7, 4, 5, 2, 1, 8, 3, 9, 6],
+#     [1, 9, 6, 7, 5, 3, 2, 8, 4]
+# ]
+
 
 # data = [ #contiune adding techniques
 #     [3, 8, 9, 4, 6, 1, 0, 0, 0],
@@ -75,15 +77,39 @@ sol = [
 
 # --------------------------    CODE    --------------------------
 
+# Vars:
+gameRunning = True
+
 #-------    Update matrices    -------
+sol = []
+tool.sudokuSolution(data, sol)
+
 for i in range(9):
     for j in range(9):
         if data[i][j] != 0:
             grid[i][j].setValue(data[i][j], False)
 
-
-# Vars:
-gameRunning = True
+if len(sol) == 0:
+    print("There is no possible solution to this data :(")
+    gameRunning = False
+elif len(sol) == 1:
+    print("Solution founded")
+    while True:
+        response = input("Do you want to see the steps to solve it? [yes/no]")
+        if "y" in response:
+            gameRunning = True
+            break
+        elif "n" in response:
+            print("Okay, here is the solution:\n\n")
+            tool.printSudoku(sol[0])
+            gameRunning = False
+            break
+else:
+    print("Multiple solutions founded. All of them are:")
+    for sols in sol: 
+        print("\n")
+        tool.printSudoku(sols)
+    gameRunning = False
 
 while gameRunning:
     #-------    Update matrix    -------
