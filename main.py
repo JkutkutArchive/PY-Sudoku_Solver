@@ -190,9 +190,9 @@ while gameRunning:
         if len(values[2]) > 0: # 3by3
             cell.addData(["basic 3 by 3", values[2]])
 
-        # if len(cell.getPosVal()) == 1: # We got the value
-        #     cell.setValue(list(cell.getPosVal())[0])
-        #     break
+        if len(cell.getPosVal()) == 1: # We got the value
+            cell.setValue(list(cell.getPosVal())[0])
+            break
 
         # ----------    UNIQUE   ----------
         unique = [set([i for i in range(1, 10, 1)]) for i in range(3)] # unique row, col, 3by3
@@ -216,30 +216,30 @@ while gameRunning:
                     valueToFilter = set([grid[x][y].value]) # valueToFilter => numbers here are not unique on our cell
                 unique[2] = unique[2].difference(valueToFilter) # All common are not unique => del them
 
-        # if len(unique[0]) == 1: # If only one value is unique -> should be the value
-        #     uniqueValue = list(unique[0])[0]
-        #     if uniqueValue in cell.getPosVal(): # if this value is a possible one, make it the value of the cell (This should always be true)
-        #         cell.addData(["unique row", uniqueValue])
-        #         cell.setValue(uniqueValue)
-        #         break
-        #     else:
-        #         print("ERROR at unique row")
-        # if len(unique[1]) == 1: # If only one value is unique -> should be the value
-        #     uniqueValue = list(unique[1])[0]
-        #     if uniqueValue in cell.getPosVal(): # if this value is a possible one, make it the value of the cell (This should always be true)
-        #         cell.addData(["unique col", uniqueValue])
-        #         cell.setValue(uniqueValue)
-        #         break
-        #     else:
-        #         print("ERROR at unique col")
-        # if len(unique[2]) == 1: # If only one value is unique -> should be the value
-        #     uniqueValue = list(unique[2])[0]
-        #     if uniqueValue in cell.getPosVal(): # if this value is a possible one, make it the value of the cell (This should always be true)
-        #         cell.addData(["unique 3 by 3", uniqueValue])
-        #         cell.setValue(uniqueValue)
-        #         break
-        #     else:
-        #         print("ERROR at unique 3 by 3")
+        if len(unique[0]) == 1: # If only one value is unique -> should be the value
+            uniqueValue = list(unique[0])[0]
+            if uniqueValue in cell.getPosVal(): # if this value is a possible one, make it the value of the cell (This should always be true)
+                cell.addData(["unique row", uniqueValue])
+                cell.setValue(uniqueValue)
+                break
+            else:
+                print("ERROR at unique row")
+        if len(unique[1]) == 1: # If only one value is unique -> should be the value
+            uniqueValue = list(unique[1])[0]
+            if uniqueValue in cell.getPosVal(): # if this value is a possible one, make it the value of the cell (This should always be true)
+                cell.addData(["unique col", uniqueValue])
+                cell.setValue(uniqueValue)
+                break
+            else:
+                print("ERROR at unique col")
+        if len(unique[2]) == 1: # If only one value is unique -> should be the value
+            uniqueValue = list(unique[2])[0]
+            if uniqueValue in cell.getPosVal(): # if this value is a possible one, make it the value of the cell (This should always be true)
+                cell.addData(["unique 3 by 3", uniqueValue])
+                cell.setValue(uniqueValue)
+                break
+            else:
+                print("ERROR at unique 3 by 3")
 
     # ----------    PAIRS   ----------
     #     What i know about pairs:
@@ -285,10 +285,10 @@ while gameRunning:
                         if hori == 1 or vert == 1: # If good pair (making a line)
                             candidates.append([cell1, cell2, val]) # Added
 
-                            print("Pair at " + str(val) + ": " + str(cell1.getPos()) + ", " + str(cell2.getPos()))
+                            # print("Pair at " + str(val) + ": " + str(cell1.getPos()) + ", " + str(cell2.getPos()))
                             # print(" " + str(cell1.getPosVal()) + ", " + str(cell2.getPosVal()))
                             # print(" " + str((hori, vert))+ " " + str(cell1.getPosVal().intersection(cell2.getPosVal())))
-                            print(" " + str((hori, vert)))
+                            # print(" " + str((hori, vert)))
 
                             # pair by one value: all cells on the line can not be this value
 
@@ -300,8 +300,8 @@ while gameRunning:
                                 # print("   posVal: " + str(cell.getPosVal()))
                                 # print("      --> " + str((val in cell.getPosVal())))
                                 if (cell != cell1) and (cell != cell2) and cell.getValue() == 0 and (val in cell.getPosVal()):
-                                    print(" Changed " + str((x, y)) + ", value: " + str(val))
-                                    # cell.addData(["pairs one val", cell1, cell2, val])
+                                    # print(" Changed " + str((x, y)) + ", value: " + str(val))
+                                    cell.addData(["pairs one val", cell1, cell2, val])
                                     cell.getPosVal().remove(val)
 
 
