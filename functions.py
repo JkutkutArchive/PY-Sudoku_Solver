@@ -1,14 +1,4 @@
-sol = [
-    [9, 8, 4, 5, 3, 1, 6, 7, 2],
-    [6, 1, 3, 8, 2, 7, 5, 4, 9],
-    [2, 5, 7, 6, 4, 9, 8, 3, 1],
-    [3, 7, 8, 9, 6, 2, 4, 1, 5],
-    [5, 6, 1, 3, 7, 4, 9, 2, 8],
-    [4, 2, 9, 1, 8, 5, 7, 6, 3],
-    [8, 3, 2, 4, 9, 6, 1, 5, 7],
-    [7, 4, 5, 2, 1, 8, 3, 9, 6],
-    [1, 9, 6, 7, 5, 3, 2, 8, 4]
-]
+sol = []
 
 def printSudoku(arr):
     print(*["  Y "] + [str(i) + " " for i in range(3)] + ["  "] + [str(3+i) + " " for i in range(3)] + ["  "] + [str(6+i) + " " for i in range(3)], sep = "")
@@ -111,10 +101,10 @@ class Cell():
         self.addData(["therefore"])
         if not noPrint:
             print(*self.data, sep = "\n")
-            # if self.value == sol[self.x][self.y]:
-            #     print("\n" + "CORRECT".center(40) + "\n")
-            # else:
-            #     print("\n" + "ERROR, NOT CORRECT VALUE".center(40) + "\n")
+            if self.value == sol[self.x][self.y]:
+                print("\n" + "CORRECT".center(40) + "\n")
+            else:
+                print("\n" + "ERROR, NOT CORRECT VALUE".center(40) + "\n")
     
     def getValue(self):
         return self.value if self.value != None else 0
