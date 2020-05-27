@@ -49,29 +49,29 @@ grid = [[tool.Cell(x, y) for y in range(9)] for x in range(9)]
 #     [0, 3, 0, 0, 0, 2, 0, 0, 0],
 #     [9, 4, 0, 0, 0, 6, 0, 0, 2]
 # ]
-# data = [ # hard (solved)
-#     [0, 0, 7, 0, 0, 0, 3, 0, 2],
-#     [2, 0, 0, 0, 0, 5, 0, 1, 0],
-#     [0, 0, 0, 8, 0, 1, 4, 0, 0],
-#     [0, 1, 0, 0, 9, 6, 0, 0, 8],
-#     [7, 6, 0, 0, 0, 0, 0, 4, 9],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 1, 0, 3, 0, 0, 0],
-#     [8, 0, 1, 0, 6, 0, 0, 0, 0],
-#     [0, 0, 0, 7, 0, 0, 0, 6, 3]
-# ]
-
-data = [ # pair test1
-    [0, 0, 0, 0, 0, 0, 3, 0, 2],
-    [0, 0, 0, 0, 0, 0, 0, 1, 6],
-    [0, 0, 0, 0, 0, 0, 4, 0, 0],
-    [0, 0, 0, 0, 0, 0, 7, 3, 8],
-    [0, 0, 0, 0, 0, 0, 2, 4, 9],
-    [0, 0, 0, 0, 0, 0, 6, 0, 1],
-    [6, 7, 0, 1, 5, 3, 0, 0, 4],
-    [8, 3, 1, 9, 6, 4, 0, 0, 0],
-    [0, 0, 0, 7, 8, 2, 1, 6, 3]
+data = [ # hard (solved)
+    [0, 0, 7, 0, 0, 0, 3, 0, 2],
+    [2, 0, 0, 0, 0, 5, 0, 1, 0],
+    [0, 0, 0, 8, 0, 1, 4, 0, 0],
+    [0, 1, 0, 0, 9, 6, 0, 0, 8],
+    [7, 6, 0, 0, 0, 0, 0, 4, 9],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 1, 0, 3, 0, 0, 0],
+    [8, 0, 1, 0, 6, 0, 0, 0, 0],
+    [0, 0, 0, 7, 0, 0, 0, 6, 3]
 ]
+
+# data = [ # pair test1
+#     [0, 0, 0, 0, 0, 0, 3, 0, 2],
+#     [0, 0, 0, 0, 0, 0, 0, 1, 6],
+#     [0, 0, 0, 0, 0, 0, 4, 0, 0],
+#     [0, 0, 0, 0, 0, 0, 7, 3, 8],
+#     [0, 0, 0, 0, 0, 0, 2, 4, 9],
+#     [0, 0, 0, 0, 0, 0, 6, 0, 1],
+#     [6, 7, 0, 1, 5, 3, 0, 0, 4],
+#     [8, 3, 1, 9, 6, 4, 0, 0, 0],
+#     [0, 0, 0, 7, 8, 2, 1, 6, 3]
+# ]
 
 # data = [ # expert
 #     [0, 0, 0, 0, 0, 0, 9, 2, 6],
@@ -106,8 +106,8 @@ nIte = 0
 
 #-------    Update matrices    -------
 print("Searching fot solutions...")
-# sol = []
-# tool.sudokuSolution(data, sol)
+sol = []
+tool.sudokuSolution(data, sol)
 
 for i in range(9):
     for j in range(9):
@@ -115,27 +115,28 @@ for i in range(9):
             grid[i][j].setValue(data[i][j], False)
 
 #-------    Analice data    -------
-# if len(sol) == 0:
-#     print("There is no possible solution to this data :(")
-#     gameRunning = False
-# elif len(sol) == 1:
-#     print("Solution founded")
-#     while True:
-#         response = input("Do you want to see the steps to solve it? [yes/no]")
-#         if "y" in response:
-#             gameRunning = True
-#             break
-#         elif "n" in response:
-#             print("Okay, here is the solution:\n\n")
-#             tool.printSudoku(sol[0])
-#             gameRunning = False
-#             break
-# else:
-#     print("Multiple solutions founded. All of them are:")
-#     for sols in sol: 
-#         print("\n")
-#         tool.printSudoku(sols)
-#     gameRunning = False
+if len(sol) == 0:
+    print("There is no possible solution to this data :(")
+    gameRunning = False
+elif len(sol) == 1:
+    print("Solution founded\n")
+    tool.printSudoku(sol[0])
+    tool.sol = sol[0]
+    while True:
+        response = input("\nDo you want to see the steps to solve it? [yes/no]")
+        if "y" in response:
+            gameRunning = True
+            break
+        elif "n" in response:
+            gameRunning = False
+            break
+        
+else:
+    print("Multiple solutions founded. All of them are:")
+    for sols in sol: 
+        print("\n")
+        tool.printSudoku(sols)
+    gameRunning = False
 
 while gameRunning:
     #-------    Update matrix    -------
@@ -302,6 +303,8 @@ while gameRunning:
                                 if (cell != cell1) and (cell != cell2) and cell.getValue() == 0 and (val in cell.getPosVal()):
                                     # print(" Changed " + str((x, y)) + ", value: " + str(val))
                                     cell.addData(["pairs one val", cell1, cell2, val])
+                                    cell1.addData(["pairs one cell", cell2, val])
+                                    cell2.addData(["pairs one cell", cell1, val])
                                     cell.getPosVal().remove(val)
 
 
