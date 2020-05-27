@@ -122,7 +122,7 @@ while gameRunning:
     if len(cells) == 0: # All cells filled => DONE :D
         print("\n")
         print(" Sudoku finished  ".center(40, "-"))
-        print("\nHere is the solution:")
+        print("\nHere is the solution:\n")
         tool.printSudoku(grid)
         print("\nThe solution is " + ("" if tool.checkSol(grid) else "IN") + "CORRECT")
         gameRunning = False
@@ -158,70 +158,63 @@ while gameRunning:
                     values[2] = values[2] + [otherValue]
 
         if len(values[0]) > 0: # Row
-            cell.addData(["basic row", values])
+            cell.addData(["basic row", values[0]])
         if len(values[1]) > 0: # Col 
-            cell.addData(["basic col", values])
+            cell.addData(["basic col", values[1]])
         if len(values[2]) > 0: # 3by3
-            cell.addData(["basic 3 by 3", values])
+            cell.addData(["basic 3 by 3", values[2]])
 
         if len(cell.getPosVal()) == 1: # We got the value
             cell.setValue(list(cell.getPosVal())[0])
             break
 
-
-
         #----------------------------
 
-        values = []
-        unique = set([i for i in range(1, 10, 1)])
-        for i in range(9): # for each piece on the row (x=cte)
-            if i != cell.x: # if not same cell
+        unique = [set([i for i in range(1, 10, 1)]) for i in range(3)] # unique row, col, 3by3
+
+        for i in range(9):
+            if i != cell.x: # for each piece on the row (x=cte) -- if not same cell
                 valueToFilter = grid[cell.x][i].getPosVal() # Set with values on other cell
                 if grid[cell.x][i].getValue() != None: # If looking at cell with defined value, valueToFilter should be the actual value
                     valueToFilter = set([grid[cell.x][i].value])                    
                 # valueToFilter => numbers here are not unique on our cell
-                unique = unique.difference(valueToFilter) # All common are not unique => del them            
-        if len(unique) == 1: # If only one value is unique -> should be the value
-            uniqueValue = list(unique)[0]
+                unique[0] = unique[0].difference(valueToFilter) # All common are not unique => del them
+
+            if i != cell.x: # for each piece on the Col (y=cte) -- if not same cell
+                valueToFilter = grid[i][cell.y].getPosVal() # Set with possible values of other cell
+                if grid[i][cell.y].getValue() != None: # If looking at cell with defined value, valueToFilter should be the actual value
+                    valueToFilter = set([grid[i][cell.y].value])                    
+                # valueToFilter => numbers here are not unique on our cell
+                unique[1] = unique[1].difference(valueToFilter) # All common are not unique => del them
+
+            x = (cell.x // 3) * 3 + (i // 3)
+            y = (cell.y // 3) * 3 + (i % 3)
+            if cell.x != x or cell.y != y:
+                valueToFilter = grid[x][y].getPosVal() # Set with values on other cell
+                if grid[x][y].getValue() != None: # If looking at cell with defined value, valueToFilter should be the actual value
+                    valueToFilter = set([grid[x][y].value])                    
+                # valueToFilter => numbers here are not unique on our cell
+                unique[2] = unique[2].difference(valueToFilter) # All common are not unique => del them
+
+
+        if len(unique[0]) == 1: # If only one value is unique -> should be the value
+            uniqueValue = list(unique[0])[0]
             if uniqueValue in cell.getPosVal(): # if this value is a possible one, make it the value of the cell (This should always be true)
                 cell.addData(["unique row", uniqueValue])
                 cell.setValue(uniqueValue)
                 break
             else:
                 print("ERROR at unique row")
-
-        values = []
-        unique = set([i for i in range(1, 10, 1)])
-        for i in range(9): # for each piece on the Col (y=cte)
-            if i != cell.x: # if not same cell
-                valueToFilter = grid[i][cell.y].getPosVal() # Set with possible values of other cell
-                if grid[i][cell.y].getValue() != None: # If looking at cell with defined value, valueToFilter should be the actual value
-                    valueToFilter = set([grid[i][cell.y].value])                    
-                # valueToFilter => numbers here are not unique on our cell
-                unique = unique.difference(valueToFilter) # All common are not unique => del them
-        if len(unique) == 1: # If only one value is unique -> should be the value
-            uniqueValue = list(unique)[0]
+        if len(unique[1]) == 1: # If only one value is unique -> should be the value
+            uniqueValue = list(unique[1])[0]
             if uniqueValue in cell.getPosVal(): # if this value is a possible one, make it the value of the cell (This should always be true)
                 cell.addData(["unique col", uniqueValue])
                 cell.setValue(uniqueValue)
                 break
             else:
                 print("ERROR at unique col")
-
-        values = []
-        unique = set([i for i in range(1, 10, 1)])
-        for i in range(3):
-            for j in range(3):
-                x = m.floor(cell.x / 3) * 3 + i
-                y = m.floor(cell.y / 3) * 3 + j
-                if cell.x != x or cell.y != y:
-                    valueToFilter = grid[x][y].getPosVal() # Set with values on other cell
-                    if grid[x][y].getValue() != None: # If looking at cell with defined value, valueToFilter should be the actual value
-                        valueToFilter = set([grid[x][y].value])                    
-                    # valueToFilter => numbers here are not unique on our cell
-                    unique = unique.difference(valueToFilter) # All common are not unique => del them
-        if len(unique) == 1: # If only one value is unique -> should be the value
-            uniqueValue = list(unique)[0]
+        if len(unique[2]) == 1: # If only one value is unique -> should be the value
+            uniqueValue = list(unique[2])[0]
             if uniqueValue in cell.getPosVal(): # if this value is a possible one, make it the value of the cell (This should always be true)
                 cell.addData(["unique 3 by 3", uniqueValue])
                 cell.setValue(uniqueValue)
