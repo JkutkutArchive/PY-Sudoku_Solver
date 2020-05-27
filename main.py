@@ -136,40 +136,33 @@ while gameRunning:
 
     # ------------------------------    actual algorithm   ------------------------------
     for cell in cells: # Check 3 by 3, row and col
-        values = []
-        for i in range(3): # 3 by 3 sectors
-            for j in range(3):
-                x = m.floor(cell.x / 3) * 3 + i
-                y = m.floor(cell.y / 3) * 3 + j
-                otherValue = grid[x][y].getValue()
-                if otherValue > 0 and (otherValue in cell.getPosVal()):
-                    cell.getPosVal().remove(otherValue)
-                    values = values + [otherValue] 
-        if len(values) > 0: 
-            cell.addData(["basic 3 by 3", values])
-            # print(*cell.data, sep = "\n")
-        values = []
-        for i in range(9): # Rows (x=cte)
-            if i != cell.y: # If not the same cell
+        values = [[], [], []] # Values in row, col, 3by3
+        
+        for i in range(9):
+            if i != cell.y: # Rows (x=cte) -- If not the same cell
                 otherValue = grid[cell.x][i].getValue()
                 if otherValue > 0 and (otherValue in cell.getPosVal()):
                     cell.getPosVal().remove(otherValue)
-                    values = values + [otherValue]
-            
-        if len(values) > 0: 
-            cell.addData(["basic row", values])
-            # print(*cell.data, sep = "\n")
-        values = []
-        for i in range(9): # Cols (y=cte)
-            if i != cell.x: # If not the same cell
+                    values[0] = values[0] + [otherValue]
+            if i != cell.x: # Cols (y=cte) -- If not the same cell
                 otherValue = grid[i][cell.y].getValue()
                 if otherValue > 0 and (otherValue in cell.getPosVal()):
                     cell.getPosVal().remove(otherValue)
-                    values = values + [otherValue]
-        if len(values) > 0: 
-            cell.addData(["basic col", values])
-            # print(*cell.data, sep = "\n")
+                    values[1] = values[1] + [otherValue]
+            x = (cell.x // 3) * 3 + (i // 3)
+            y = (cell.y // 3) * 3 + (i % 3)
+            if cell.x != x or cell.y != y: # 3 by 3 -- If not the same cell
+                otherValue = grid[x][y].getValue()
+                if otherValue > 0 and (otherValue in cell.getPosVal()):
+                    cell.getPosVal().remove(otherValue)
+                    values[2] = values[2] + [otherValue]
 
+        if len(values[0]) > 0: # Row
+            cell.addData(["basic row", values])
+        if len(values[1]) > 0: # Col 
+            cell.addData(["basic col", values])
+        if len(values[2]) > 0: # 3by3
+            cell.addData(["basic 3 by 3", values])
 
         if len(cell.getPosVal()) == 1: # We got the value
             cell.setValue(list(cell.getPosVal())[0])
