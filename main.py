@@ -2,7 +2,7 @@
 # import pygame # library to generate the graphic interface
 import numpy as np # library to handle matrices
 import time # to set a delay between each iteration
-import math as m
+# import math as m
 
 import functions as tool
 
@@ -11,11 +11,11 @@ import functions as tool
 # add:
 
 # -Scanning techniques
-# 1. Scanning in one direction:(rows and cols-> solved)
-# 2. Scanning in two directions:(rows and cols-> solved)
-# 3. Searching for Single Candidates: (actual method for 1,2 -> posVal.length = 1)
-# 4. Eliminating numbers from rows, columns and boxes: (Analize -> changeProduced)
-# 5. Searching for missing numbers in rows and columns: (unique rows & cols)
+# 1. Scanning in one direction:()
+# 2. Scanning in two directions:()
+# 3. Searching for Single Candidates: ()
+# 4. Eliminating numbers from rows, columns and boxes: ()
+# 5. Searching for missing numbers in rows and columns: ()
 
 # -Analyzing techniques:
 # 1. Eliminating squares using Naked Pairs in a box
@@ -38,28 +38,39 @@ data = [ #canonical (solved)
     [0, 4, 5, 0, 1, 8, 0, 9, 6],
     [1, 9, 6, 7, 0, 0, 2, 8, 0]
 ]
-# sol = [
-#     [9, 8, 4, 5, 3, 1, 6, 7, 2],
-#     [6, 1, 3, 8, 2, 7, 5, 4, 9],
-#     [2, 5, 7, 6, 4, 9, 8, 3, 1],
-#     [3, 7, 8, 9, 6, 2, 4, 1, 5],
-#     [5, 6, 1, 3, 7, 4, 9, 2, 8],
-#     [4, 2, 9, 1, 8, 5, 7, 6, 3],
-#     [8, 3, 2, 4, 9, 6, 1, 5, 7],
-#     [7, 4, 5, 2, 1, 8, 3, 9, 6],
-#     [1, 9, 6, 7, 5, 3, 2, 8, 4]
+# data = [ # medium (solved)
+#     [0, 0, 0, 7, 0, 0, 0, 0, 0],
+#     [0, 0, 7, 0, 9, 0, 0, 1, 8],
+#     [0, 0, 9, 6, 1, 0, 4, 3, 0],
+#     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+#     [7, 5, 0, 3, 2, 8, 0, 4, 9],
+#     [4, 0, 2, 9, 0, 0, 0, 7, 5],
+#     [0, 0, 6, 8, 0, 0, 0, 0, 0],
+#     [0, 3, 0, 0, 0, 2, 0, 0, 0],
+#     [9, 4, 0, 0, 0, 6, 0, 0, 2]
 # ]
-data = [ # analice
-    [0, 0, 0, 7, 0, 0, 0, 0, 0],
-    [0, 0, 7, 0, 9, 0, 0, 1, 8],
-    [0, 0, 9, 6, 1, 0, 4, 3, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [7, 5, 0, 3, 2, 8, 0, 4, 9],
-    [4, 0, 2, 9, 0, 0, 0, 7, 5],
-    [0, 0, 6, 8, 0, 0, 0, 0, 0],
-    [0, 3, 0, 0, 0, 2, 0, 0, 0],
-    [9, 4, 0, 0, 0, 6, 0, 0, 2]
-]
+# data = [ # hard (solved)
+#     [0, 0, 7, 0, 0, 0, 3, 0, 2],
+#     [2, 0, 0, 0, 0, 5, 0, 1, 0],
+#     [0, 0, 0, 8, 0, 1, 4, 0, 0],
+#     [0, 1, 0, 0, 9, 6, 0, 0, 8],
+#     [7, 6, 0, 0, 0, 0, 0, 4, 9],
+#     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+#     [0, 0, 0, 1, 0, 3, 0, 0, 0],
+#     [8, 0, 1, 0, 6, 0, 0, 0, 0],
+#     [0, 0, 0, 7, 0, 0, 0, 6, 3]
+# ]
+# data = [ # expert
+#     [0, 0, 0, 0, 0, 0, 9, 2, 6],
+#     [0, 7, 0, 0, 9, 0, 8, 5, 0],
+#     [0, 0, 1, 0, 0, 0, 0, 0, 0],
+#     [0, 0, 3, 0, 0, 0, 5, 0, 0],
+#     [8, 6, 0, 0, 0, 0, 0, 0, 0],
+#     [5, 0, 4, 8, 0, 0, 0, 9, 0],
+#     [0, 4, 0, 0, 2, 1, 0, 0, 0],
+#     [6, 0, 0, 0, 0, 0, 0, 3, 0],
+#     [0, 0, 0, 0, 4, 7, 0, 0, 0]
+# ]
 
 
 # data = [ # epmty
@@ -80,6 +91,7 @@ data = [ # analice
 gameRunning = True
 
 #-------    Update matrices    -------
+print("Searching fot solutions...")
 sol = []
 tool.sudokuSolution(data, sol)
 
