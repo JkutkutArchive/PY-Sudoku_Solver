@@ -27,7 +27,7 @@ import functions as tool
 # Sudoku vars:
 # grid = np.matrix([[tool.Cell(x, y) for y in range(9)] for x in range(9)])
 grid = [[tool.Cell(x, y) for y in range(9)] for x in range(9)]
-data = [ #canonical
+data = [ #canonical (solved)
     [9, 8, 4, 0, 3, 1, 0, 7, 2],
     [6, 1, 0, 0, 0, 7, 0, 0, 0],
     [2, 5, 7, 0, 0, 9, 8, 0, 0],
@@ -38,7 +38,6 @@ data = [ #canonical
     [0, 4, 5, 0, 1, 8, 0, 9, 6],
     [1, 9, 6, 7, 0, 0, 2, 8, 0]
 ]
-
 # sol = [
 #     [9, 8, 4, 5, 3, 1, 6, 7, 2],
 #     [6, 1, 3, 8, 2, 7, 5, 4, 9],
@@ -50,29 +49,29 @@ data = [ #canonical
 #     [7, 4, 5, 2, 1, 8, 3, 9, 6],
 #     [1, 9, 6, 7, 5, 3, 2, 8, 4]
 # ]
+data = [ # analice
+    [0, 0, 0, 7, 0, 0, 0, 0, 0],
+    [0, 0, 7, 0, 9, 0, 0, 1, 8],
+    [0, 0, 9, 6, 1, 0, 4, 3, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [7, 5, 0, 3, 2, 8, 0, 4, 9],
+    [4, 0, 2, 9, 0, 0, 0, 7, 5],
+    [0, 0, 6, 8, 0, 0, 0, 0, 0],
+    [0, 3, 0, 0, 0, 2, 0, 0, 0],
+    [9, 4, 0, 0, 0, 6, 0, 0, 2]
+]
 
 
-# data = [ #contiune adding techniques
-#     [3, 8, 9, 4, 6, 1, 0, 0, 0],
-#     [7, 1, 5, 8, 0, 2, 4, 3, 6],
-#     [2, 0, 4, 0, 3, 7, 9, 1, 8],
-#     [0, 3, 6, 7, 2, 9, 0, 4, 1],
-#     [9, 2, 0, 6, 0, 4, 5, 7, 3],
-#     [1, 4, 7, 3, 5, 8, 6, 9, 2],
-#     [6, 7, 1, 2, 4, 5, 3, 8, 9],
-#     [8, 5, 0, 9, 7, 0, 1, 0, 4],
-#     [4, 9, 0, 1, 0, 0, 0, 0, 0],
-# ]
-# data = [ # contiune adding techniques
-#     [0, 0, 9, 2, 0, 3, 8, 0, 0],
-#     [0, 0, 0, 0, 0, 9, 0, 0, 0],
-#     [4, 0, 8, 6, 0, 5, 1, 0, 3],
-#     [0, 0, 0, 0, 0, 0, 9, 0, 4],
+# data = [ # epmty
 #     [0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 5, 0, 2],
-#     [0, 0, 6, 5, 0, 2, 3, 0, 7],
-#     [0, 0, 1, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 5, 4, 0, 8, 6, 0, 0],
+#     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+#     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+#     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+#     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+#     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+#     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+#     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+#     [0, 0, 0, 0, 0, 0, 0, 0, 0]
 # ]
 
 # --------------------------    CODE    --------------------------
@@ -175,19 +174,19 @@ while gameRunning:
         for i in range(9):
             if i != cell.y: # for each piece on the row (x=cte) -- if not same cell
                 valueToFilter = grid[cell.x][i].getPosVal() # Set with values on other cell
-                if grid[cell.x][i].getValue() != None: # If looking at cell with defined value, valueToFilter should be the actual value
+                if grid[cell.x][i].getValue() != 0: # If looking at cell with defined value, valueToFilter should be the actual value
                     valueToFilter = set([grid[cell.x][i].value]) # valueToFilter => numbers here are not unique on our cell
                 unique[0] = unique[0].difference(valueToFilter) # All common are not unique => del them
             if i != cell.x: # for each piece on the Col (y=cte) -- if not same cell
                 valueToFilter = grid[i][cell.y].getPosVal() # Set with possible values of other cell
-                if grid[i][cell.y].getValue() != None: # If looking at cell with defined value, valueToFilter should be the actual value
+                if grid[i][cell.y].getValue() != 0: # If looking at cell with defined value, valueToFilter should be the actual value
                     valueToFilter = set([grid[i][cell.y].value]) # valueToFilter => numbers here are not unique on our cell                
                 unique[1] = unique[1].difference(valueToFilter) # All common are not unique => del them
             x = (cell.x // 3) * 3 + (i // 3)
             y = (cell.y // 3) * 3 + (i % 3)
             if cell.x != x or cell.y != y:
                 valueToFilter = grid[x][y].getPosVal() # Set with values on other cell
-                if grid[x][y].getValue() != None: # If looking at cell with defined value, valueToFilter should be the actual value
+                if grid[x][y].getValue() != 0: # If looking at cell with defined value, valueToFilter should be the actual value
                     valueToFilter = set([grid[x][y].value]) # valueToFilter => numbers here are not unique on our cell
                 unique[2] = unique[2].difference(valueToFilter) # All common are not unique => del them
 
