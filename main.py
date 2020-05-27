@@ -280,21 +280,29 @@ while gameRunning:
                     if len(posCandidates) == 1: # If only one cell with same val (no one on the 3by3 has this val)
                         # We have a valid pair. More tests are needed to proceed
                         cell2 = list(posCandidates)[0]
-                        hori = 1 if cell1.x == cell2.x else 0
-                        vert = 1 if cell1.y == cell2.y else 0
+                        hori = 1 if cell1.y == cell2.y else 0
+                        vert = 1 if cell1.x == cell2.x else 0
                         if hori == 1 or vert == 1: # If good pair (making a line)
                             candidates.append([cell1, cell2, val]) # Added
 
                             print("Pair at " + str(val) + ": " + str(cell1.getPos()) + ", " + str(cell2.getPos()))
-                            print(" " + str(cell1.getPosVal()) + ", " + str(cell2.getPosVal()))
-                            print(" " + str((hori, vert))+ " " + str(cell1.getPosVal().intersection(cell2.getPosVal())))
+                            # print(" " + str(cell1.getPosVal()) + ", " + str(cell2.getPosVal()))
+                            # print(" " + str((hori, vert))+ " " + str(cell1.getPosVal().intersection(cell2.getPosVal())))
+                            print(" " + str((hori, vert)))
 
                             # pair by one value: all cells on the line can not be this value
 
-                            for k in range(9): # for all cells on line
-                                x = cell1.x + hori * k
-                                y = cell1.y + vert * k
-                                if (x, y) != cell1.getPos() and (x, y) != cell1.getPos():
+                            for k in range(1, 9, 1): # for all cells on line (1º = same cell => start at 2º)
+                                x = (cell1.x + hori * k) % 9
+                                y = (cell1.y + vert * k) % 9
+                                cell = grid[x][y]
+                                # print(str((x, y)) + " -> " + str((cell != cell1)) + " --- " + str((cell != cell2)))
+                                # print("   posVal: " + str(cell.getPosVal()))
+                                # print("      --> " + str((val in cell.getPosVal())))
+                                if (cell != cell1) and (cell != cell2) and cell.getValue() == 0 and (val in cell.getPosVal()):
+                                    print(" Changed " + str((x, y)) + ", value: " + str(val))
+                                    # cell.addData(["pairs one val", cell1, cell2, val])
+                                    cell.getPosVal().remove(val)
 
 
         
