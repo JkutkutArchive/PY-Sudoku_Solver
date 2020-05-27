@@ -143,7 +143,9 @@ class Cell():
             elif "col" in dataArr[0]:
                 tipo = "col"
             dataToAdd = "If we look at the " + tipo + " containing this cell, we know that this cell should be " + str(dataArr[1]) + "."
-            
+        elif "pairs" in dataArr[0]:
+            if "one" in dataArr[0]:
+                dataToAdd = "Having on mind that one of the cells " + str(dataArr[1].getPos()) + " and " + str(dataArr[2].getPos()) + " has " + str(dataArr[3]) + " as the value, this cell can not be " + str(dataArr[3])
         self.data.append(dataToAdd)
 
 class color():
