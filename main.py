@@ -260,32 +260,51 @@ while gameRunning:
     #           6 | 7 | 8 
     
     for sector in range(8,9,1): # For each sector
-        candidates = set() # set of pairs
+        candidates = [] # set of pairs
         for i in range(9): # for each cell in 3by3 but last one
             x1 = (sector // 3) * 3 + (i // 3)
             y1 = (sector % 3) * 3 + (i % 3)
             cell1 = grid[x1][y1]
             if cell1.getValue() == 0: # If cell1 has no value defined
-                print("see "+str(cell1.getPos()))
+                # print("see "+str(cell1.getPos()))
                 for val in cell1.getPosVal():
                     posCandidates = set() # Collection of posible candidates
                     for j in range(i + 1, 9, 1): # For the rest of the cells
                         x2 = (sector // 3) * 3 + (j // 3)
                         y2 = (sector % 3) * 3 + (j % 3)
                         cell2 = grid[x2][y2]
-                        print("check "+str(cell1.getPos()) + ", " + str(cell2.getPos()))
+                        # print("check "+str(cell1.getPos()) + ", " + str(cell2.getPos()))
                         if cell2.getValue() == 0 and val in cell2.getPosVal(): # if cell2 has no value defined and has that val
-                            posCandidates.add(cell2)
-                    if len(posCandidates) == 1: # If only one cell with same val
-                        candidates.add([cell1, list(posCandidates)[0]])
+                            posCandidates.add(cell2) # This candidate has this val as posVal
+                    
+                    if len(posCandidates) == 1: # If only one cell with same val (no one on the 3by3 has this val)
+                        # We have a valid pair. More tests are needed to proceed
+                        cell2 = list(posCandidates)[0]
+                        hori = 1 if cell1.x == cell2.x else 0
+                        vert = 1 if cell1.y == cell2.y else 0
+                        if hori == 1 or vert == 1: # If good pair (making a line)
+                            candidates.append([cell1, cell2, val]) # Added
+
+                            print("Pair at " + str(val) + ": " + str(cell1.getPos()) + ", " + str(cell2.getPos()))
+                            print(" " + str(cell1.getPosVal()) + ", " + str(cell2.getPosVal()))
+                            print(" " + str((hori, vert))+ " " + str(cell1.getPosVal().intersection(cell2.getPosVal())))
+
+                            # pair by one value: all cells on the line can not be this value
+
+                            for k in range(9): # for all cells on line
+                                x = cell1.x + hori * k
+                                y = cell1.y + vert * k
+                                if (x, y) != cell1.getPos() and (x, y) != cell1.getPos():
+
+
         
-        print("Sector " + str(sector))
-        print(candidates)
-        for pair in candidates:
-            print("Pair at " + str(pair[0].getPos()) + ", " + str(pair[1].getPos()))
+        # pair by 2 values
 
-
-
+        # print("Sector " + str(sector))
+        # for pair in candidates:
+        #     print("Pair at " + str(pair[2]) + ": " + str(pair[0].getPos()) + ", " + str(pair[1].getPos()))
+        #     print(" " + str(pair[0].getPosVal()) + ", " + str(pair[1].getPosVal()))
+        #     print(" " + str(pair[0].getPosVal().intersection(pair[1].getPosVal())))
     response = input("Continue?")
     # response = ""
     if response == "exit":

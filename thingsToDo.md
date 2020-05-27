@@ -2,6 +2,7 @@
 - bsic Rows and col logic can be together
 - handle Errors
 - Difficult sudokus
+- at pairs, search pairs using "+" directions instead of 3 by 3 
 
 ## functions:
 - revise Eq method
