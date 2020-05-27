@@ -27,17 +27,17 @@ import functions as tool
 # Sudoku vars:
 # grid = np.matrix([[tool.Cell(x, y) for y in range(9)] for x in range(9)])
 grid = [[tool.Cell(x, y) for y in range(9)] for x in range(9)]
-data = [ #canonical (solved)
-    [9, 8, 4, 0, 3, 1, 0, 7, 2],
-    [6, 1, 0, 0, 0, 7, 0, 0, 0],
-    [2, 5, 7, 0, 0, 9, 8, 0, 0],
-    [3, 0, 0, 0, 6, 0, 0, 1, 0],
-    [0, 0, 0, 3, 7, 0, 9, 2, 0],
-    [0, 0, 9, 0, 0, 5, 0, 0, 0],
-    [0, 3, 0, 0, 0, 6, 0, 0, 0],
-    [0, 4, 5, 0, 1, 8, 0, 9, 6],
-    [1, 9, 6, 7, 0, 0, 2, 8, 0]
-]
+# data = [ #canonical (solved)
+#     [9, 8, 4, 0, 3, 1, 0, 7, 2],
+#     [6, 1, 0, 0, 0, 7, 0, 0, 0],
+#     [2, 5, 7, 0, 0, 9, 8, 0, 0],
+#     [3, 0, 0, 0, 6, 0, 0, 1, 0],
+#     [0, 0, 0, 3, 7, 0, 9, 2, 0],
+#     [0, 0, 9, 0, 0, 5, 0, 0, 0],
+#     [0, 3, 0, 0, 0, 6, 0, 0, 0],
+#     [0, 4, 5, 0, 1, 8, 0, 9, 6],
+#     [1, 9, 6, 7, 0, 0, 2, 8, 0]
+# ]
 # data = [ # medium (solved)
 #     [0, 0, 0, 7, 0, 0, 0, 0, 0],
 #     [0, 0, 7, 0, 9, 0, 0, 1, 8],
@@ -60,6 +60,19 @@ data = [ #canonical (solved)
 #     [8, 0, 1, 0, 6, 0, 0, 0, 0],
 #     [0, 0, 0, 7, 0, 0, 0, 6, 3]
 # ]
+
+data = [ # pair test1
+    [0, 0, 0, 0, 0, 0, 3, 0, 2],
+    [0, 0, 0, 0, 0, 0, 0, 1, 6],
+    [0, 0, 0, 0, 0, 0, 4, 0, 0],
+    [0, 0, 0, 0, 0, 0, 7, 3, 8],
+    [0, 0, 0, 0, 0, 0, 2, 4, 9],
+    [0, 0, 0, 0, 0, 0, 6, 0, 1],
+    [6, 7, 0, 1, 5, 3, 0, 0, 4],
+    [8, 3, 1, 9, 6, 4, 0, 0, 0],
+    [0, 0, 0, 7, 8, 2, 1, 6, 3]
+]
+
 # data = [ # expert
 #     [0, 0, 0, 0, 0, 0, 9, 2, 6],
 #     [0, 7, 0, 0, 9, 0, 8, 5, 0],
@@ -89,11 +102,12 @@ data = [ #canonical (solved)
 
 # Vars:
 gameRunning = True
+nIte = 0
 
 #-------    Update matrices    -------
 print("Searching fot solutions...")
-sol = []
-tool.sudokuSolution(data, sol)
+# sol = []
+# tool.sudokuSolution(data, sol)
 
 for i in range(9):
     for j in range(9):
@@ -101,27 +115,27 @@ for i in range(9):
             grid[i][j].setValue(data[i][j], False)
 
 #-------    Analice data    -------
-if len(sol) == 0:
-    print("There is no possible solution to this data :(")
-    gameRunning = False
-elif len(sol) == 1:
-    print("Solution founded")
-    while True:
-        response = input("Do you want to see the steps to solve it? [yes/no]")
-        if "y" in response:
-            gameRunning = True
-            break
-        elif "n" in response:
-            print("Okay, here is the solution:\n\n")
-            tool.printSudoku(sol[0])
-            gameRunning = False
-            break
-else:
-    print("Multiple solutions founded. All of them are:")
-    for sols in sol: 
-        print("\n")
-        tool.printSudoku(sols)
-    gameRunning = False
+# if len(sol) == 0:
+#     print("There is no possible solution to this data :(")
+#     gameRunning = False
+# elif len(sol) == 1:
+#     print("Solution founded")
+#     while True:
+#         response = input("Do you want to see the steps to solve it? [yes/no]")
+#         if "y" in response:
+#             gameRunning = True
+#             break
+#         elif "n" in response:
+#             print("Okay, here is the solution:\n\n")
+#             tool.printSudoku(sol[0])
+#             gameRunning = False
+#             break
+# else:
+#     print("Multiple solutions founded. All of them are:")
+#     for sols in sol: 
+#         print("\n")
+#         tool.printSudoku(sols)
+#     gameRunning = False
 
 while gameRunning:
     #-------    Update matrix    -------
@@ -140,7 +154,8 @@ while gameRunning:
         gameRunning = False
         break
 
-    print("\n\n-----------    Iteration    ------------\n")
+    nIte = nIte + 1
+    print("\n\n-----------    Iteration "+ str(nIte) +"   ------------\n")
     tool.printSudoku(grid)
     print()
 
@@ -175,9 +190,9 @@ while gameRunning:
         if len(values[2]) > 0: # 3by3
             cell.addData(["basic 3 by 3", values[2]])
 
-        if len(cell.getPosVal()) == 1: # We got the value
-            cell.setValue(list(cell.getPosVal())[0])
-            break
+        # if len(cell.getPosVal()) == 1: # We got the value
+        #     cell.setValue(list(cell.getPosVal())[0])
+        #     break
 
         # ----------    UNIQUE   ----------
         unique = [set([i for i in range(1, 10, 1)]) for i in range(3)] # unique row, col, 3by3
@@ -201,30 +216,30 @@ while gameRunning:
                     valueToFilter = set([grid[x][y].value]) # valueToFilter => numbers here are not unique on our cell
                 unique[2] = unique[2].difference(valueToFilter) # All common are not unique => del them
 
-        if len(unique[0]) == 1: # If only one value is unique -> should be the value
-            uniqueValue = list(unique[0])[0]
-            if uniqueValue in cell.getPosVal(): # if this value is a possible one, make it the value of the cell (This should always be true)
-                cell.addData(["unique row", uniqueValue])
-                cell.setValue(uniqueValue)
-                break
-            else:
-                print("ERROR at unique row")
-        if len(unique[1]) == 1: # If only one value is unique -> should be the value
-            uniqueValue = list(unique[1])[0]
-            if uniqueValue in cell.getPosVal(): # if this value is a possible one, make it the value of the cell (This should always be true)
-                cell.addData(["unique col", uniqueValue])
-                cell.setValue(uniqueValue)
-                break
-            else:
-                print("ERROR at unique col")
-        if len(unique[2]) == 1: # If only one value is unique -> should be the value
-            uniqueValue = list(unique[2])[0]
-            if uniqueValue in cell.getPosVal(): # if this value is a possible one, make it the value of the cell (This should always be true)
-                cell.addData(["unique 3 by 3", uniqueValue])
-                cell.setValue(uniqueValue)
-                break
-            else:
-                print("ERROR at unique 3 by 3")
+        # if len(unique[0]) == 1: # If only one value is unique -> should be the value
+        #     uniqueValue = list(unique[0])[0]
+        #     if uniqueValue in cell.getPosVal(): # if this value is a possible one, make it the value of the cell (This should always be true)
+        #         cell.addData(["unique row", uniqueValue])
+        #         cell.setValue(uniqueValue)
+        #         break
+        #     else:
+        #         print("ERROR at unique row")
+        # if len(unique[1]) == 1: # If only one value is unique -> should be the value
+        #     uniqueValue = list(unique[1])[0]
+        #     if uniqueValue in cell.getPosVal(): # if this value is a possible one, make it the value of the cell (This should always be true)
+        #         cell.addData(["unique col", uniqueValue])
+        #         cell.setValue(uniqueValue)
+        #         break
+        #     else:
+        #         print("ERROR at unique col")
+        # if len(unique[2]) == 1: # If only one value is unique -> should be the value
+        #     uniqueValue = list(unique[2])[0]
+        #     if uniqueValue in cell.getPosVal(): # if this value is a possible one, make it the value of the cell (This should always be true)
+        #         cell.addData(["unique 3 by 3", uniqueValue])
+        #         cell.setValue(uniqueValue)
+        #         break
+        #     else:
+        #         print("ERROR at unique 3 by 3")
 
     # ----------    PAIRS   ----------
     #     What i know about pairs:
@@ -243,10 +258,32 @@ while gameRunning:
     #           3 | 4 | 5 
     #          ---+---+---
     #           6 | 7 | 8 
-    for sector in range(9): # For each sector
-        candidates = []
-        for i in range(1, 10, 1): # For each posible value 
-            spotsIn3b3 = [] # store in i index the spot with i val in posVal
+    
+    for sector in range(8,9,1): # For each sector
+        candidates = set() # set of pairs
+        for i in range(9): # for each cell in 3by3 but last one
+            x1 = (sector // 3) * 3 + (i // 3)
+            y1 = (sector % 3) * 3 + (i % 3)
+            cell1 = grid[x1][y1]
+            if cell1.getValue() == 0: # If cell1 has no value defined
+                print("see "+str(cell1.getPos()))
+                for val in cell1.getPosVal():
+                    posCandidates = set() # Collection of posible candidates
+                    for j in range(i + 1, 9, 1): # For the rest of the cells
+                        x2 = (sector // 3) * 3 + (j // 3)
+                        y2 = (sector % 3) * 3 + (j % 3)
+                        cell2 = grid[x2][y2]
+                        print("check "+str(cell1.getPos()) + ", " + str(cell2.getPos()))
+                        if cell2.getValue() == 0 and val in cell2.getPosVal(): # if cell2 has no value defined and has that val
+                            posCandidates.add(cell2)
+                    if len(posCandidates) == 1: # If only one cell with same val
+                        candidates.add([cell1, list(posCandidates)[0]])
+        
+        print("Sector " + str(sector))
+        print(candidates)
+        for pair in candidates:
+            print("Pair at " + str(pair[0].getPos()) + ", " + str(pair[1].getPos()))
+
 
 
     response = input("Continue?")
