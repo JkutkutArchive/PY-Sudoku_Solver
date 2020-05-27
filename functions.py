@@ -119,11 +119,14 @@ class Cell():
     def getValue(self):
         return self.value if self.value != None else 0
 
-    def getPosVal(self):
-        return self.posVal
-    
     def setPosVal(self, set):
         self.posVal = set
+
+    def getPosVal(self):
+        return self.posVal
+
+    def getPos(self):
+        return (self.x, self.y)
 
     def addData(self, dataArr):
         dataToAdd = ""
