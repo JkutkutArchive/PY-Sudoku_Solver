@@ -84,13 +84,13 @@ class Cell():
         return str(self.getValue())
 
     def __eq__(self, other):
-        if self.x == other.x and self.y == other.y:
-            if self.value == other.value and self.posVal == other.posVal:
-                if self.data == other.data:
-                    return True
-
-        return False
-        # return  and  and 
+        if self.getPos() != self.getPos(): # If different coordinates
+            return False # In theory, when well used this class, this should be the only condition used
+        if self.value != other.value and self.getPosVal() != other.getPosVal():
+            return False
+        if self.data != other.data:
+            return False
+        return True 
     
     def __hash__(self):
         return hash(self.x) ^ hash(self.y) # Because there is not 2 cells on the same coord
