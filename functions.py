@@ -104,7 +104,7 @@ class Cell():
             if self.value == sol[self.x][self.y]:
                 print("\n" + "CORRECT".center(40) + "\n")
             else:
-                print("\n" + "ERROR, NOT CORRECT VALUE".center(40) + "\n")
+                print("\n" + ("ERROR, NOT CORRECT VALUE -> " + str(sol[self.x][self.y])).center(40) + "\n")
     
     def getValue(self):
         return self.value if self.value != None else 0
@@ -120,7 +120,6 @@ class Cell():
 
     def addData(self, dataArr):
         dataToAdd = ""
-        # print("TYPE: " + dataArr[0])
         if "therefore" in dataArr[0]:
             dataToAdd = "Therefore, the value of this cell is " + str(self.value) + "."
         elif "basic" in dataArr[0]:
@@ -139,6 +138,9 @@ class Cell():
                     dataToAdd = "Having on mind that one of the cells " + str(dataArr[1].getPos()) + " and " + str(dataArr[2].getPos()) + " has " + str(dataArr[3]) + " as the value, this cell can not be " + str(dataArr[3]) + "."
                 elif "cell" in dataArr[0]:
                     dataToAdd = "This cell and the " + str(dataArr[1].getPos()) + " are link because the value " + str(dataArr[2]) + " is on one of these 2 cells."
+            if "two" in dataArr[0]:
+                dataToAdd = "If we take a look, this and the " + str(dataArr[1].getPos()) + " cell are eather " + str(dataArr[2]) + ". Both cells can only be these values."
+
         self.data.append(dataToAdd)
 
 class color():
