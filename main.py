@@ -49,17 +49,17 @@ grid = [[tool.Cell(x, y) for y in range(9)] for x in range(9)]
 #     [0, 3, 0, 0, 0, 2, 0, 0, 0],
 #     [9, 4, 0, 0, 0, 6, 0, 0, 2]
 # ]
-data = [ # hard (solved)
-    [0, 0, 7, 0, 0, 0, 3, 0, 2],
-    [2, 0, 0, 0, 0, 5, 0, 1, 0],
-    [0, 0, 0, 8, 0, 1, 4, 0, 0],
-    [0, 1, 0, 0, 9, 6, 0, 0, 8],
-    [7, 6, 0, 0, 0, 0, 0, 4, 9],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 1, 0, 3, 0, 0, 0],
-    [8, 0, 1, 0, 6, 0, 0, 0, 0],
-    [0, 0, 0, 7, 0, 0, 0, 6, 3]
-]
+# data = [ # hard (solved)
+#     [0, 0, 7, 0, 0, 0, 3, 0, 2],
+#     [2, 0, 0, 0, 0, 5, 0, 1, 0],
+#     [0, 0, 0, 8, 0, 1, 4, 0, 0],
+#     [0, 1, 0, 0, 9, 6, 0, 0, 8],
+#     [7, 6, 0, 0, 0, 0, 0, 4, 9],
+#     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+#     [0, 0, 0, 1, 0, 3, 0, 0, 0],
+#     [8, 0, 1, 0, 6, 0, 0, 0, 0],
+#     [0, 0, 0, 7, 0, 0, 0, 6, 3]
+# ]
 
 # data = [ # pair test1
 #     [0, 0, 0, 0, 0, 0, 3, 0, 2],
@@ -73,17 +73,17 @@ data = [ # hard (solved)
 #     [0, 0, 0, 7, 8, 2, 1, 6, 3]
 # ]
 
-# data = [ # expert
-#     [0, 0, 0, 0, 0, 0, 9, 2, 6],
-#     [0, 7, 0, 0, 9, 0, 8, 5, 0],
-#     [0, 0, 1, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 3, 0, 0, 0, 5, 0, 0],
-#     [8, 6, 0, 0, 0, 0, 0, 0, 0],
-#     [5, 0, 4, 8, 0, 0, 0, 9, 0],
-#     [0, 4, 0, 0, 2, 1, 0, 0, 0],
-#     [6, 0, 0, 0, 0, 0, 0, 3, 0],
-#     [0, 0, 0, 0, 4, 7, 0, 0, 0]
-# ]
+data = [ # expert
+    [0, 0, 0, 0, 0, 0, 9, 2, 6],
+    [0, 7, 0, 0, 9, 0, 8, 5, 0],
+    [0, 0, 1, 0, 0, 0, 0, 0, 0],
+    [0, 0, 3, 0, 0, 0, 5, 0, 0],
+    [8, 6, 0, 0, 0, 0, 0, 0, 0],
+    [5, 0, 4, 8, 0, 0, 0, 9, 0],
+    [0, 4, 0, 0, 2, 1, 0, 0, 0],
+    [6, 0, 0, 0, 0, 0, 0, 3, 0],
+    [0, 0, 0, 0, 4, 7, 0, 0, 0]
+]
 
 
 # data = [ # epmty
@@ -263,8 +263,6 @@ while gameRunning:
     for sector in range(8,9,1): # For each sector
         candidates = [] # set of pairs
         valuesToTest = set([i for i in range(1, 10, 1)])
-        valuesToTest.remove(6)
-        print(valuesToTest)
         for i in range(9): # for each cell in 3by3 but last one
             if len(valuesToTest) == 0: # If not more values to test, go to next sector
                 break
@@ -272,11 +270,8 @@ while gameRunning:
             y1 = (sector % 3) * 3 + (i % 3)
             cell1 = grid[x1][y1]
             if cell1.getValue() != 0: # If cell1 has defined value
-                print(cell1.getValue())
-                print(valuesToTest)
                 valuesToTest.discard(cell1.getValue())
             else: # If cell1 has no value defined
-                # print("see "+str(cell1.getPos()))
                 for val in cell1.getPosVal():
                     if val not in valuesToTest: # If not on this set, this val can not form any pairs
                         continue # Go to the next val
@@ -285,7 +280,6 @@ while gameRunning:
                         x2 = (sector // 3) * 3 + (j // 3)
                         y2 = (sector % 3) * 3 + (j % 3)
                         cell2 = grid[x2][y2]
-                        # print("check "+str(cell1.getPos()) + ", " + str(cell2.getPos()))
                         if cell2.getValue() == 0 and val in cell2.getPosVal(): # if cell2 has no value defined and has that val
                             posCandidates.add(cell2) # This candidate has this val as posVal
                     
@@ -300,22 +294,12 @@ while gameRunning:
                         if hori == 1 or vert == 1: # If good pair (making a line)
                             candidates.append([cell1, cell2, val]) # Added
 
-                            # print("Pair at " + str(val) + ": " + str(cell1.getPos()) + ", " + str(cell2.getPos()))
-                            # print(" " + str(cell1.getPosVal()) + ", " + str(cell2.getPosVal()))
-                            # print(" " + str((hori, vert))+ " " + str(cell1.getPosVal().intersection(cell2.getPosVal())))
-                            # print(" " + str((hori, vert)))
-
                             # pair by one value: all cells on the line can not be this value
-
                             for k in range(1, 9, 1): # for all cells on line (1º = same cell => start at 2º)
                                 x = (cell1.x + hori * k) % 9
                                 y = (cell1.y + vert * k) % 9
                                 cell = grid[x][y]
-                                # print(str((x, y)) + " -> " + str((cell != cell1)) + " --- " + str((cell != cell2)))
-                                # print("   posVal: " + str(cell.getPosVal()))
-                                # print("      --> " + str((val in cell.getPosVal())))
                                 if (cell != cell1) and (cell != cell2) and cell.getValue() == 0 and (val in cell.getPosVal()):
-                                    # print(" Changed " + str((x, y)) + ", value: " + str(val))
                                     cell.addData(["pairs one val", cell1, cell2, val])
                                     cell1.addData(["pairs one cell", cell2, val])
                                     cell2.addData(["pairs one cell", cell1, val])

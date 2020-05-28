@@ -135,7 +135,10 @@ class Cell():
             dataToAdd = "If we look at the " + tipo + " containing this cell, we know that this cell should be " + str(dataArr[1]) + "."
         elif "pairs" in dataArr[0]:
             if "one" in dataArr[0]:
-                dataToAdd = "Having on mind that one of the cells " + str(dataArr[1].getPos()) + " and " + str(dataArr[2].getPos()) + " has " + str(dataArr[3]) + " as the value, this cell can not be " + str(dataArr[3])
+                if "val" in dataArr[0]:
+                    dataToAdd = "Having on mind that one of the cells " + str(dataArr[1].getPos()) + " and " + str(dataArr[2].getPos()) + " has " + str(dataArr[3]) + " as the value, this cell can not be " + str(dataArr[3]) + "."
+                elif "cell" in dataArr[0]:
+                    dataToAdd = "This cell and the " + str(dataArr[1].getPos()) + " are link because the value " + str(dataArr[2]) + " is on one of these 2 cells."
         self.data.append(dataToAdd)
 
 class color():
