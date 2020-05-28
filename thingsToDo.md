@@ -10,5 +10,7 @@
 ## Final version:
 - COLORS
 - If more than one posible sol -> show all without steps
-- Invert Axis 
-- not 0 based coord
+- When printing the sudoku:
+  - Invert Axis
+  - not 0 based coord
+  - print focused cell
