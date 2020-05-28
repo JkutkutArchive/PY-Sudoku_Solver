@@ -1,14 +1,12 @@
 ## main:
-- bsic Rows and col logic can be together
 - handle Errors
-- Difficult sudokus
+- expert sudokus
 - at pairs, search pairs using "+" directions instead of 3 by 3 
+- If no new discovery, no print
 
 ## functions:
 - revise Eq method
-- at addData, no need to use array as input
-- at AddData, handle erros
-- at AddData, use Set and update already created elemets
+- at AddData, handle errors
 
 ## Final version:
 - COLORS
