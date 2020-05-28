@@ -78,7 +78,7 @@ class Cell():
         self.y = y
         self.value = None
         self.posVal = set([i for i in range(1, 10, 1)])
-        self.data = ["Let's focus on the cell on the position (" + str(x) + ", " + str(y) + ")"]
+        self.data = []
     
     def __str__(self):
         return str(self.getValue())
@@ -100,7 +100,7 @@ class Cell():
         self.posVal = None
         self.addData(["therefore"])
         if not noPrint:
-            print(*self.data, sep = "\n")
+            print(*self.dataToText(), sep = "\n")
             if self.value == sol[self.x][self.y]:
                 print("\n" + "CORRECT".center(40) + "\n")
             else:
@@ -118,30 +118,41 @@ class Cell():
     def getPos(self):
         return (self.x, self.y)
 
-    def addData(self, dataArr):
-        dataToAdd = ""
-        if "therefore" in dataArr[0]:
-            dataToAdd = "Therefore, the value of this cell is " + str(self.value) + "."
-        elif "basic" in dataArr[0]:
-            tipo = dataArr[0][6:]
-            dataToAdd = "If we look at the " + tipo + " containing this cell, we know that this cell can not be " + str(dataArr[1]) + "."
-        elif "unique" in dataArr[0]:
-            tipo = "3 by 3 sector"
-            if "row" in dataArr[0]:
-                tipo = "row"
-            elif "col" in dataArr[0]:
-                tipo = "col"
-            dataToAdd = "If we look at the " + tipo + " containing this cell, we know that this cell should be " + str(dataArr[1]) + "."
-        elif "pairs" in dataArr[0]:
-            if "one" in dataArr[0]:
-                if "val" in dataArr[0]:
-                    dataToAdd = "Having on mind that one of the cells " + str(dataArr[1].getPos()) + " and " + str(dataArr[2].getPos()) + " has " + str(dataArr[3]) + " as the value, this cell can not be " + str(dataArr[3]) + "."
-                elif "cell" in dataArr[0]:
-                    dataToAdd = "This cell and the " + str(dataArr[1].getPos()) + " are link because the value " + str(dataArr[2]) + " is on one of these 2 cells."
-            if "two" in dataArr[0]:
-                dataToAdd = "If we take a look, this and the " + str(dataArr[1].getPos()) + " cell are eather " + str(dataArr[2]) + ". Both cells can only be these values."
-
-        self.data.append(dataToAdd)
+    
+    def addData(self, *dataArr):
+        # key = dataArr[0]
+        # if "basic" in key:
+        #     for d in data:
+        #         if key == d[0]: # Update the previous data
+        #             # data[key]
+        #             True
+        self.data.append(dataArr)
+    def dataToText(self):
+        s = ["Let's focus on the cell on the position (" + str(self.x) + ", " + str(self.y) + ")"]
+        for d in self.data:
+            dataToAdd = ""
+            if "therefore" in d[0]:
+                dataToAdd = "Therefore, the value of this cell is " + str(self.value) + "."
+            elif "basic" in d[0]:
+                tipo = d[0][6:]
+                dataToAdd = "If we look at the " + tipo + " on this cell, this cell can not be " + str(d[1]) + "."
+            elif "unique" in d[0]:
+                tipo = "3 by 3 sector"
+                if "row" in d[0]:
+                    tipo = "row"
+                elif "col" in d[0]:
+                    tipo = "col"
+                dataToAdd = "If we look at the " + tipo + " containing this cell, we know that this cell should be " + str(d[1]) + "."
+            elif "pairs" in d[0]:
+                if "one" in d[0]:
+                    if "val" in d[0]:
+                        dataToAdd = "Having on mind that one of the cells " + str(d[1].getPos()) + " and " + str(d[2].getPos()) + " is a " + str(d[3]) + ", this cell can not be " + str(d[3]) + "."
+                    elif "cell" in d[0]:
+                        dataToAdd = "This cell and " + str(d[1].getPos()) + " are linked. Value " + str(d[2]) + " is on one of these 2 cells."
+                if "two" in d[0]:
+                    dataToAdd = "If we take a look, this and the " + str(d[1].getPos()) + " cell are eather " + str(d[2]) + ". Both cells can only be these values."
+            s.append(dataToAdd)
+        return s
 
 class color():
     def __init__(self):
