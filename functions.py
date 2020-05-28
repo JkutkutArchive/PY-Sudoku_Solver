@@ -156,6 +156,12 @@ class Cell():
                         dataToAdd = "This cell and " + str(d[1].getPos()) + " are linked. Value " + str(d[2]) + " is on one of these 2 cells."
                 if "two" in d[0]:
                     dataToAdd = "If we take a look, this and the " + str(d[1].getPos()) + " cell are eather " + str(d[2]) + ". Both cells can only be these values."
+                
+                if "row" in d[0] or "col" in d[0]:
+                    if "val" in d[0]:
+                        dataToAdd = "Having on mind that one of the cells " + str(d[1].getPos()) + " and " + str(d[2].getPos()) + " is a " + str(d[3]) + ", this cell can not be " + str(d[3]) + "."
+                    elif "cell" in d[0]:
+                        dataToAdd = "This cell and " + str(d[1].getPos()) + " are linked. Value " + str(d[2]) + " is on one of these 2 cells."
             s.append(dataToAdd)
         return s
 

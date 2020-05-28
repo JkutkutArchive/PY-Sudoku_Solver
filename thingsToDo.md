@@ -7,8 +7,10 @@
 
 ## functions:
 - at AddData, handle errors
+- at AddData, pairs on one and row may be merged
 
 ## Final version:
+- LaTeX!
 - COLORS
 - If more than one posible sol -> show all without steps
 - When printing the sudoku:

@@ -15,13 +15,13 @@ import functions as tool
 # 2. Scanning in two directions:(basic + unique)
 # 3. Searching for Single Candidates: (unique)
 # 4. Eliminating numbers from rows, columns and boxes: (pairs)
-# 5. Searching for missing numbers in rows and columns: ()
+# 5. Searching for missing numbers in rows and columns: (basic)
 
 # -Analyzing techniques:
-# 1. Eliminating squares using Naked Pairs in a box
-# 2. Eliminating squares using Naked Pairs in rows and columns
-# 3. Eliminating squares using Hidden Pairs in rows and columns
-# 4. Eliminating squares using X-Wing(difficult puzzle)
+# 1. Eliminating squares using Naked Pairs in a box (pairs two values)
+# 2. Eliminating squares using Naked Pairs in rows and columns (pairs two values)
+# 3. Eliminating squares using Hidden Pairs in rows and columns (unique)
+# 4. Eliminating squares using X-Wing (pair on row and col)
 
 
 # Sudoku vars:
@@ -253,11 +253,11 @@ while gameRunning:
         # print("No trivial value founded, applying more advanced algorithms")
 
     # ----------    PAIRS   ----------
-    # Sectors: like phone numberpad: 012 \n 345 \n 678
-    for sector in range(9): # For each sector
+    # Pairs with one and two values
+    for sector in range(9): # For each sector (like phone numberpad: 012 \n 345 \n 678)
         candidates = [] # set of pairs
         valuesToTest = set([i for i in range(1, 10, 1)])
-        for i in range(9): # for each cell in 3by3 but last one
+        for i in range(8): # for each cell in 3by3 but last one
             if len(valuesToTest) == 0: # If not more values to test, go to next sector
                 break
             x1 = (sector // 3) * 3 + (i // 3)
@@ -287,6 +287,8 @@ while gameRunning:
                         vert = 1 if cell1.x == cell2.x else 0
                         if hori == 1 or vert == 1: # If good pair (making a line)
                             print("Pair founded with the value " + str(val) + ": " + str(cell1.getPos()) + ", " + str(cell2.getPos()))
+                            cell1.addData("pairs one cell", cell2, val)
+                            cell2.addData("pairs one cell", cell1, val)
                             candidates.append([cell1, cell2, val]) # Added
 
                             # pair by one value: all cells on the line can not be this value
@@ -296,16 +298,14 @@ while gameRunning:
                                 cell = grid[x][y]
                                 if (cell != cell1) and (cell != cell2) and cell.getValue() == 0 and (val in cell.getPosVal()):
                                     cell.addData("pairs one val", cell1, cell2, val)
-                                    cell1.addData("pairs one cell", cell2, val)
-                                    cell2.addData("pairs one cell", cell1, val)
                                     cell.getPosVal().remove(val)
     
         # pair by 2 values
-        print("Sector " + str(sector))
-        for pair in candidates:
-            print("  Pair at " + str(pair[2]) + ": " + str(pair[0].getPos()) + ", " + str(pair[1].getPos()))
-            print("   " + str(pair[0].getPosVal()) + ", " + str(pair[1].getPosVal()))
-            print("   " + str(pair[0].getPosVal().intersection(pair[1].getPosVal())))
+        # print("Sector " + str(sector))
+        # for pair in candidates:
+        #     print("  Pair at " + str(pair[2]) + ": " + str(pair[0].getPos()) + ", " + str(pair[1].getPos()))
+        #     print("   " + str(pair[0].getPosVal()) + ", " + str(pair[1].getPosVal()))
+        #     print("   " + str(pair[0].getPosVal().intersection(pair[1].getPosVal())))
         
         i = 0
         while i < len(candidates):
@@ -318,10 +318,11 @@ while gameRunning:
                     if n == 2: # If triple pair (or greater)
                         break # -> Stop, this can not lead to anything
             if n == 1:
-                print("VALID DOUBLE PAIR".center(40, "*"))
-                print(" Values: " + str(candidates[i][2]) + ", " + str(candidates[i+1][2]))
                 values = [candidates[i][2], candidates[i + 1][2]]
                 cells = list(c1)
+                print("VALID DOUBLE PAIR".center(40, "*"))
+                print("  cells: " + str(cells[0].getPos()) + ", " + str(cells[1].getPos()))
+                print("  Values: " + str(candidates[i][2]) + ", " + str(candidates[i+1][2]))
                 cells[0].addData("pairs two", cells[1], values) 
                 cells[0].setPosVal(set(ele for ele in values)) # Update the possible values
                 cells[1].addData("pairs two", cells[0], values)
@@ -330,7 +331,144 @@ while gameRunning:
                 i = i + n - 1 # Skip all pairs not valid on next iteration
             i = i + 1
 
-        
+    # Pairs on row and col
+    # Row: x = cte, Col: y = cte
+    for r in range(9): # For each row
+        candidates = [] # set of pairs
+        valuesToTest = set([i for i in range(1, 10, 1)])
+        for i in range(8): # for each cell in row but last one
+            if len(valuesToTest) == 0: # If not more values to test, go to next row
+                break
+            x1 = i
+            y1 = r
+            cell1 = grid[x1][y1]
+            if cell1.getValue() != 0: # If cell1 has defined value
+                valuesToTest.discard(cell1.getValue())
+            else: # If cell1 has no value defined
+                for val in cell1.getPosVal():
+                    if val not in valuesToTest: # If not on this set, this val can not form any pairs
+                        continue # Go to the next val
+                    posCandidates = set() # Collection of posible candidates
+                    for j in range(i + 1, 9, 1): # For the rest of the cells
+                        x2 = j
+                        y2 = r
+                        cell2 = grid[x2][y2]
+                        if cell2.getValue() == 0 and val in cell2.getPosVal(): # if cell2 has no value defined and has that val
+                            posCandidates.add(cell2) # This candidate has this val as posVal
+                    
+                    if len(posCandidates) != 1: # If more than one or no one with this val => no pair
+                        valuesToTest.discard(val) # remove this value, because it can not form any valid pair
+                        continue # Go to the next val
+                    else: # If only one cell with same val (no one on the row has this val)
+                        # We have a valid pair.
+                        cell2 = list(posCandidates)[0]
+                        print("Pair ROW founded with the value " + str(val) + ": " + str(cell1.getPos()) + ", " + str(cell2.getPos()))
+                        cell1.addData("pairs row cell", cell2, val)
+                        cell2.addData("pairs row cell", cell1, val)
+                        candidates.append([cell1, cell2, val]) # Added
+
+                        # pair by one value: all cells on the line can not be this value
+                        for k in range(1, 9, 1): # for all cells on line (1º = same cell => start at 2º)
+                            x = k
+                            y = r
+                            cell = grid[x][y]
+                            if (cell != cell1) and (cell != cell2) and cell.getValue() == 0 and (val in cell.getPosVal()):
+                                cell.addData("pairs row val", cell1, cell2, val)
+                                cell.getPosVal().remove(val)
+        i = 0
+        while i < len(candidates):
+            c1 = set(candidates[i][0:2])
+            n = 0 # ocurrences of the same pair
+            for j in range(i+1, len(candidates)):
+                c2 = set(candidates[j][0:2])
+                if c1 == c2:
+                    n = n + 1
+                    if n == 2: # If triple pair (or greater)
+                        break # -> Stop, this can not lead to anything
+            if n == 1:
+                values = [candidates[i][2], candidates[i + 1][2]]
+                cells = list(c1)
+                print("VALID DOUBLE PAIR".center(40, "*"))
+                print("  cells: " + str(cells[0].getPos()) + ", " + str(cells[1].getPos()))
+                print("  Values: " + str(candidates[i][2]) + ", " + str(candidates[i+1][2]))
+                cells[0].addData("pairs two", cells[1], values) 
+                cells[0].setPosVal(set(ele for ele in values)) # Update the possible values
+                cells[1].addData("pairs two", cells[0], values)
+                cells[1].setPosVal(set(ele for ele in values)) # Update the possible values
+            elif n > 1:
+                i = i + n - 1 # Skip all pairs not valid on next iteration
+            i = i + 1
+    
+    # Col: y = cte
+    for r in range(9): # For each col
+        candidates = [] # set of pairs
+        valuesToTest = set([i for i in range(1, 10, 1)])
+        for i in range(8): # for each cell in col but last one
+            if len(valuesToTest) == 0: # If not more values to test, go to next col
+                break
+            x1 = r
+            y1 = i
+            cell1 = grid[x1][y1]
+            if cell1.getValue() != 0: # If cell1 has defined value
+                valuesToTest.discard(cell1.getValue())
+            else: # If cell1 has no value defined
+                for val in cell1.getPosVal():
+                    if val not in valuesToTest: # If not on this set, this val can not form any pairs
+                        continue # Go to the next val
+                    posCandidates = set() # Collection of posible candidates
+                    for j in range(i + 1, 9, 1): # For the rest of the cells
+                        x2 = r
+                        y2 = j
+                        cell2 = grid[x2][y2]
+                        if cell2.getValue() == 0 and val in cell2.getPosVal(): # if cell2 has no value defined and has that val
+                            posCandidates.add(cell2) # This candidate has this val as posVal
+                    
+                    if len(posCandidates) != 1: # If more than one or no one with this val => no pair
+                        valuesToTest.discard(val) # remove this value, because it can not form any valid pair
+                        continue # Go to the next val
+                    else: # If only one cell with same val (no one on the col has this val)
+                        # We have a valid pair.
+                        cell2 = list(posCandidates)[0]
+                        print("Pair COL founded with the value " + str(val) + ": " + str(cell1.getPos()) + ", " + str(cell2.getPos()))
+                        cell1.addData("pairs col cell", cell2, val)
+                        cell2.addData("pairs col cell", cell1, val)
+                        candidates.append([cell1, cell2, val]) # Added
+
+                        # pair by one value: all cells on the line can not be this value
+                        for k in range(1, 9, 1): # for all cells on line (1º = same cell => start at 2º)
+                            x = r
+                            y = k
+                            cell = grid[x][y]
+                            if (cell != cell1) and (cell != cell2) and cell.getValue() == 0 and (val in cell.getPosVal()):
+                                cell.addData("pairs col val", cell1, cell2, val)
+                                cell.getPosVal().remove(val)
+        i = 0
+        while i < len(candidates):
+            c1 = set(candidates[i][0:2])
+            n = 0 # ocurrences of the same pair
+            for j in range(i+1, len(candidates)):
+                c2 = set(candidates[j][0:2])
+                if c1 == c2:
+                    n = n + 1
+                    if n == 2: # If triple pair (or greater)
+                        break # -> Stop, this can not lead to anything
+            if n == 1:
+                values = [candidates[i][2], candidates[i + 1][2]]
+                cells = list(c1)
+                print("VALID DOUBLE PAIR".center(40, "*"))
+                print("  cells: " + str(cells[0].getPos()) + ", " + str(cells[1].getPos()))
+                print("  Values: " + str(candidates[i][2]) + ", " + str(candidates[i+1][2]))
+                cells[0].addData("pairs two", cells[1], values) 
+                cells[0].setPosVal(set(ele for ele in values)) # Update the possible values
+                cells[1].addData("pairs two", cells[0], values)
+                cells[1].setPosVal(set(ele for ele in values)) # Update the possible values
+            elif n > 1:
+                i = i + n - 1 # Skip all pairs not valid on next iteration
+            i = i + 1
+
+
+
+    
     response = input("Continue?")
     # response = ""
     if response == "exit":
@@ -345,319 +483,3 @@ while gameRunning:
                 print(*grid[int(response[0])][int(response[1])].posVal, sep=", ")
                 print(grid[int(response[0])][int(response[1])].value)
 
-
-
-#     //***************************    actual algorithm    ***************************
-    
-#     let pairs = [];//to store candidates (2D -> [[spot, spot], [spot, spot]...])
-    
-#     //all 3by3s
-#     for(let w = 0; w < 9; w++){//for all 9 sectors
-#       //console.log("in sector " + w);
-#       let candidates = [];
-#       for(let i = 0; i < 9; i++){//index
-#         let spotsIn3b3 = []; //store in i index the spot with i val in posVal
-#         for (let j = 0; j < 3; j++) {
-#           for (let k = 0; k < 3; k++) {
-#             let x = (w % 3) * 3 + j;//works
-#             let y = Math.floor(w / 3) * 3 + k;//works
-#             //console.log(printCoord(x,y, grid[x][y].posVal + " => " + grid[x][y].posVal.indexOf(i)));
-#             if(grid[x][y].value == undefined &&
-#                grid[x][y].posVal.indexOf(i) != -1){
-#               spotsIn3b3.push(grid[x][y]);//add it to possible candidates
-#             }
-#           }
-#         }
-        
-#         if(spotsIn3b3.length == 2){//if candidate (2 spots)
-#           candidates.push(spotsIn3b3);
-#         }
-#       }
-#       if(candidates.length > 1){//if new candidates
-#         for(let i = 0; i < candidates.length; i++){//remove duplicates
-#           if(i + 1 < candidates.length &&
-#              candidates[i][0].equals(candidates[i + 1][0]) &&
-#              candidates[i][1].equals(candidates[i + 1][1])){
-#             //if duplicated => remove next because they are in order
-#             candidates.splice(i + 1, 1);
-#           }
-#         }
-#         pairs.push(...candidates);//add them to pairs
-#       }
-#     }
-    
-#     for(let i = 0; i < pairs.length; i++){//remove unwanted values from pair and remove good values from the rest
-#       //if not useful value in posVal -> Remove it (ej: pair: [123, 12] -> [12, 12])
-#       let changeProduced = false;
-#       let intersection = [filterArray(pairs[i][0].posVal, pairs[i][1].posVal), filterArray(pairs[i][1].posVal, pairs[i][0].posVal)];
-#       //let inter1U2 = filterArray(pairs[i][0].posVal, pairs[i][1].posVal);
-#       //let inter2U1 = filterArray(pairs[i][1].posVal, pairs[i][0].posVal);
-#       for(let j = 0; j < 2; j++){
-#         if(pairs[i][j].posVal.length == 2){
-#            //if(pairs[i][j].posVal.length - intersection[j].length == 2){//if intersection = 0
-#            if(intersection[j].length == 0){//if intersection = 0 => perfect pair
-#             pairs[i][(j + 1) % 2].posVal = pairs[i][j].posVal;
-#             //changeProduced = true;  
-#             removeFromPairs(pairs[i], pairs[i][0].posVal);
-#           // if(debugS(pairs[i][(j + 1) % 2].x, pairs[i][(j + 1) % 2].y)){  console.log("Perf pair 3b3 " + printCoord(pairs[i][(j + 1) % 2].x, pairs[i][(j + 1) % 2].y, printArray(grid[pairs[i][(j + 1) % 2].x][pairs[i][(j + 1) % 2].y].posVal)))}
-            
-#           }
-#           else if(intersection[j].length == 1){//if 1 value only
-#             let value = filterArray(pairs[i][j].posVal, intersection[j]);
-#             removeFromPairs(pairs[i], value);
-#             // if(debugS(pairs[i][(j + 1) % 2].x, pairs[i][(j + 1) % 2].y)){  console.log("1val pair 3b3 " + printCoord(pairs[i][(j + 1) % 2].x, pairs[i][(j + 1) % 2].y, printArray(grid[pairs[i][(j + 1) % 2].x][pairs[i][(j + 1) % 2].y].posVal)))}
-            
-#           }
-#         }
-#       } 
-#       if(false){
-#         let c = color(Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255));
-#         pairs[i][0].show(c);
-#         pairs[i][1].show(c);
-#         let f = pairs[i][0];
-#         let s = pairs[i][1];
-#         console.log(printCoords(f) + " --- " + printCoords(s) + " --> " + f.posVal + " -- " + s.posVal);
-#       }
-#     }
-    
-#     pairs = [];
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-#     //all rows and cols (debuged)
-#     for(let w = 0; w < 9; w++){//for each row & col
-#       let candidates = [];
-#       for(let i = 1; i <= 9; i++){//for each index (possible value in posVal)
-#         let spotsInRow = [];//store the spot with i val in posVal
-#         let spotsInCol = [];//store the spot with i val in posVal
-        
-#         for(let j = 0; j < 9; j++){//for each row if doing cols and viceversa
-#           if(grid[j][w].value == undefined &&
-#              grid[j][w].posVal.indexOf(i) != -1){//if it has that value
-#             spotsInRow.push(grid[j][w]);//add it to possible candidates with that value
-#           }
-          
-#           if(grid[w][j].value == undefined &&
-#              grid[w][j].posVal.indexOf(i) != -1){//if it has that value
-#             spotsInCol.push(grid[w][j]);//add it to possible candidates with that value
-#           }
-#         }
-#         //console.log(spotsInCol);
-        
-#         if(spotsInRow.length == 2){//if candidate (2 spots only)
-#           candidates.push(spotsInRow);
-#           console.log("new candidate in Row: " + printArraySpots(spotsInRow));
-#         }
-#         if(spotsInCol.length == 2){//if candidate (2 spots only)
-#           candidates.push(spotsInCol);
-#           console.log("new candidate in Col: " + printArraySpots(spotsInCol));
-          
-#         }  
-#       }
-#       //console.log(candidates);
-#       if(candidates.length > 1){//if new candidates (type row or col)
-#         for(let i = 0; i < candidates.length; i++){//remove duplicates
-#           //console.log(printCoords(candidates[i][0]) + " --- " + printCoords(candidates[i][1]));
-#           if(i + 1 < candidates.length &&
-#              candidates[i][0].equals(candidates[i + 1][0]) &&
-#              candidates[i][1].equals(candidates[i + 1][1])){
-#             //if duplicated => remove next because they are in order
-#             //console.log("duplicated");
-#             candidates.splice(i + 1, 1);
-#           }
-#         }
-#         pairs.push(...candidates);//add them to pairs
-        
-#       }
-      
-#     }
-    
-    
-    
-    
-    
-#     console.log(printCoords(grid[xDebug][yDebug], printArray(grid[xDebug][yDebug].posVal)));//debug
-    
-    
-#     for(let i = 0; i < pairs.length; i++){//remove unwanted values from pair and remove good values from the rest
-#       //if not useful value in posVal -> Remove it (ej: pair: [123, 12] -> [12, 12])
-#       let intersection = [filterArray(pairs[i][0].posVal, pairs[i][1].posVal), filterArray(pairs[i][1].posVal, pairs[i][0].posVal)];
-#       for(let j = 0; j < 2; j++){
-#         if(pairs[i][j].posVal.length == 2){
-#           if(intersection[j].length == 0){//if intersection = 0 => perfect pair
-#            pairs[i][(j + 1) % 2].posVal = pairs[i][j].posVal;
-#            removeFromPairs(pairs[i], pairs[i][0].posVal);
-            
-#            //if(debugS(pairs[i][(j + 1) % 2].x, pairs[i][(j + 1) % 2].y)){  console.log("1 " + printCoords(pairs[i][(j+1)%2], printArray(pairs[i][(j+1)%2].posVal)));}
-           
-#           }
-#           else if(intersection[j].length == 1){//if 1 value only
-#             let value = filterArray(pairs[i][j].posVal, intersection[j]);
-#             removeFromPairs(pairs[i], value);
-            
-#             //if(debugS(pairs[i][0].x, pairs[i][0].y) || debugS(pairs[i][1].x, pairs[i][1].y)){  console.log("2" + printCoords(pairs[i][j], printArray(pairs[i][j].posVal)));}
-            
-#           }
-#         }        
-#       }
-#       //ERROR MAKING PAIRS!!
-      
-#       console.log(printCoord(pairs[i][0].x, pairs[i][0].y) + " & " + printCoord(pairs[i][1].x, pairs[i][1].y) +" iteration -> "+ printArray(grid[xDebug][yDebug].posVal));//debug
-#     }
-    
-    
-    
-#     console.log(printCoords(grid[xDebug][yDebug]) + " with posVal: " + printArray(grid[xDebug][yDebug].posVal));//debug
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-
-
-#     //check if finnised
-#     if (setS.length == 0) {
-#       console.log("Done!");
-#       noLoop();
-#       return;
-#     }
-
-#     //draw 3 by 3 grid
-#     for (let i = 0; i < 3; i++) {
-#       for (let j = 0; j < 3; j++) {
-#         stroke(0);
-#         strokeWeight(5);
-#         noFill();
-#         rect(i * 3 * w, j * 3 * h, 3 * w, 3 * h);
-#       }
-#     }
-    
-
-#     //let x = 5, y = 7;
-#     //grid[x][y].show(color(0));//debug
-#     // console.log(printCoords(grid[xDebug][yDebug]) + " with posVal: " + printArray(grid[xDebug][yDebug].posVal));//debug
-#   } //debug
-#   noLoop();
-#   checkSolution();
-# }
-
-# function removeFromPairs(pair, values){//pair, valuesToRemove
-#   //detect if row or col and remove values in pairs (1.4)
-#   let dx = (pair[0].x - pair[1].x != 0) ? 1 : 0;
-#   let dy = (dx != 0) ? 0 : 1;
-#   let x = (dx == 0) ? pair[0].x : 0;
-#   let y = (dy == 0) ? pair[0].y : 0;
-  
-#   let deb = (x == xDebug || y == yDebug);//debug
-#   if(deb){console.log("Pair " + printCoords(pair[0]) + " & " + printCoords(pair[1]) + " in direction " + printCoord(dx, dy) + " with posVal " + printArray(pair[0].posVal)); console.log();}
-  
-  
-#   for(let j = 0; j < 9; j++){//rows and cols
-#     if(pair.indexOf(grid[x][y]) == -1 && grid[x][y].value == undefined){
-#       grid[x][y].posVal = filterArray(grid[x][y].posVal, values);
-#       //grid[x][y].show(color(0));
-#     }
-#     x += dx;
-#     y += dy;
-#   }
-#   let sectorX = Math.floor(pair[0].x / 3);
-#   let sectorY = Math.floor(pair[0].y / 3)
-#   for(let j = 0; j < 3; j++){
-#     for(let k = 0; k < 3; k++){
-#       let x = sectorX * 3 + j;
-#       let y = sectorY * 3 + k;
-#       if(pair.indexOf(grid[x][y]) == -1 && grid[x][y].value == undefined){
-#         grid[x][y].posVal = filterArray(grid[x][y].posVal, values);
-#       }
-#     }
-#   }
-# }
-
-# function setValueInArray(array, index, value) { //also removes from array
-#   //console.log(printCoords(array[index]) + " to value " + value);
-#   array[index].setValue(value); //set value
-#   array.splice(index, 1);
-#   return array;
-# }
-# function filterArray(array1, array2){
-#   //console.log("filter: ");
-#   //console.log(array1);
-#   //console.log(array2); 
-#   array1 = array1.filter(function(val) {
-#     return array2.indexOf(val) == -1;
-#   });
-#   return array1;
-# }
-
-# function checkSolution(){
-#   let error = false;
-#   for(let i = 0; i < 9; i++){
-#     for(let j = 0; j < 9; j++){
-#       if(grid[i][j].value != undefined && grid[i][j].value != solDebug[i][j].value){
-#         //console.log(grid[i][j].value + " --- " + solDebug[i][j].value);
-#         grid[i][j].show(color(255, 0, 0));
-#         error = true;
-#       }
-#     }
-#   }
-#   if(error){
-#     //console.log("ERROR SOLVING");
-#   }
-# }
-
-# function printCoords(spot, value){
-#   if(value) return printCoord(spot.x, spot.y, value);
-#   else{ return printCoord(spot.x, spot.y);}
-# }
-# function printCoord(x, y, value){
-#   if(value){
-#     return ("(" + x + ", " + y + ") -> " + value);
-#   }
-#   else{
-#     return ("(" + x + ", " + y + ")");
-#   }
-# }
-# function printArray(array){
-#   let str = "[";
-#   for(let i = 0; i < array.length; i++){
-#     if(Array.isArray(array[i])){
-#       str += printArray(array[i]);
-#     }
-#     else{
-#       str += array[i];
-#     }
-#     str += ((i + 1 < array.length) ? ", " : "");
-#   }
-#   str += "]";
-#   return str;
-# }
-
-# function printArraySpots(array){
-#   let str = "[";
-#   for(let i = 0; i < array.length; i++){
-#     if(Array.isArray(array[i])){
-#       str += printArray(array[i]);
-#     }
-#     else{
-#       str += printArray([array[i].x, array[i].y]);
-#     }
-#     str += ((i + 1 < array.length) ? ", " : "");
-#   }
-#   str += "]";
-#   return str;
-# }
