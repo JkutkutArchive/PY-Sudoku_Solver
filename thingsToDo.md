@@ -2,7 +2,8 @@
 - handle Errors
 - expert sudokus
 - at pairs, search pairs using "+" directions instead of 3 by 3 
-- If no new discovery, no print
+- If no new discovery, no sudoku print (base this print on discovery)
+- Multiple discoveries on the same iteration?
 
 ## functions:
 - at AddData, handle errors

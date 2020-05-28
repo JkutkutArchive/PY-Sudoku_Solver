@@ -49,17 +49,17 @@ grid = [[tool.Cell(x, y) for y in range(9)] for x in range(9)]
 #     [0, 3, 0, 0, 0, 2, 0, 0, 0],
 #     [9, 4, 0, 0, 0, 6, 0, 0, 2]
 # ]
-data = [ # hard (solved)
-    [0, 0, 7, 0, 0, 0, 3, 0, 2],
-    [2, 0, 0, 0, 0, 5, 0, 1, 0],
-    [0, 0, 0, 8, 0, 1, 4, 0, 0],
-    [0, 1, 0, 0, 9, 6, 0, 0, 8],
-    [7, 6, 0, 0, 0, 0, 0, 4, 9],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 1, 0, 3, 0, 0, 0],
-    [8, 0, 1, 0, 6, 0, 0, 0, 0],
-    [0, 0, 0, 7, 0, 0, 0, 6, 3]
-]
+# data = [ # hard (solved)
+#     [0, 0, 7, 0, 0, 0, 3, 0, 2],
+#     [2, 0, 0, 0, 0, 5, 0, 1, 0],
+#     [0, 0, 0, 8, 0, 1, 4, 0, 0],
+#     [0, 1, 0, 0, 9, 6, 0, 0, 8],
+#     [7, 6, 0, 0, 0, 0, 0, 4, 9],
+#     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+#     [0, 0, 0, 1, 0, 3, 0, 0, 0],
+#     [8, 0, 1, 0, 6, 0, 0, 0, 0],
+#     [0, 0, 0, 7, 0, 0, 0, 6, 3]
+# ]
 
 # data = [ # pair test1
 #     [0, 0, 0, 0, 0, 0, 3, 0, 2],
@@ -73,17 +73,17 @@ data = [ # hard (solved)
 #     [0, 0, 0, 7, 8, 2, 1, 6, 3]
 # ]
 
-# data = [ # expert
-#     [0, 0, 0, 0, 0, 0, 9, 2, 6],
-#     [0, 7, 0, 0, 9, 0, 8, 5, 0],
-#     [0, 0, 1, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 3, 0, 0, 0, 5, 0, 0],
-#     [8, 6, 0, 0, 0, 0, 0, 0, 0],
-#     [5, 0, 4, 8, 0, 0, 0, 9, 0],
-#     [0, 4, 0, 0, 2, 1, 0, 0, 0],
-#     [6, 0, 0, 0, 0, 0, 0, 3, 0],
-#     [0, 0, 0, 0, 4, 7, 0, 0, 0]
-# ]
+data = [ # expert
+    [0, 0, 0, 0, 0, 0, 9, 2, 6],
+    [0, 7, 0, 0, 9, 0, 8, 5, 0],
+    [0, 0, 1, 0, 0, 0, 0, 0, 0],
+    [0, 0, 3, 0, 0, 0, 5, 0, 0],
+    [8, 6, 0, 0, 0, 0, 0, 0, 0],
+    [5, 0, 4, 8, 0, 0, 0, 9, 0],
+    [0, 4, 0, 0, 2, 1, 0, 0, 0],
+    [6, 0, 0, 0, 0, 0, 0, 3, 0],
+    [0, 0, 0, 0, 4, 7, 0, 0, 0]
+]
 
 
 # data = [ # epmty
@@ -250,85 +250,85 @@ while gameRunning:
 
     # ---------------------    advanced algorithm   ---------------------
     # if not discoveryMade: # If no value discovered on this iteration, use more advanced algorithms
-    #     print("No trivial value founded, applying more advanced algorithms")
+        # print("No trivial value founded, applying more advanced algorithms")
 
-    #     # ----------    PAIRS   ----------
-    #     # Sectors: like phone numberpad: 012 \n 345 \n 678
-    #     for sector in range(9): # For each sector
-    #         candidates = [] # set of pairs
-    #         valuesToTest = set([i for i in range(1, 10, 1)])
-    #         for i in range(9): # for each cell in 3by3 but last one
-    #             if len(valuesToTest) == 0: # If not more values to test, go to next sector
-    #                 break
-    #             x1 = (sector // 3) * 3 + (i // 3)
-    #             y1 = (sector % 3) * 3 + (i % 3)
-    #             cell1 = grid[x1][y1]
-    #             if cell1.getValue() != 0: # If cell1 has defined value
-    #                 valuesToTest.discard(cell1.getValue())
-    #             else: # If cell1 has no value defined
-    #                 for val in cell1.getPosVal():
-    #                     if val not in valuesToTest: # If not on this set, this val can not form any pairs
-    #                         continue # Go to the next val
-    #                     posCandidates = set() # Collection of posible candidates
-    #                     for j in range(i + 1, 9, 1): # For the rest of the cells
-    #                         x2 = (sector // 3) * 3 + (j // 3)
-    #                         y2 = (sector % 3) * 3 + (j % 3)
-    #                         cell2 = grid[x2][y2]
-    #                         if cell2.getValue() == 0 and val in cell2.getPosVal(): # if cell2 has no value defined and has that val
-    #                             posCandidates.add(cell2) # This candidate has this val as posVal
-                        
-    #                     if len(posCandidates) != 1: # If more than one or no one with this val => no pair
-    #                         valuesToTest.discard(val) # remove this value, because it can not form any valid pair
-    #                         continue # Go to the next val
-    #                     else: # If only one cell with same val (no one on the 3by3 has this val)
-    #                         # We have a valid pair. More tests are needed to proceed
-    #                         cell2 = list(posCandidates)[0]
-    #                         hori = 1 if cell1.y == cell2.y else 0
-    #                         vert = 1 if cell1.x == cell2.x else 0
-    #                         if hori == 1 or vert == 1: # If good pair (making a line)
-    #                             print("Pair founded with the value " + str(val) + ": " + str(cell1.getPos()) + ", " + str(cell2.getPos()))
-    #                             candidates.append([cell1, cell2, val]) # Added
+    # ----------    PAIRS   ----------
+    # Sectors: like phone numberpad: 012 \n 345 \n 678
+    for sector in range(9): # For each sector
+        candidates = [] # set of pairs
+        valuesToTest = set([i for i in range(1, 10, 1)])
+        for i in range(9): # for each cell in 3by3 but last one
+            if len(valuesToTest) == 0: # If not more values to test, go to next sector
+                break
+            x1 = (sector // 3) * 3 + (i // 3)
+            y1 = (sector % 3) * 3 + (i % 3)
+            cell1 = grid[x1][y1]
+            if cell1.getValue() != 0: # If cell1 has defined value
+                valuesToTest.discard(cell1.getValue())
+            else: # If cell1 has no value defined
+                for val in cell1.getPosVal():
+                    if val not in valuesToTest: # If not on this set, this val can not form any pairs
+                        continue # Go to the next val
+                    posCandidates = set() # Collection of posible candidates
+                    for j in range(i + 1, 9, 1): # For the rest of the cells
+                        x2 = (sector // 3) * 3 + (j // 3)
+                        y2 = (sector % 3) * 3 + (j % 3)
+                        cell2 = grid[x2][y2]
+                        if cell2.getValue() == 0 and val in cell2.getPosVal(): # if cell2 has no value defined and has that val
+                            posCandidates.add(cell2) # This candidate has this val as posVal
+                    
+                    if len(posCandidates) != 1: # If more than one or no one with this val => no pair
+                        valuesToTest.discard(val) # remove this value, because it can not form any valid pair
+                        continue # Go to the next val
+                    else: # If only one cell with same val (no one on the 3by3 has this val)
+                        # We have a valid pair. More tests are needed to proceed
+                        cell2 = list(posCandidates)[0]
+                        hori = 1 if cell1.y == cell2.y else 0
+                        vert = 1 if cell1.x == cell2.x else 0
+                        if hori == 1 or vert == 1: # If good pair (making a line)
+                            print("Pair founded with the value " + str(val) + ": " + str(cell1.getPos()) + ", " + str(cell2.getPos()))
+                            candidates.append([cell1, cell2, val]) # Added
 
-    #                             # pair by one value: all cells on the line can not be this value
-    #                             for k in range(1, 9, 1): # for all cells on line (1º = same cell => start at 2º)
-    #                                 x = (cell1.x + hori * k) % 9
-    #                                 y = (cell1.y + vert * k) % 9
-    #                                 cell = grid[x][y]
-    #                                 if (cell != cell1) and (cell != cell2) and cell.getValue() == 0 and (val in cell.getPosVal()):
-    #                                     cell.addData("pairs one val", cell1, cell2, val)
-    #                                     cell1.addData("pairs one cell", cell2, val)
-    #                                     cell2.addData("pairs one cell", cell1, val)
-    #                                     cell.getPosVal().remove(val)
+                            # pair by one value: all cells on the line can not be this value
+                            for k in range(1, 9, 1): # for all cells on line (1º = same cell => start at 2º)
+                                x = (cell1.x + hori * k) % 9
+                                y = (cell1.y + vert * k) % 9
+                                cell = grid[x][y]
+                                if (cell != cell1) and (cell != cell2) and cell.getValue() == 0 and (val in cell.getPosVal()):
+                                    cell.addData("pairs one val", cell1, cell2, val)
+                                    cell1.addData("pairs one cell", cell2, val)
+                                    cell2.addData("pairs one cell", cell1, val)
+                                    cell.getPosVal().remove(val)
+    
+        # pair by 2 values
+        print("Sector " + str(sector))
+        for pair in candidates:
+            print("  Pair at " + str(pair[2]) + ": " + str(pair[0].getPos()) + ", " + str(pair[1].getPos()))
+            print("   " + str(pair[0].getPosVal()) + ", " + str(pair[1].getPosVal()))
+            print("   " + str(pair[0].getPosVal().intersection(pair[1].getPosVal())))
         
-    #         # pair by 2 values
-    #         print("Sector " + str(sector))
-    #         for pair in candidates:
-    #             print("  Pair at " + str(pair[2]) + ": " + str(pair[0].getPos()) + ", " + str(pair[1].getPos()))
-    #             print("   " + str(pair[0].getPosVal()) + ", " + str(pair[1].getPosVal()))
-    #             print("   " + str(pair[0].getPosVal().intersection(pair[1].getPosVal())))
-            
-    #         i = 0
-    #         while i < len(candidates):
-    #             c1 = set(candidates[i][0:2])
-    #             n = 0 # ocurrences of the same pair
-    #             for j in range(i+1, len(candidates)):
-    #                 c2 = set(candidates[j][0:2])
-    #                 if c1 == c2:
-    #                     n = n + 1
-    #                     if n == 2: # If triple pair (or greater)
-    #                         break # -> Stop, this can not lead to anything
-    #             if n == 1:
-    #                 print("VALID DOUBLE PAIR".center(40, "*"))
-    #                 print(" Values: " + str(candidates[i][2]) + ", " + str(candidates[i+1][2]))
-    #                 values = [candidates[i][2], candidates[i + 1][2]]
-    #                 cells = list(c1)
-    #                 cells[0].addData("pairs two", cells[1], values) 
-    #                 cells[0].setPosVal(set(ele for ele in values)) # Update the possible values
-    #                 cells[1].addData("pairs two", cells[0], values)
-    #                 cells[1].setPosVal(set(ele for ele in values)) # Update the possible values
-    #             elif n > 1:
-    #                 i = i + n - 1 # Skip all pairs not valid on next iteration
-    #             i = i + 1
+        i = 0
+        while i < len(candidates):
+            c1 = set(candidates[i][0:2])
+            n = 0 # ocurrences of the same pair
+            for j in range(i+1, len(candidates)):
+                c2 = set(candidates[j][0:2])
+                if c1 == c2:
+                    n = n + 1
+                    if n == 2: # If triple pair (or greater)
+                        break # -> Stop, this can not lead to anything
+            if n == 1:
+                print("VALID DOUBLE PAIR".center(40, "*"))
+                print(" Values: " + str(candidates[i][2]) + ", " + str(candidates[i+1][2]))
+                values = [candidates[i][2], candidates[i + 1][2]]
+                cells = list(c1)
+                cells[0].addData("pairs two", cells[1], values) 
+                cells[0].setPosVal(set(ele for ele in values)) # Update the possible values
+                cells[1].addData("pairs two", cells[0], values)
+                cells[1].setPosVal(set(ele for ele in values)) # Update the possible values
+            elif n > 1:
+                i = i + n - 1 # Skip all pairs not valid on next iteration
+            i = i + 1
 
         
     response = input("Continue?")

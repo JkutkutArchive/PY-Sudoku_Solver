@@ -104,6 +104,8 @@ class Cell():
             if self.value == sol[self.x][self.y]:
                 print("\n" + "CORRECT".center(40) + "\n")
             else:
+                import main
+                main.gameRunning = False
                 print("\n" + ("ERROR, NOT CORRECT VALUE -> " + str(sol[self.x][self.y])).center(40) + "\n")
     
     def getValue(self):
@@ -122,10 +124,10 @@ class Cell():
         key = dataArr[0]
         if "basic" in key or "pairs one cell" == key: # If basic type or pair, can be merged to the previous data
             for d in self.data: # Search for it
-                if key == d[0]: # If exacly the same type
+                if key == d[0]: # If exacly the same data type
                     if "pairs one cell" == key and d[1] == dataArr[1]:
                         return
-                    else: # Basic type
+                    elif "basic" in key: # Basic type
                         d[1].extend(dataArr[1]) # Update the previous data (Basic: row, col, 3by3)
                         return # end Execution
         self.data.append(dataArr) # If not founded or not basic, add it as new data
