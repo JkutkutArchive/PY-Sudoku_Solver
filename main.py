@@ -308,11 +308,33 @@ while gameRunning:
         
         # pair by 2 values
         print("Sector " + str(sector))
+
         for pair in candidates:
             print("Pair at " + str(pair[2]) + ": " + str(pair[0].getPos()) + ", " + str(pair[1].getPos()))
             print(" " + str(pair[0].getPosVal()) + ", " + str(pair[1].getPosVal()))
             print(" " + str(pair[0].getPosVal().intersection(pair[1].getPosVal())))
-        
+        # i = 0
+        # while i < len(candidates):
+        #     c1 = set(candidates[i][0:2])
+        #     n = 0 # ocurrences of the same pair
+        #     for j in range(i+1, len(candidates)):
+        #         c2 = set(candidates[j][0:2])
+        #         if c1 == c2:
+        #             n = n + 1
+        #             if n == 2: # If triple pair (or greater)
+        #                 break # -> Stop, this can not lead to anything
+        #     if n == 1:
+        #         # print("VALID PAIR".center(40, "*"))
+        #         # print(" Values: " + str(candidates[i][2]) + ", " + str(candidates[i+1][2]))
+        #         values = [candidates[i][2], candidates[i + 1][2]]
+        #         cells = list(c1)
+        #         cells[0].addData(["pairs two", cells[1], values]) 
+        #         cells[0].setPosVal(set(ele for ele in values)) # Update the possible values
+        #         cells[1].addData(["pairs two", cells[0], values])
+        #         cells[1].setPosVal(set(ele for ele in values)) # Update the possible values
+        #     elif n > 1:
+        #         i = i + n - 1 # Skip all pairs not valid on next iteration
+        #     i = i + 1
 
         
     response = input("Continue?")
