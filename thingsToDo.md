@@ -5,7 +5,6 @@
 - If no new discovery, no print
 
 ## functions:
-- revise Eq method
 - at AddData, handle errors
 
 ## Final version:
