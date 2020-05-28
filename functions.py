@@ -120,13 +120,13 @@ class Cell():
 
     
     def addData(self, *dataArr):
-        # key = dataArr[0]
-        # if "basic" in key:
-        #     for d in data:
-        #         if key == d[0]: # Update the previous data
-        #             # data[key]
-        #             True
-        self.data.append(dataArr)
+        key = dataArr[0]
+        if "basic" in key: # If basic type, can be merged to the previous data
+            for d in self.data: # Search for it
+                if key == d[0]: # If exacly the same type
+                    d[1].extend(dataArr[1]) # Update the previous data (Basic: row, col, 3by3)
+                    return # end Execution
+        self.data.append(dataArr) # If not founded or not basic, add it as new data
     def dataToText(self):
         s = ["Let's focus on the cell on the position (" + str(self.x) + ", " + str(self.y) + ")"]
         for d in self.data:
