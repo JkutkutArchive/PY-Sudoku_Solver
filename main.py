@@ -185,11 +185,11 @@ while gameRunning:
                     values[2] = values[2] + [otherValue]
 
         if len(values[0]) > 0: # Row
-            cell.addData(["basic row", values[0]])
+            cell.addData("basic row", values[0])
         if len(values[1]) > 0: # Col 
-            cell.addData(["basic col", values[1]])
+            cell.addData("basic col", values[1])
         if len(values[2]) > 0: # 3by3
-            cell.addData(["basic 3 by 3", values[2]])
+            cell.addData("basic 3 by 3", values[2])
 
         if len(cell.getPosVal()) == 1: # We got the value
             cell.setValue(list(cell.getPosVal())[0])
@@ -220,7 +220,7 @@ while gameRunning:
         if len(unique[0]) == 1: # If only one value is unique -> should be the value
             uniqueValue = list(unique[0])[0]
             if uniqueValue in cell.getPosVal(): # if this value is a possible one, make it the value of the cell (This should always be true)
-                cell.addData(["unique row", uniqueValue])
+                cell.addData("unique row", uniqueValue)
                 cell.setValue(uniqueValue)
                 break
             else:
@@ -228,7 +228,7 @@ while gameRunning:
         if len(unique[1]) == 1: # If only one value is unique -> should be the value
             uniqueValue = list(unique[1])[0]
             if uniqueValue in cell.getPosVal(): # if this value is a possible one, make it the value of the cell (This should always be true)
-                cell.addData(["unique col", uniqueValue])
+                cell.addData("unique col", uniqueValue)
                 cell.setValue(uniqueValue)
                 break
             else:
@@ -236,7 +236,7 @@ while gameRunning:
         if len(unique[2]) == 1: # If only one value is unique -> should be the value
             uniqueValue = list(unique[2])[0]
             if uniqueValue in cell.getPosVal(): # if this value is a possible one, make it the value of the cell (This should always be true)
-                cell.addData(["unique 3 by 3", uniqueValue])
+                cell.addData("unique 3 by 3", uniqueValue)
                 cell.setValue(uniqueValue)
                 break
             else:
@@ -300,9 +300,9 @@ while gameRunning:
                                 y = (cell1.y + vert * k) % 9
                                 cell = grid[x][y]
                                 if (cell != cell1) and (cell != cell2) and cell.getValue() == 0 and (val in cell.getPosVal()):
-                                    cell.addData(["pairs one val", cell1, cell2, val])
-                                    cell1.addData(["pairs one cell", cell2, val])
-                                    cell2.addData(["pairs one cell", cell1, val])
+                                    cell.addData("pairs one val", cell1, cell2, val)
+                                    cell1.addData("pairs one cell", cell2, val)
+                                    cell2.addData("pairs one cell", cell1, val)
                                     cell.getPosVal().remove(val)
 
         
@@ -328,9 +328,9 @@ while gameRunning:
         #         # print(" Values: " + str(candidates[i][2]) + ", " + str(candidates[i+1][2]))
         #         values = [candidates[i][2], candidates[i + 1][2]]
         #         cells = list(c1)
-        #         cells[0].addData(["pairs two", cells[1], values]) 
+        #         cells[0].addData("pairs two", cells[1], values) 
         #         cells[0].setPosVal(set(ele for ele in values)) # Update the possible values
-        #         cells[1].addData(["pairs two", cells[0], values])
+        #         cells[1].addData("pairs two", cells[0], values)
         #         cells[1].setPosVal(set(ele for ele in values)) # Update the possible values
         #     elif n > 1:
         #         i = i + n - 1 # Skip all pairs not valid on next iteration
