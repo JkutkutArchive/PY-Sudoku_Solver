@@ -84,7 +84,7 @@ class Cell():
         return str(self.getValue())
 
     def __eq__(self, other):
-        if self.getPos() != self.getPos(): # If different coordinates
+        if self.getPos() != other.getPos(): # If different coordinates
             return False # In theory, when well used this class, this should be the only condition used
         if self.value != other.value and self.getPosVal() != other.getPosVal():
             return False
@@ -118,7 +118,6 @@ class Cell():
     def getPos(self):
         return (self.x, self.y)
 
-    
     def addData(self, *dataArr):
         key = dataArr[0]
         if "basic" in key or "pairs one cell" == key: # If basic type or pair, can be merged to the previous data
@@ -130,6 +129,7 @@ class Cell():
                         d[1].extend(dataArr[1]) # Update the previous data (Basic: row, col, 3by3)
                         return # end Execution
         self.data.append(dataArr) # If not founded or not basic, add it as new data
+    
     def dataToText(self):
         s = ["Let's focus on the cell on the position (" + str(self.x) + ", " + str(self.y) + ")"]
         for d in self.data:
