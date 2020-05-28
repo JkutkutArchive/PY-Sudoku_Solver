@@ -262,13 +262,24 @@ while gameRunning:
     
     for sector in range(8,9,1): # For each sector
         candidates = [] # set of pairs
+        valuesToTest = set([i for i in range(1, 10, 1)])
+        valuesToTest.remove(6)
+        print(valuesToTest)
         for i in range(9): # for each cell in 3by3 but last one
+            if len(valuesToTest) == 0: # If not more values to test, go to next sector
+                break
             x1 = (sector // 3) * 3 + (i // 3)
             y1 = (sector % 3) * 3 + (i % 3)
             cell1 = grid[x1][y1]
-            if cell1.getValue() == 0: # If cell1 has no value defined
+            if cell1.getValue() != 0: # If cell1 has defined value
+                print(cell1.getValue())
+                print(valuesToTest)
+                valuesToTest.discard(cell1.getValue())
+            else: # If cell1 has no value defined
                 # print("see "+str(cell1.getPos()))
                 for val in cell1.getPosVal():
+                    if val not in valuesToTest: # If not on this set, this val can not form any pairs
+                        continue # Go to the next val
                     posCandidates = set() # Collection of posible candidates
                     for j in range(i + 1, 9, 1): # For the rest of the cells
                         x2 = (sector // 3) * 3 + (j // 3)
@@ -278,7 +289,10 @@ while gameRunning:
                         if cell2.getValue() == 0 and val in cell2.getPosVal(): # if cell2 has no value defined and has that val
                             posCandidates.add(cell2) # This candidate has this val as posVal
                     
-                    if len(posCandidates) == 1: # If only one cell with same val (no one on the 3by3 has this val)
+                    if len(posCandidates) != 1: # If more than one or no one with this val => no pair
+                        valuesToTest.discard(val) # remove this value, because it can not form any valid pair
+                        continue # Go to the next val
+                    else: # If only one cell with same val (no one on the 3by3 has this val)
                         # We have a valid pair. More tests are needed to proceed
                         cell2 = list(posCandidates)[0]
                         hori = 1 if cell1.y == cell2.y else 0
@@ -306,7 +320,6 @@ while gameRunning:
                                     cell1.addData(["pairs one cell", cell2, val])
                                     cell2.addData(["pairs one cell", cell1, val])
                                     cell.getPosVal().remove(val)
-
 
         
         # pair by 2 values
