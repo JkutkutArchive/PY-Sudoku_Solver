@@ -15,10 +15,7 @@ def init(*name): # Init the var
 
 def addSudokuOnLaTeX(grid):
     if doc == None: return
-
-    # sudoku = Table(position="H")
-    # sudoku.append(UnsafeCommand("centering"))
-
+    
     sudokuTabular = Tabular('l|l:l:l|l:l:l|l:l:l|', pos="t")
 
     sudokuTabular.add_row(tuple([""] + [MultiColumn(1, align='l|', data=bold(str(i))) for i in range(9)]))
