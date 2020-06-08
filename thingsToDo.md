@@ -10,7 +10,6 @@
 - at AddData, pairs on one and row may be merged
 
 ## Final version:
-- LaTeX!
 - COLORS
 - If more than one posible sol -> show all without steps
 - When printing the sudoku:
@@ -24,3 +23,7 @@
   - pip3 install pylatex
   - sudo apt-get install latexmk
   - sudo apt install texlive-latex-extra
+- Add title:
+  - Author
+  - url to github
+- Tutorial/description/introduction?
