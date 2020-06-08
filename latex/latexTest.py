@@ -13,28 +13,21 @@ doc.packages.append(Package('float'))
 test1 = Section('Sudoku')
 t = Table(position="H")
 t.append(UnsafeCommand("centering"))
+table = Tabular('ll|l:l:l|l:l:l|l:l:l|')
 
-table = Tabular('l|l:l:l|l:l:l|l:l:l|')
-row_cells = ("",\
-    MultiColumn(1, align='l|', data=bold('0')),\
-    MultiColumn(1, align='l|', data=bold('1')),\
-    MultiColumn(1, align='l|', data=bold('2')),\
-    MultiColumn(1, align='l|', data=bold('3')),\
-    MultiColumn(1, align='l|', data=bold('4')),\
-    MultiColumn(1, align='l|', data=bold('5')),\
-    MultiColumn(1, align='l|', data=bold('6')),\
-    MultiColumn(1, align='l|', data=bold('7')),\
-    MultiColumn(1, align='l|', data=bold('8')))
-table.add_row(row_cells)
+table.add_row(tuple(["",bold("Y")] + [MultiColumn(1, align='l|', data=bold(str(i))) for i in range(9)])) # Line with indices
+
+
+table.add_row(tuple([bold("X")] + [MultiColumn(1, align='l|', data="") for i in range(1,11)]))
 table.add_hline()
 
 for r in range(9):
-    table.add_row(tuple([bold(str(r))] + [str(i) for i in range(1,10)]))
+    table.add_row(tuple([bold(str(r)), ""] + [str(i) for i in range(1,10)]))
     if r == 2 or r == 5 or r == 8:
         table.add_hline()
     else:
-        table.append(UnsafeCommand("cline", "1-1"))
-        table.append(UnsafeCommand("cdashline", "2-10"))
+        table.append(UnsafeCommand("cline", "1-2"))
+        table.append(UnsafeCommand("cdashline", "3-11"))
 
 t.append(table)
 test1.append(t)
