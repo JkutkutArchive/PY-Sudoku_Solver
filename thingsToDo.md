@@ -17,3 +17,10 @@
   - Invert Axis
   - not 0 based coord
   - print focused cell
+
+
+### LaTeX:
+- Commands:
+  - pip3 install pylatex
+  - sudo apt-get install latexmk
+  - sudo apt install texlive-latex-extra
