@@ -1,42 +1,54 @@
-from pylatex import Document, Section, Table, Tabular, MultiColumn, UnsafeCommand
-from pylatex.utils import bold 
-
-from pylatex.package import Package
-
+from pylatex import Document, Section, Table, Tabular, Tabularx, MultiColumn, UnsafeCommand # Elements to add on the Tex file
+from pylatex.utils import bold, escape_latex # To bold the text
+from pylatex.package import Package # To import custom packages
 from pylatex.base_classes import CommandBase #Environment, Arguments
 
+doc = None # Create the var
 
-doc = Document("solution") #create the document (argument = name of the file)
-doc.packages.append(Package('arydshln')) # package to make the custom borders on the table
-doc.packages.append(Package('float'))
+def init(*name): # Init the var
+    global doc
+    name = name if name else "aa-solution"
+    doc = Document(name) #create the document (argument = name of the file)
+    doc.packages.append(Package('arydshln')) # package to make the custom borders on the table
+    doc.packages.append(Package('float'))
 
 
 def addSudokuOnLaTeX(grid):
-    t = Table(position="H")
-    t.append(UnsafeCommand("centering"))
-    table = Tabular('ll|l:l:l|l:l:l|l:l:l|')
+    if doc == None: return
 
-    table.add_row(tuple(["",bold("Y")] + [MultiColumn(1, align='l|', data=bold(str(i))) for i in range(9)])) # Line with indices
+    # sudoku = Table(position="H")
+    # sudoku.append(UnsafeCommand("centering"))
 
+    sudokuTabular = Tabular('l|l:l:l|l:l:l|l:l:l|', pos="t")
 
-    table.add_row(tuple([bold("X")] + [MultiColumn(1, align='l|', data="") for i in range(1,11)]))
-    table.add_hline()
+    sudokuTabular.add_row(tuple([""] + [MultiColumn(1, align='l|', data=bold(str(i))) for i in range(9)]))
+    sudokuTabular.add_hline()
 
     for r in range(9):
-        table.add_row(tuple([bold(str(r)), ""] + [str(grid[r][c]) if grid[r][c] != 0 else ""  for c in range(9)]))
+        sudokuTabular.add_row(tuple([bold(str(r))] + [str(grid[r][c]) if grid[r][c] != 0 else ""  for c in range(9)]))
         if r == 2 or r == 5 or r == 8:
-            table.add_hline()
+            sudokuTabular.add_hline()
         else:
-            table.append(UnsafeCommand("cline", "1-2"))
-            table.append(UnsafeCommand("cdashline", "3-11"))
-    #Table ended
-    t.append(table)
-    doc.append(t)
+            sudokuTabular.append(UnsafeCommand("cline", "1-1"))
+            sudokuTabular.append(UnsafeCommand("cdashline", "2-10"))
+
+    xAxis = Tabular('l')
+    xAxis.add_row(tuple([bold("X")]))
+    xAxis.add_row(tuple([bold(escape_latex("↓"))]))
+
+    table = Table(position="H")
+    axis = Tabular("ll")
+    axis.add_row(("", bold(escape_latex("Y →"))))
+    axis.add_row((xAxis, sudokuTabular))
+    table.append(axis)
+    doc.append(table)
 
 def toPDF():
+    if doc == None: return
     doc.generate_pdf(clean_tex=False)
 
 if __name__ == "__main__":
+    init()
     data = [ #canonical (solved)
         [9, 8, 4, 0, 3, 1, 0, 7, 2],
         [6, 1, 0, 0, 0, 7, 0, 0, 0],
