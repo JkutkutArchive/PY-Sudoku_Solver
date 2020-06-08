@@ -30,7 +30,6 @@ for r in range(9):
     if r == 2 or r == 5 or r == 8:
         table.add_hline()
     else:
-        # table.append(Cdashline())
         table.append(UnsafeCommand("cline", "1-1"))
         table.append(UnsafeCommand("cdashline", "2-10"))
 
