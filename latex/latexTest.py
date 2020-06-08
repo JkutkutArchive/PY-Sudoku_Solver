@@ -1,45 +1,38 @@
-from pylatex import Document, Section, Subsection, Tabular, MultiColumn,\
-    MultiRow, UnsafeCommand
+from pylatex import Document, Section, Subsection, Tabular, MultiColumn, UnsafeCommand
+from pylatex.utils import bold 
 
 from pylatex.package import Package
 
 from pylatex.base_classes import CommandBase #Environment, Arguments
 
-
-class Cdashline(CommandBase):
-    _latex_name = "dashline"
-    packages = [Package('arydshln')]
-
 doc = Document("basic")
 doc.packages.append(Package('arydshln'))
 doc.packages.append(Package('float'))
-
-new_commamd = UnsafeCommand('newcommand', '\dashline', extra_arguments=r'\cline{1-1} \cdashline{2-10}')
-doc.append(new_commamd)
-
 
 
 test1 = Subsection('MultiColumn')
 table = Tabular('l|l:l:l|l:l:l|l:l:l|')
 row_cells = ("",\
-    MultiColumn(1, align='l|', data='0'),\
-    MultiColumn(1, align='l|', data='1'),\
-    MultiColumn(1, align='l|', data='2'),\
-    MultiColumn(1, align='l|', data='3'),\
-    MultiColumn(1, align='l|', data='4'),\
-    MultiColumn(1, align='l|', data='5'),\
-    MultiColumn(1, align='l|', data='6'),\
-    MultiColumn(1, align='l|', data='7'),\
-    MultiColumn(1, align='l|', data='8'))
+    MultiColumn(1, align='l|', data=bold('0')),\
+    MultiColumn(1, align='l|', data=bold('1')),\
+    MultiColumn(1, align='l|', data=bold('2')),\
+    MultiColumn(1, align='l|', data=bold('3')),\
+    MultiColumn(1, align='l|', data=bold('4')),\
+    MultiColumn(1, align='l|', data=bold('5')),\
+    MultiColumn(1, align='l|', data=bold('6')),\
+    MultiColumn(1, align='l|', data=bold('7')),\
+    MultiColumn(1, align='l|', data=bold('8')))
 table.add_row(row_cells)
 table.add_hline()
 
 for r in range(9):
-    table.add_row(tuple([str(r)] + [str(i) for i in range(1,10)]))
+    table.add_row(tuple([bold(str(r))] + [str(i) for i in range(1,10)]))
     if r == 2 or r == 5 or r == 8:
         table.add_hline()
     else:
-        table.append(Cdashline())
+        # table.append(Cdashline())
+        table.append(UnsafeCommand("cline", "1-1"))
+        table.append(UnsafeCommand("cdashline", "2-10"))
 
 test1.append(table)
 doc.append(test1)
