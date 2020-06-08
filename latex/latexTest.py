@@ -1,16 +1,19 @@
-from pylatex import Document, Section, Subsection, Tabular, MultiColumn, UnsafeCommand
+from pylatex import Document, Section, Table, Tabular, MultiColumn, UnsafeCommand
 from pylatex.utils import bold 
 
 from pylatex.package import Package
 
 from pylatex.base_classes import CommandBase #Environment, Arguments
 
-doc = Document("basic")
-doc.packages.append(Package('arydshln'))
+doc = Document("basic") #create the document (argument = name of the file)
+doc.packages.append(Package('arydshln')) # package to make the custom borders on the table
 doc.packages.append(Package('float'))
 
 
-test1 = Subsection('MultiColumn')
+test1 = Section('Sudoku')
+t = Table(position="H")
+t.append(UnsafeCommand("centering"))
+
 table = Tabular('l|l:l:l|l:l:l|l:l:l|')
 row_cells = ("",\
     MultiColumn(1, align='l|', data=bold('0')),\
@@ -33,7 +36,8 @@ for r in range(9):
         table.append(UnsafeCommand("cline", "1-1"))
         table.append(UnsafeCommand("cdashline", "2-10"))
 
-test1.append(table)
+t.append(table)
+test1.append(t)
 doc.append(test1)
 
 
