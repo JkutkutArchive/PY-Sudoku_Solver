@@ -1,5 +1,5 @@
-from pylatex import Document, Section, Table, Tabular, Tabularx, MultiColumn, UnsafeCommand # Elements to add on the Tex file
-from pylatex.basic import TextColor, HugeText
+from pylatex import Document, Section, Subsection, Table, Tabular, Tabularx, MultiColumn, UnsafeCommand
+from pylatex.basic import TextColor, HugeText, NewLine, NewPage
 from pylatex.utils import bold, escape_latex, NoEscape
 from pylatex.package import Package # To import custom packages
 from pylatex.base_classes import CommandBase #Environment, Arguments
@@ -19,18 +19,27 @@ def init(data, *fileName): # Init the var
     title.append(HugeText(bold("Sudoku's step by step solver")))
     doc.append(title)
     intro = Section("Introduction")
-    doc.append(intro)
     intro.append("On this PDF, the reader will be able to see how to solve the given sudoku:")
-    
-    addSudokuOnLaTeX(data)
-    
+    addSudokuOnLaTeX(data, place=intro)
+    intro.append("On the following pages, with each iteration of the code, the conclusions madeby the algorithm will be showed next to a representation of the sudoku with allthe discovered values.")
+    intro.append(NewLine())
+    intro.append("The way to refer to a particular cell will be using coordinates (x, y). This way, the value 'x' represents the row's number and 'y' the column's number. This will be represented every time the sudoku’s representation is generated as you can see.")
+    intro.append(NewLine())
+    intro.append("To see the code used to generate this file and solve the sudoku, please go to the author of the code’s github: ")
+    intro.append(NoEscape(r"\href{https://github.com/Jkutkut/PY-Sudoku-Solver}{Jkutkut's GitHub}"))
+    intro.append(NewPage())
+    doc.append(intro)
+    doc.append(Section("Steps"))
 
-    doc.append(NoEscape(r'\href{https://github.com/Jkutkut/PY-Sudoku-Solver}{Jkutkut\'s GitHub}'))
 
+def newIteration(grid, *data):
+    doc.append(Subsection("New Iteration"))
+    addSudokuOnLaTeX(grid, data[0] if data else None)
 
-
-def addSudokuOnLaTeX(grid, *data):
+def addSudokuOnLaTeX(grid, *data, place=None):
     if doc == None: return
+    # print(place)
+    place = place if place else doc
     if data: data = data[0]
     
     sudokuTabular = Tabular('l|l:l:l|l:l:l|l:l:l|', pos="t")
@@ -66,7 +75,8 @@ def addSudokuOnLaTeX(grid, *data):
     axis.add_row(("", bold(escape_latex("Y →"))))
     axis.add_row((xAxis, sudokuTabular))
     table.append(axis)
-    doc.append(table)
+    place.append(table)
+
 
 
 def toPDF():
@@ -74,7 +84,7 @@ def toPDF():
     doc.generate_pdf(clean_tex=False)
 
 if __name__ == "__main__":
-    data = [ #canonical (solved)
+    data = [
         [9, 8, 4, 0, 3, 1, 0, 7, 2],
         [6, 1, 0, 0, 0, 7, 0, 0, 0],
         [2, 5, 7, 0, 0, 9, 8, 0, 0],
@@ -86,6 +96,17 @@ if __name__ == "__main__":
         [1, 9, 6, 7, 0, 0, 2, 8, 0]
     ]
     init(data)
-    addSudokuOnLaTeX(data, data)
+    g = [
+        [9, 8, 4, 7, 3, 1, 0, 7, 2],
+        [6, 1, 0, 4, 9, 7, 0, 0, 0],
+        [2, 5, 7, 2, 4, 9, 8, 0, 0],
+        [3, 0, 0, 1, 6, 0, 0, 1, 0],
+        [3, 4, 0, 3, 7, 0, 9, 2, 0],
+        [1, 0, 9, 0, 0, 5, 0, 0, 0],
+        [2, 3, 0, 0, 0, 6, 0, 0, 0],
+        [3, 4, 5, 0, 1, 8, 0, 9, 6],
+        [1, 9, 6, 7, 0, 0, 2, 8, 0]
+    ]
+    newIteration(g, data)
     toPDF()
     
