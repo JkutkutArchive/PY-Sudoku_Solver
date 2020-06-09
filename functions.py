@@ -108,9 +108,11 @@ class Cell():
             if self.value == sol[self.x][self.y]:
                 print("\n" + "CORRECT".center(40) + "\n")
             else:
-                import main
-                main.gameRunning = False
+                # import main
                 print("\n" + ("ERROR, NOT CORRECT VALUE -> " + str(sol[self.x][self.y])).center(40) + "\n")
+                # main.gameRunning = False
+                raise Exception("ERROR, NOT CORRECT VALUE -> " + str(sol[self.x][self.y]).center(40) + "\n")
+                
     
     def getValue(self):
         return self.value if self.value != None else 0
