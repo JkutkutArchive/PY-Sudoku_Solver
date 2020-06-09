@@ -1,4 +1,5 @@
 from pylatex import Document, Section, Table, Tabular, Tabularx, MultiColumn, UnsafeCommand # Elements to add on the Tex file
+from pylatex import TextColor
 from pylatex.utils import bold, escape_latex # To bold the text
 from pylatex.package import Package # To import custom packages
 from pylatex.base_classes import CommandBase #Environment, Arguments
@@ -13,8 +14,9 @@ def init(*name): # Init the var
     doc.packages.append(Package('float'))
 
 
-def addSudokuOnLaTeX(grid):
+def addSudokuOnLaTeX(grid, *data):
     if doc == None: return
+    if data: data = data[0]
     
     sudokuTabular = Tabular('l|l:l:l|l:l:l|l:l:l|', pos="t")
 
@@ -22,7 +24,21 @@ def addSudokuOnLaTeX(grid):
     sudokuTabular.add_hline()
 
     for r in range(9):
-        sudokuTabular.add_row(tuple([bold(str(r))] + [str(grid[r][c]) if grid[r][c] != 0 else ""  for c in range(9)]))
+        if data:
+            # print(data[1])
+            row = []
+            for c in range(9):
+                # print("r: " + str(r) +", c: " + str(c))
+                # print(data[r][c])
+                if data[r][c] != 0: # Data given, print black
+                    row.append(str(data[r][c]))
+                else:
+                    print("founded: (" + str(r) + ", " + str(c) + "): " + str(data[r][c]))
+                    row.append(TextColor("blue", str(grid[r][c])) if grid[r][c] != 0 else "")
+        else:
+            row = [str(grid[r][c]) if grid[r][c] != 0 else ""  for c in range(9)]
+
+        sudokuTabular.add_row(tuple([bold(str(r))] + row))
         if r == 2 or r == 5 or r == 8:
             sudokuTabular.add_hline()
         else:
@@ -57,6 +73,6 @@ if __name__ == "__main__":
         [0, 4, 5, 0, 1, 8, 0, 9, 6],
         [1, 9, 6, 7, 0, 0, 2, 8, 0]
     ]
-    addSudokuOnLaTeX(data)
+    addSudokuOnLaTeX(data, data)
     toPDF()
     
