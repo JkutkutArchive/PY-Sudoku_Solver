@@ -1,3 +1,4 @@
+import latexToPDF as pdf
 sol = []
 
 def printSudoku(arr):
@@ -103,6 +104,7 @@ class Cell():
         self.addData(["therefore"])
         if not noPrint:
             print(*self.dataToText(), sep = "\n")
+            pdf.printDataOnLaTeX(self.dataToText()) # Add this data to the pdf
             if self.value == sol[self.x][self.y]:
                 print("\n" + "CORRECT".center(40) + "\n")
             else:
