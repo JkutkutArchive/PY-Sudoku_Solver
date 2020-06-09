@@ -36,9 +36,11 @@ def init(data, *fileName): # Init the var
     doc.append(Section("Steps"))
 
 
-def newIteration(grid, *data):
+def newIteration(grid, data):
+    if doc == None: return
     doc.append(Subsection("New Iteration"))
-    addSudokuOnLaTeX(grid, data[0] if data else None)
+    addSudokuOnLaTeX(grid, data)
+    # addSudokuOnLaTeX(grid, data[0] if data else None)
 
 def addSudokuOnLaTeX(grid, *data, place=None):
     if doc == None: return
@@ -82,6 +84,7 @@ def addSudokuOnLaTeX(grid, *data, place=None):
     place.append(table)
 
 def printDataOnLaTeX(data, place=None):
+    if doc == None: return
     place = place if place else doc
     place.append(data[0][0:-6])
     place.append(bold(data[0][-6:]))
