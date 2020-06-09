@@ -125,6 +125,7 @@ elif len(sol) == 1:
         response = input("\nDo you want to see the steps to solve it? [yes/no]")
         if "y" in response:
             gameRunning = True
+            pdf.init(data) # Start the pdf
             break
         elif "n" in response:
             gameRunning = False
@@ -152,11 +153,15 @@ while gameRunning:
         tool.printSudoku(grid)
         print("\nThe solution is " + ("" if tool.checkSol(grid) else "IN") + "CORRECT")
         gameRunning = False
-        break
+        pdf.endFile(grid, data) # Make the conclusion of the PDF and render the file
+        input("jhklafjfla")
+        break # Exit the program
 
     nIte = nIte + 1
     print("\n\n-----------    Iteration "+ str(nIte) +"   ------------\n")
+    print("len of the cells: " + str(len(cells)))
     tool.printSudoku(grid)
+    pdf.newIteration(grid, data)
     print()
 
     discoveryMade = False # If at this iteration we discover the value of some cell, this become true
@@ -470,8 +475,9 @@ while gameRunning:
     
     response = input("Continue?")
     # response = ""
-    if response == "exit":
+    if response == "exit" or response == "e":
         gameRunning = False
+        pdf.toPDF() # Render the pdf file
     elif "viewData" in response: 
         while True:
             response = input("Cell?")
