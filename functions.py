@@ -137,7 +137,7 @@ class Cell():
         for d in self.data:
             dataToAdd = ""
             if "therefore" in d[0]:
-                dataToAdd = "Therefore, the value of this cell is " + str(self.value) + "."
+                dataToAdd = "Therefore, the value of this cell is " + str(self.value)
             elif "basic" in d[0]:
                 tipo = d[0][6:]
                 dataToAdd = "If we look at the " + tipo + " on this cell, this cell can not be " + str(d[1]) + "."
