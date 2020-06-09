@@ -1,17 +1,32 @@
 from pylatex import Document, Section, Table, Tabular, Tabularx, MultiColumn, UnsafeCommand # Elements to add on the Tex file
-from pylatex import TextColor
-from pylatex.utils import bold, escape_latex # To bold the text
+from pylatex.basic import TextColor, HugeText
+from pylatex.utils import bold, escape_latex, NoEscape
 from pylatex.package import Package # To import custom packages
 from pylatex.base_classes import CommandBase #Environment, Arguments
+from pylatex.position import Center
 
 doc = None # Create the var
 
-def init(*name): # Init the var
+def init(data, *fileName): # Init the var
     global doc
-    name = name if name else "aa-solution"
-    doc = Document(name) #create the document (argument = name of the file)
+    fileName = fileName if fileName else "aa-solution"
+    doc = Document(fileName) #create the document (argument = name of the file)
     doc.packages.append(Package('arydshln')) # package to make the custom borders on the table
-    doc.packages.append(Package('float'))
+    doc.packages.append(Package('float')) # package to handle table position
+    doc.packages.append(Package('hyperref')) # package to add links
+    
+    title = Center()
+    title.append(HugeText(bold("Sudoku's step by step solver")))
+    doc.append(title)
+    intro = Section("Introduction")
+    doc.append(intro)
+    intro.append("On this PDF, the reader will be able to see how to solve the given sudoku:")
+    
+    addSudokuOnLaTeX(data)
+    
+
+    doc.append(NoEscape(r'\href{https://github.com/Jkutkut/PY-Sudoku-Solver}{Jkutkut\'s GitHub}'))
+
 
 
 def addSudokuOnLaTeX(grid, *data):
@@ -25,15 +40,11 @@ def addSudokuOnLaTeX(grid, *data):
 
     for r in range(9):
         if data:
-            # print(data[1])
             row = []
             for c in range(9):
-                # print("r: " + str(r) +", c: " + str(c))
-                # print(data[r][c])
                 if data[r][c] != 0: # Data given, print black
                     row.append(str(data[r][c]))
                 else:
-                    print("founded: (" + str(r) + ", " + str(c) + "): " + str(data[r][c]))
                     row.append(TextColor("blue", str(grid[r][c])) if grid[r][c] != 0 else "")
         else:
             row = [str(grid[r][c]) if grid[r][c] != 0 else ""  for c in range(9)]
@@ -50,18 +61,19 @@ def addSudokuOnLaTeX(grid, *data):
     xAxis.add_row(tuple([bold(escape_latex("↓"))]))
 
     table = Table(position="H")
+    table.append(UnsafeCommand("centering"))
     axis = Tabular("ll")
     axis.add_row(("", bold(escape_latex("Y →"))))
     axis.add_row((xAxis, sudokuTabular))
     table.append(axis)
     doc.append(table)
 
+
 def toPDF():
     if doc == None: return
     doc.generate_pdf(clean_tex=False)
 
 if __name__ == "__main__":
-    init()
     data = [ #canonical (solved)
         [9, 8, 4, 0, 3, 1, 0, 7, 2],
         [6, 1, 0, 0, 0, 7, 0, 0, 0],
@@ -73,6 +85,7 @@ if __name__ == "__main__":
         [0, 4, 5, 0, 1, 8, 0, 9, 6],
         [1, 9, 6, 7, 0, 0, 2, 8, 0]
     ]
+    init(data)
     addSudokuOnLaTeX(data, data)
     toPDF()
     
