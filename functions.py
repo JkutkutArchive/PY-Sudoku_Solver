@@ -85,7 +85,7 @@ class Cell():
 
     def __eq__(self, other):
         if type(other) == int: # if comparing by the value
-            return self.value == other
+            return self.getValue() == other
         if self.getPos() != other.getPos(): # If different coordinates
             return False # In theory, when well used this class, this should be the only condition used
         if self.value != other.value and self.getPosVal() != other.getPosVal():
