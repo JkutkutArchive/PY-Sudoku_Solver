@@ -2,8 +2,8 @@
 - handle Errors
 - expert sudokus
 - at pairs, search pairs using "+" directions instead of 3 by 3 
-- If no new discovery, no sudoku print (base this print on discovery)
-- Multiple discoveries on the same iteration?
+- If no new discovery, no sudoku print (base this print on discovery) ---> ERROR
+- 
 
 ## functions:
 - at AddData, handle errors
@@ -17,6 +17,14 @@
   - not 0 based coord
   - print focused cell
 
+
+
+## README:
+- Intro
+- Description of algo
+- LaTeX documentation:
+  - Pylatex
+    - Tutorial to install?
 
 ### LaTeX:
 - Commands:
