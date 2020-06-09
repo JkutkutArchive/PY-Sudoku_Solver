@@ -23,7 +23,7 @@ def init(data, *fileName): # Init the var
     addSudokuOnLaTeX(data, place=intro)
     intro.append("On the following pages, with each iteration of the code, the conclusions madeby the algorithm will be showed next to a representation of the sudoku with allthe discovered values.")
     intro.append(NewLine())
-    intro.append("The way to refer to a particular cell will be using coordinates (x, y). This way, the value 'x' represents the row's number and 'y' the column's number. This will be represented every time the sudoku’s representation is generated as you can see.")
+    intro.append("The way to refer to a particular cell will be using coordinates (r, c). This way, the value 'r' represents the row's number and 'c' the column's number. This will be represented every time the sudoku’s representation is generated as you can see.")
     intro.append(NewLine())
     intro.append("To see the code used to generate this file and solve the sudoku, please go to the author of the code’s github: ")
     intro.append(NoEscape(r"\href{https://github.com/Jkutkut/PY-Sudoku-Solver}{Jkutkut's GitHub}"))
@@ -65,19 +65,31 @@ def addSudokuOnLaTeX(grid, *data, place=None):
             sudokuTabular.append(UnsafeCommand("cline", "1-1"))
             sudokuTabular.append(UnsafeCommand("cdashline", "2-10"))
 
-    xAxis = Tabular('l')
-    xAxis.add_row(tuple([bold("X")]))
+    xAxis = Tabular('c')
+    xAxis.add_row(tuple([bold("Row")]))
     xAxis.add_row(tuple([bold(escape_latex("↓"))]))
 
     table = Table(position="H")
     table.append(UnsafeCommand("centering"))
     axis = Tabular("ll")
-    axis.add_row(("", bold(escape_latex("Y →"))))
+    axis.add_row(("", bold(escape_latex("Col →"))))
     axis.add_row((xAxis, sudokuTabular))
     table.append(axis)
     place.append(table)
 
-
+def printDataOnLaTeX(data, place=None):
+    place = place if place else doc
+    place.append(data[0][0:-6])
+    place.append(bold(data[0][-6:]))
+    place.append(NewLine())
+    for i in range(1, len(data) - 1):
+        place.append(data[i])
+        place.append(NewLine())    
+    place.append(data[-1][0:-1])
+    place.append(bold(data[-1][-1:]))
+    place.append(NewLine())
+    place.append(NewLine())
+    
 
 def toPDF():
     if doc == None: return
@@ -107,6 +119,26 @@ if __name__ == "__main__":
         [3, 4, 5, 0, 1, 8, 0, 9, 6],
         [1, 9, 6, 7, 0, 0, 2, 8, 0]
     ]
+
+    d1 = [
+        "Let's focus on the cell on the position (0, 0)",
+        "If we look at the row on this cell, this cell can not be [7, 3, 4, 9].",
+        "If we look at the col on this cell, this cell can not be [2, 8].",
+        "This cell and (0, 3) are linked. Value 6 is on one of these 2 cells.",
+        "If we look at the row containing this cell, we know that this cell should be 1.",
+        "Therefore, the value of this cell is 1"
+    ]
+    d2 = [
+        "Let's focus on the cell on the position (6, 8)",
+        "If we look at the row on this cell, this cell can not be [1, 3, 7, 5].",
+        "If we look at the col on this cell, this cell can not be [2, 8, 9].",
+        "If we look at the 3 by 3 on this cell, this cell can not be [6].",
+        "This cell and (7, 8) are linked. Value 4 is on one of these 2 cells.",
+        "This cell and (7, 8) are linked. Value 4 is on one of these 2 cells.",
+        "Therefore, the value of this cell is 4"
+    ]
     newIteration(g, data)
+    printDataOnLaTeX(d1)
+    printDataOnLaTeX(d2)
     toPDF()
     
