@@ -16,8 +16,12 @@ def init(data, *fileName): # Init the var
     doc.packages.append(Package('hyperref')) # package to add links
     
     title = Center()
+    # for i in range(4):
+    #     title.append(NewLine())
     title.append(HugeText(bold("Sudoku's step by step solver")))
     doc.append(title)
+    for i in range(8):
+        title.append(NewLine())
     intro = Section("Introduction")
     intro.append("On this PDF, the reader will be able to see how to solve the given sudoku:")
     addSudokuOnLaTeX(data, place=intro)
