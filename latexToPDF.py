@@ -94,9 +94,24 @@ def printDataOnLaTeX(data, place=None):
         place.append(NewLine())    
     place.append(data[-1][0:-1])
     place.append(bold(data[-1][-1:]))
-    place.append(NewLine())
-    place.append(NewLine())
+    for i in range(3): place.append(NewLine())
     
+def endFile(grid, data):
+    if doc == None: return
+    
+    doc.append(NewPage()) # Go to a new page
+    end = Section("Algorithm ended")
+    doc.append(end)
+    end.append("With all these iterations, we can determine that the solution for this sudoku:")
+    addSudokuOnLaTeX(data, place=end)
+    end.append("is the following:")
+    addSudokuOnLaTeX(grid, data, place=end)
+    for i in range(5): end.append(NewLine())
+    end.append("If you want to see or use the code that abled this file to exist, check the authors GitHub: ")
+    end.append(NoEscape(r"\href{https://github.com/Jkutkut/PY-Sudoku-Solver}{Jkutkut's GitHub}"))
+    toPDF()
+
+
 
 def toPDF():
     if doc == None: return
@@ -147,5 +162,6 @@ if __name__ == "__main__":
     newIteration(g, data)
     printDataOnLaTeX(d1)
     printDataOnLaTeX(d2)
-    toPDF()
+    endFile(g, data)
+    # toPDF()
     
