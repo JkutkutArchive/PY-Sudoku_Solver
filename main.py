@@ -2,9 +2,9 @@
 # import pygame # library to generate the graphic interface
 import numpy as np # library to handle matrices
 import time # to set a delay between each iteration
-# import math as m
 
 import functions as tool
+import latexToPDF as pdf
 
 # https://www.conceptispuzzles.com/index.aspx?uri=puzzle/sudoku/techniques
 
