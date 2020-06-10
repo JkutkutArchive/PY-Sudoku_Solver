@@ -101,7 +101,7 @@ class Cell():
     def setValue(self, value, *noPrint):
         self.value = value
         self.posVal = None
-        self.addData(["therefore"])
+        self.addData("therefore")
         if not noPrint:
             print(*self.dataToText(), sep = "\n")
             pdf.printDataOnLaTeX(self.dataToText()) # Add this data to the pdf
@@ -126,17 +126,23 @@ class Cell():
     def getPos(self):
         return (self.x, self.y)
 
-    def addData(self, *dataArr):
-        key = dataArr[0]
-        if "basic" in key or "pairs one cell" == key: # If basic type or pair, can be merged to the previous data
-            for d in self.data: # Search for it
-                if key == d[0]: # If exacly the same data type
-                    if "pairs one cell" == key and d[1] == dataArr[1]:
-                        return
-                    elif "basic" in key: # Basic type
+    def addData(self, *dataArr): # Add data. If already added, do not duplicate the info
+        if dataArr not in self.data: # If this data not added yet
+            key = dataArr[0]
+            if "basic" in key:
+                for d in self.data: # Search for it
+                    if key == d[0]: # If data on d has exacly the same data type
                         d[1].extend(dataArr[1]) # Update the previous data (Basic: row, col, 3by3)
                         return # end Execution
+            
+            if "cell" in key: # "pair one cell" is eq to: "pair row cell" and "pair col cell"
+                for d in self.data:
+                    if "cell" in d[0] and dataArr[1:] == d[1:]: # If the data entered now has already been added
+                        return # Do not added
+        
+        
         self.data.append(dataArr) # If not founded or not basic, add it as new data
+
     
     def dataToText(self):
         s = ["Let's focus on the cell on the position (" + str(self.x) + ", " + str(self.y) + ")"]
@@ -159,15 +165,15 @@ class Cell():
                     if "val" in d[0]:
                         dataToAdd = "Having on mind that one of the cells " + str(d[1].getPos()) + " and " + str(d[2].getPos()) + " is a " + str(d[3]) + ", this cell can not be " + str(d[3]) + "."
                     elif "cell" in d[0]:
-                        dataToAdd = "This cell and " + str(d[1].getPos()) + " are linked. Value " + str(d[2]) + " is on one of these 2 cells."
-                if "two" in d[0]:
+                        dataToAdd = "This cell and " + str(d[1]) + " are linked. Value " + str(d[2]) + " is on one of these 2 cells."
+                elif "two" in d[0]:
                     dataToAdd = "If we take a look, this and the " + str(d[1].getPos()) + " cell are eather " + str(d[2]) + ". Both cells can only be these values."
                 
-                if "row" in d[0] or "col" in d[0]:
+                elif "row" in d[0] or "col" in d[0]:
                     if "val" in d[0]:
                         dataToAdd = "Having on mind that one of the cells " + str(d[1].getPos()) + " and " + str(d[2].getPos()) + " is a " + str(d[3]) + ", this cell can not be " + str(d[3]) + "."
                     elif "cell" in d[0]:
-                        dataToAdd = "This cell and " + str(d[1].getPos()) + " are linked. Value " + str(d[2]) + " is on one of these 2 cells."
+                        dataToAdd = "This cell and " + str(d[1]) + " are linked. Value " + str(d[2]) + " is on one of these 2 cells."
             s.append(dataToAdd)
         return s
 
