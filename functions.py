@@ -99,8 +99,8 @@ class Cell():
                 return False
         return True # If here, they are exacly equal
     
-    def __hash__(self):
-        return hash(self.x) ^ hash(self.y) # Because there is not 2 cells on the same coord
+    def __hash__(self): # Enables to generate a hash to use this class on sets
+        return hash(self.x) ^ hash(self.y) # This make the hash unique because there is not 2 cells on the same coordinates
 
     def setValue(self, value, *noPrint):
         self.value = value
