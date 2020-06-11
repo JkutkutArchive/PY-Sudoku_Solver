@@ -82,18 +82,22 @@ class Cell():
         self.data = [] # Here all the conclusions made by the algo will be stored here to dispay it later
     
     def __str__(self):
-        return str(self.getValue())
+        return str(self.getValue()) # Just print the value of the cell calling the method "getValue()"
 
-    def __eq__(self, other):
-        if type(other) == int: # if comparing by the value
-            return self.getValue() == other
-        if self.getPos() != other.getPos(): # If different coordinates
-            return False # In theory, when well used this class, this should be the only condition used
-        if self.value != other.value and self.getPosVal() != other.getPosVal():
-            return False
-        if self.data != other.data:
-            return False
-        return True 
+    def __eq__(self, other, exactComparation=False): # Enable us to compare it to other cells or to integers by the value
+        if type(other) == int: # if comparing to an integer
+            return self.getValue() == other # Return if the values are the same
+        
+        if self.getPos() != other.getPos(): # If cells on different coordinates
+            return False # In theory, when well used this class, this should be the only condition used (position unique for each cell)
+        
+        if exactComparation: # If selected, the fucntion will make a full comparantion
+            # (If used this class correctly, this next ifs should never be necessary)
+            if self.value != other.value and self.getPosVal() != other.getPosVal(): # If different values on those variables
+                return False
+            if self.data != other.data: # If the data stored is different
+                return False
+        return True # If here, they are exacly equal
     
     def __hash__(self):
         return hash(self.x) ^ hash(self.y) # Because there is not 2 cells on the same coord
