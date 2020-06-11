@@ -75,11 +75,11 @@ def pError(**kwargs):
 #   --------------------------------    CLASSES     --------------------------------
 class Cell():
     def __init__(self, x, y):
-        self.x = x
-        self.y = y
-        self.value = None
-        self.posVal = set([i for i in range(1, 10, 1)])
-        self.data = []
+        self.x = x # Position on the grid (row)
+        self.y = y # Position on the grid (element in row/column)
+        self.value = None # Value of the cell (Now, undefined)
+        self.posVal = set([i for i in range(1, 10, 1)]) # Possible values of the cell
+        self.data = [] # Here all the conclusions made by the algo will be stored here to dispay it later
     
     def __str__(self):
         return str(self.getValue())
