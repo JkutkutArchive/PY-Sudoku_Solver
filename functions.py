@@ -116,7 +116,7 @@ class Cell():
                 raise Exception(("ERROR, NOT CORRECT VALUE -> " + str(sol[self.x][self.y])).center(40))
                 
     
-    def getValue(self):
+    def getValue(self): # Returns the value of the cell. If not defined, return 0
         return self.value if self.value != None else 0
 
     def setPosVal(self, set):
