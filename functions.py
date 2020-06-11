@@ -102,20 +102,18 @@ class Cell():
     def __hash__(self): # Enables to generate a hash to use this class on sets
         return hash(self.x) ^ hash(self.y) # This make the hash unique because there is not 2 cells on the same coordinates
 
-    def setValue(self, value, *noPrint):
-        self.value = value
-        self.posVal = None
-        self.addData("therefore")
-        if not noPrint:
-            print(*self.dataToText(), sep = "\n")
+    def setValue(self, value, printData=True):
+        self.value = value # Set the value of the cell to the one given 
+        self.posVal = None # Therefore, there are no possible values left
+        self.addData("therefore") # Add to the data array the data to say that the value is the given 
+        if printData: # If selected to print the data
+            print(*self.dataToText(), sep = "\n") # Print all the data
             pdf.printDataOnLaTeX(self.dataToText()) # Add this data to the pdf
-            if self.value == sol[self.x][self.y]:
-                print("\n" + "CORRECT".center(40) + "\n")
-            else:
-                # import main
+            if self.value == sol[self.x][self.y]: # Check the solution calculated at the begining. Is it the same?
+                print("\n" + "CORRECT".center(40) + "\n") # If correct, print Correct (and do nothing)
+            else: # End execution. The algorithim has failed
                 print("\n" + ("ERROR, NOT CORRECT VALUE -> " + str(sol[self.x][self.y])).center(40) + "\n")
-                # main.gameRunning = False
-                raise Exception("ERROR, NOT CORRECT VALUE -> " + str(sol[self.x][self.y]).center(40) + "\n")
+                raise Exception(("ERROR, NOT CORRECT VALUE -> " + str(sol[self.x][self.y])).center(40))
                 
     
     def getValue(self):
