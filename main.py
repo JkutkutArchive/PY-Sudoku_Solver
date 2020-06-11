@@ -204,7 +204,6 @@ while gameRunning:
 
         # ----------    UNIQUE   ----------
         unique = [set([i for i in range(1, 10, 1)]) for i in range(3)] # unique row, col, 3by3
-
         for i in range(9):
             if i != cell.y: # for each piece on the row (x=cte) -- if not same cell
                 valueToFilter = grid[cell.x][i].getPosVal() # Set with values on other cell
