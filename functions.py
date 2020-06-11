@@ -144,38 +144,35 @@ class Cell():
             self.data.append(dataArr) # If not founded or not basic, add it as new data
 
     
-    def dataToText(self):
-        s = ["Let's focus on the cell on the position (" + str(self.x) + ", " + str(self.y) + ")"]
-        for d in self.data:
-            dataToAdd = ""
-            if "therefore" in d[0]:
+    def dataToText(self): # Return a array of strings with the data ready to be red.
+        s = ["Let's focus on the cell on the position " + str(self.getPos())] # Start by giving the position of the cell
+        for d in self.data: # For each data piece stored on the array
+            key = d[0] # Type of data on this piece d
+            dataToAdd = "" # Here the data of this piece will be stored based on the key (then added to s)
+            if "therefore" == key:
                 dataToAdd = "Therefore, the value of this cell is " + str(self.value)
-            elif "basic" in d[0]:
-                tipo = d[0][6:]
+            elif "basic" in key: # Format: ["basic <TYPE>", <VALUE>]
+                tipo = key[6:] # only enter the <TYPE>
                 dataToAdd = "If we look at the " + tipo + " on this cell, this cell can not be " + str(d[1]) + "."
-            elif "unique" in d[0]:
-                tipo = "3 by 3 sector"
-                if "row" in d[0]:
-                    tipo = "row"
-                elif "col" in d[0]:
-                    tipo = "col"
+            elif "unique" in key: # Format: ["unique <TYPE>", <VALUE>]
+                tipo = key[6:] # only enter the <TYPE>
                 dataToAdd = "If we look at the " + tipo + " containing this cell, we know that this cell should be " + str(d[1]) + "."
-            elif "pairs" in d[0]:
-                if "one" in d[0]:
-                    if "val" in d[0]:
+            elif "pairs" in key:
+                if "one" in key:
+                    if "val" in key:
                         dataToAdd = "Having on mind that one of the cells " + str(d[1].getPos()) + " and " + str(d[2].getPos()) + " is a " + str(d[3]) + ", this cell can not be " + str(d[3]) + "."
-                    elif "cell" in d[0]:
+                    elif "cell" in key:
                         dataToAdd = "This cell and " + str(d[1]) + " are linked. Value " + str(d[2]) + " is on one of these 2 cells."
-                elif "two" in d[0]:
+                elif "two" in key:
                     dataToAdd = "If we take a look, this and the " + str(d[1].getPos()) + " cell are eather " + str(d[2]) + ". Both cells can only be these values."
                 
-                elif "row" in d[0] or "col" in d[0]:
-                    if "val" in d[0]:
+                elif "row" in key or "col" in key:
+                    if "val" in key:
                         dataToAdd = "Having on mind that one of the cells " + str(d[1].getPos()) + " and " + str(d[2].getPos()) + " is a " + str(d[3]) + ", this cell can not be " + str(d[3]) + "."
-                    elif "cell" in d[0]:
+                    elif "cell" in key:
                         dataToAdd = "This cell and " + str(d[1]) + " are linked. Value " + str(d[2]) + " is on one of these 2 cells."
-            s.append(dataToAdd)
-        return s
+            s.append(dataToAdd) # Add it to the array with the rest
+        return s # Return all the data on text format
 
 class color():
     def __init__(self):
