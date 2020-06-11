@@ -119,8 +119,8 @@ class Cell():
     def getValue(self): # Returns the value of the cell. If not defined, return 0
         return self.value if self.value != None else 0
 
-    def setPosVal(self, set):
-        self.posVal = set
+    def setPosVal(self, set): # Redefine the possible values of the cells
+        self.posVal = set # Save the given set as the possible values (Warning, set not copied)
 
     def getPosVal(self):
         return self.posVal
