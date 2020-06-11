@@ -472,7 +472,6 @@ while gameRunning:
 
 
 
-    
     response = input("Continue?")
     # response = ""
     if response == "exit" or response == "e":
