@@ -79,6 +79,7 @@ class Cell():
         self.y = y # Position on the grid (element in row/column)
         self.value = None # Value of the cell (Now, undefined)
         self.posVal = set([i for i in range(1, 10, 1)]) # Possible values of the cell
+        self.pairs = set() # Set with tuple with the linked cell and the value: "(<Cell>, <Value>)"
         self.data = [] # Here all the conclusions made by the algo will be stored here to dispay it later
     
     def __str__(self):
@@ -102,10 +103,12 @@ class Cell():
     def __hash__(self): # Enables to generate a hash to use this class on sets
         return hash(self.x) ^ hash(self.y) # This make the hash unique because there is not 2 cells on the same coordinates
 
+    # ******    GETTERS AND SETTERS:    ******
     def setValue(self, value, printData=True):
         self.value = value # Set the value of the cell to the one given 
         self.posVal = None # Therefore, there are no possible values left
         self.addData("therefore") # Add to the data array the data to say that the value is the given 
+        self.tellPairs() # Notify all linked cells that the value has been defined
         if printData: # If selected to print the data
             print(*self.dataToText(), sep = "\n") # Print all the data
             pdf.printDataOnLaTeX(self.dataToText()) # Add this data to the pdf
@@ -115,7 +118,6 @@ class Cell():
                 print("\n" + ("ERROR, NOT CORRECT VALUE -> " + str(sol[self.x][self.y])).center(40) + "\n")
                 raise Exception(("ERROR, NOT CORRECT VALUE -> " + str(sol[self.x][self.y])).center(40))
                 
-    
     def getValue(self): # Returns the value of the cell. If not defined, return 0
         return self.value if self.value != None else 0
 
@@ -125,9 +127,46 @@ class Cell():
     def getPosVal(self): # Returns the set with the possible values.
         return self.posVal
 
+    def setPairs(self, ps):
+        self.pairs = ps
+
+    def getPairs(self):
+        return self.pairs
+
     def getPos(self): # returns a tuple with the coordinates (row, column)
         return (self.x, self.y)
 
+    # ******    PAIRS:    ******
+    def addPair(self, other, value): # Add the new pair on a tuple with the value in common
+        self.getPairs().add((other, value)) # If already in, nothing happends
+
+    def tellPairs(self): # when value is defined, this method is called to tell all pairs this event has occured
+        # Value is defined => tell all cells that 
+        for p in self.getPairs():
+            p.delPair(self, self.value) 
+        
+        self.setPairs(None) # Once done, do not store them anymore
+    
+    def delPair(self, matePair, mateValue):
+        if self.getValue() != 0: return # If already with value, do nothing
+
+        self.getPosVal().remove(mateValue) # If linked and mateValue now defined => this cell is not mateValue
+
+        for p in self.getPairs():
+            cell = p[0] # mate cell linked
+            v = p[1] # value that make the link
+            if v == mateValue: # if "cell" has same value-relation as mate (the one who called this) => "cell" has that value
+                cell.setValue(v) # Set the value 
+
+        if len(self.getPosVal()) == 1: # We have the value
+            self.setValue(next(iter(self.getPosVal())))
+
+
+
+
+
+
+    # ******    DATA:    ******
     def addData(self, *dataArr): # Add data. If already added, do not duplicate the info
         if dataArr not in self.data: # If this data not added yet
             key = dataArr[0] # This first element represents the type of data
@@ -143,7 +182,6 @@ class Cell():
                         return # Do not added
             self.data.append(dataArr) # If not founded or not basic, add it as new data
 
-    
     def dataToText(self): # Return a array of strings with the data ready to be red.
         s = ["Let's focus on the cell on the position " + str(self.getPos())] # Start by giving the position of the cell
         for d in self.data: # For each data piece stored on the array
