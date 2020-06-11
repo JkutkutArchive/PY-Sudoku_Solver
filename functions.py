@@ -139,8 +139,7 @@ class Cell():
                 for d in self.data:
                     if "cell" in d[0] and dataArr[1:] == d[1:]: # If the data entered now has already been added
                         return # Do not added
-        
-        self.data.append(dataArr) # If not founded or not basic, add it as new data
+            self.data.append(dataArr) # If not founded or not basic, add it as new data
 
     
     def dataToText(self):
