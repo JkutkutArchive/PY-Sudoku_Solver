@@ -122,16 +122,16 @@ class Cell():
     def setPosVal(self, set): # Redefine the possible values of the cells
         self.posVal = set # Save the given set as the possible values (Warning, set not copied)
 
-    def getPosVal(self):
+    def getPosVal(self): # Returns the set with the possible values.
         return self.posVal
 
-    def getPos(self):
+    def getPos(self): # returns a tuple with the coordinates (row, column)
         return (self.x, self.y)
 
     def addData(self, *dataArr): # Add data. If already added, do not duplicate the info
         if dataArr not in self.data: # If this data not added yet
-            key = dataArr[0]
-            if "basic" in key:
+            key = dataArr[0] # This first element represents the type of data
+            if "basic" in key: # If key is the type "basic": row, col or 3by3
                 for d in self.data: # Search for it
                     if key == d[0]: # If data on d has exacly the same data type
                         d[1].extend(dataArr[1]) # Update the previous data (Basic: row, col, 3by3)
