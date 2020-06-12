@@ -141,21 +141,21 @@ class Cell():
         self.getPairs().add((other, value)) # If already in, nothing happends
 
     def tellPairs(self): # when value is defined, this method is called to tell all pairs this event has occured
-        # Value is defined => tell all cells that 
-        for p in self.getPairs():
-            p.delPair(self, self.value) 
-        
+        for p in self.getPairs(): # for each pair-mate
+            p.delPair(self, self.value) # Tell the mate pair there is no pair relation anymore
         self.setPairs(None) # Once done, do not store them anymore
     
-    def delPair(self, matePair, mateValue):
+    def delPair(self, matePair, mateValue): # Executed when matePair gets its value defined
         if self.getValue() != 0: return # If already with value, do nothing
 
-        self.getPosVal().remove(mateValue) # If linked and mateValue now defined => this cell is not mateValue
+        self.getPosVal().remove(mateValue) # If linked and mateValue now defined => this cell can not be mateValue
+        self.addData("delPair remove value", matePair.getPos(), mateValue) # The cell (matePair.pos) has now the value v1 and these cells are linked, so this cell can not be v1
 
-        for p in self.getPairs():
+        for p in self.getPairs(): # for each mate linked with this cell
             cell = p[0] # mate cell linked
             v = p[1] # value that make the link
             if v == mateValue: # if "cell" has same value-relation as mate (the one who called this) => "cell" has that value
+                cell.addData("delPair set value", self.getPos(), mateValue) # The cell (self.pos) is no longer matevalue and these cells were linked, so the value of this cell is matevalue
                 cell.setValue(v) # Set the value 
 
         if len(self.getPosVal()) == 1: # We have the value
@@ -181,6 +181,8 @@ class Cell():
                     if "cell" in d[0] and dataArr[1:] == d[1:]: # If the data entered now has already been added
                         return # Do not added
             self.data.append(dataArr) # If not founded or not basic, add it as new data
+            if "pair" in key: # If new pair added
+                self.addPair(dataArr[1], dataArr[2]) # add the new pair
 
     def dataToText(self): # Return a array of strings with the data ready to be red.
         s = ["Let's focus on the cell on the position " + str(self.getPos())] # Start by giving the position of the cell
@@ -209,6 +211,12 @@ class Cell():
                         dataToAdd = "Having on mind that one of the cells " + str(d[1].getPos()) + " and " + str(d[2].getPos()) + " is a " + str(d[3]) + ", this cell can not be " + str(d[3]) + "."
                     elif "cell" in key:
                         dataToAdd = "This cell and " + str(d[1]) + " are linked. Value " + str(d[2]) + " is on one of these 2 cells."
+            elif "delPairs" in key:
+                if "remove" in key:
+                    dataToAdd = "The cell " + str(d[1]) + " has now the value " + str(d[2]) + " and these cells are linked, so this cell can not be " + str(d[2])
+                elif "set" in key:
+                    dataToAdd = "The cell " + str(d[1]) + " is no longer " + str(d[2]) + " and these cells were linked, so the value of this cell is " + str(d[2])
+
             s.append(dataToAdd) # Add it to the array with the rest
         return s # Return all the data on text format
 
