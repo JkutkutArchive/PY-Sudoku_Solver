@@ -290,8 +290,8 @@ while gameRunning:
                         vert = 1 if cell1.x == cell2.x else 0
                         if hori == 1 or vert == 1: # If good pair (making a line)
                             print("Pair founded with the value " + str(val) + ": " + str(cell1.getPos()) + ", " + str(cell2.getPos()))
-                            cell1.addData("pairs one cell", cell2.getPos(), val)
-                            cell2.addData("pairs one cell", cell1.getPos(), val)
+                            cell1.addData("pairs one cell", cell2, val)
+                            cell2.addData("pairs one cell", cell1, val)
                             candidates.append([cell1, cell2, val]) # Added
 
                             # pair by one value: all cells on the line can not be this value
@@ -366,8 +366,8 @@ while gameRunning:
                         # We have a valid pair.
                         cell2 = list(posCandidates)[0]
                         print("Pair ROW founded with the value " + str(val) + ": " + str(cell1.getPos()) + ", " + str(cell2.getPos()))
-                        cell1.addData("pairs row cell", cell2.getPos(), val)
-                        cell2.addData("pairs row cell", cell1.getPos(), val)
+                        cell1.addData("pairs row cell", cell2, val)
+                        cell2.addData("pairs row cell", cell1, val)
                         candidates.append([cell1, cell2, val]) # Added
 
                         # pair by one value: all cells on the line can not be this value
@@ -433,8 +433,8 @@ while gameRunning:
                         # We have a valid pair.
                         cell2 = list(posCandidates)[0]
                         print("Pair COL founded with the value " + str(val) + ": " + str(cell1.getPos()) + ", " + str(cell2.getPos()))
-                        cell1.addData("pairs col cell", cell2.getPos(), val)
-                        cell2.addData("pairs col cell", cell1.getPos(), val)
+                        cell1.addData("pairs col cell", cell2, val)
+                        cell2.addData("pairs col cell", cell1, val)
                         candidates.append([cell1, cell2, val]) # Added
 
                         # pair by one value: all cells on the line can not be this value

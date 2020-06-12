@@ -141,8 +141,9 @@ class Cell():
         self.getPairs().add((other, value)) # If already in, nothing happends
 
     def tellPairs(self): # when value is defined, this method is called to tell all pairs this event has occured
-        for p in self.getPairs(): # for each pair-mate
-            p.delPair(self, self.value) # Tell the mate pair there is no pair relation anymore
+        for p in self.getPairs(): # for each pair-mate tuple
+            print(p)
+            p[0].delPair(self, self.value) # Tell the mate pair there is no pair relation anymore
         self.setPairs(None) # Once done, do not store them anymore
     
     def delPair(self, matePair, mateValue): # Executed when matePair gets its value defined
@@ -202,7 +203,7 @@ class Cell():
                     if "val" in key:
                         dataToAdd = "Having on mind that one of the cells " + str(d[1].getPos()) + " and " + str(d[2].getPos()) + " is a " + str(d[3]) + ", this cell can not be " + str(d[3]) + "."
                     elif "cell" in key:
-                        dataToAdd = "This cell and " + str(d[1]) + " are linked. Value " + str(d[2]) + " is on one of these 2 cells."
+                        dataToAdd = "This cell and " + str(d[1].getPos()) + " are linked. Value " + str(d[2]) + " is on one of these 2 cells."
                 elif "two" in key:
                     dataToAdd = "If we take a look, this and the " + str(d[1].getPos()) + " cell are eather " + str(d[2]) + ". Both cells can only be these values."
                 
@@ -210,7 +211,7 @@ class Cell():
                     if "val" in key:
                         dataToAdd = "Having on mind that one of the cells " + str(d[1].getPos()) + " and " + str(d[2].getPos()) + " is a " + str(d[3]) + ", this cell can not be " + str(d[3]) + "."
                     elif "cell" in key:
-                        dataToAdd = "This cell and " + str(d[1]) + " are linked. Value " + str(d[2]) + " is on one of these 2 cells."
+                        dataToAdd = "This cell and " + str(d[1].getPos()) + " are linked. Value " + str(d[2]) + " is on one of these 2 cells."
             elif "delPairs" in key:
                 if "remove" in key:
                     dataToAdd = "The cell " + str(d[1]) + " has now the value " + str(d[2]) + " and these cells are linked, so this cell can not be " + str(d[2])
