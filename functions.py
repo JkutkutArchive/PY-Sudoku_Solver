@@ -89,8 +89,8 @@ class Cell():
         return "Cell " + str(self.getPos()) + \
             "\n - Value: " + str(self.getValue()) + \
             "\n - PosVal: " + str(self.getPosVal()) + \
-            "\n - Pairs: " + "\n".join(["    - Pair with " + str(p[0].getPos()) + " -> " + str(p[1]) for p in self.pairs]) + \
-            "\n - Pairs: " + "\n".join(["    - " + str(d) for d in self.data])
+            "\n - Pairs: " + "".join(["\n    - Pair with " + str(p[0].getPos()) + " -> " + str(p[1]) for p in self.pairs]) + \
+            "\n - Data: " + "".join(["\n    - " + str(d) for d in self.data])
 
     def __eq__(self, other, exactComparation=False): # Enable us to compare it to other cells or to integers by the value
         if type(other) == int: # if comparing to an integer
@@ -124,7 +124,7 @@ class Cell():
             print(*d, sep = "\n") # Print all the data
             pdf.printDataOnLaTeX(d) # Add this data to the pdf
         if value != sol[self.x][self.y]: # If not correct value
-            print("\n\n\n")
+            print("\n\n\n ERROR: \n"+self.cellToString())
             raise Exception(("ERROR, NOT CORRECT VALUE -> Cell" + str(self.getPos()) + " is not " + str(value) + ", is " + str(sol[self.x][self.y])).center(40))
                 
     def getValue(self): # Returns the value of the cell. If not defined, return 0
@@ -163,7 +163,7 @@ class Cell():
         for p in self.getPairs(): # for each pair-mate tuple
             # print(p)
             p[0].delPair(self, self.value) # Tell the mate pair there is no pair relation anymore
-        self.setPairs(None) # Once done, do not store them anymore
+        self.pairs.clear() # Once done, do not store them anymore
     
     def delPair(self, matePair, mateValue): # Executed when matePair gets its value defined
         if self.getValue() != 0: return # If already with value, do nothing
