@@ -90,7 +90,7 @@ class Cell():
             "\n - Value: " + str(self.getValue()) + \
             "\n - PosVal: " + str(self.getPosVal()) + \
             "\n - Pairs: " + "".join(["\n    - Pair with " + str(p[0].getPos()) + " -> " + str(p[1]) for p in self.pairs]) + \
-            "\n - Data: " + "".join(["\n    - " + str(d) for d in self.data])
+            "\n - Data: " + "".join(["\n    - " + str(d) for d in self.dataToText()])
 
     def __eq__(self, other, exactComparation=False): # Enable us to compare it to other cells or to integers by the value
         if type(other) == int: # if comparing to an integer
@@ -121,7 +121,7 @@ class Cell():
         self.tellPairs() # Notify all linked cells that the value has been defined
         if printData: # If selected to print the data
             d = self.dataToText() # Data on text format
-            print(*d, sep = "\n") # Print all the data
+            print(*[""] + d, sep = "\n") # Print all the data
             pdf.printDataOnLaTeX(d) # Add this data to the pdf
         if value != sol[self.x][self.y]: # If not correct value
             print("\n\n\n ERROR: \n"+self.cellToString())
@@ -204,7 +204,7 @@ class Cell():
             self.data.append(dataArr) # If not founded or not basic, add it as new data
 
     def dataToText(self): # Return a array of strings with the data ready to be red.
-        s = ["\nLet's focus on the cell on the position " + str(self.getPos())] # Start by giving the position of the cell
+        s = ["Let's focus on the cell on the position " + str(self.getPos())] # Start by giving the position of the cell
         for d in self.data: # For each data piece stored on the array
             key = d[0] # Type of data on this piece d
             dataToAdd = "" # Here the data of this piece will be stored based on the key (then added to s)
