@@ -150,8 +150,9 @@ while gameRunning:
         tool.printSudoku(grid)
         print("\nThe solution is " + ("" if tool.checkSol(grid) else "IN") + "CORRECT")
         gameRunning = False
+        print("Generating PDF with the steps to solve this sudoku:")
         pdf.endFile(grid, data) # Make the conclusion of the PDF and render the file
-        input("jhklafjfla")
+        print("PDF generated with all the steps")
         break # Exit the program
 
     nIte = nIte + 1
@@ -495,3 +496,5 @@ while gameRunning:
                 print(*grid[int(response[0])][int(response[1])].posVal, sep=", ")
                 print(grid[int(response[0])][int(response[1])].value)
 
+print("\nThank you for using this code. I hope you liked it.")
+print("If you want to see more code like this, visit\nhttps://github.com/Jkutkut/Jkutkut-projects")
