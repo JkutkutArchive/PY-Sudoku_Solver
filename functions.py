@@ -105,18 +105,20 @@ class Cell():
 
     # ******    GETTERS AND SETTERS:    ******
     def setValue(self, value, printData=True):
+        if self.getValue() != 0: return # if already called, do not continue
+        # if value != sol[self.x][self.y]: # If not correct value
+        #     raise Exception(("ERROR, NOT CORRECT VALUE -> Cell" + str(self.getPos()) + " is not " + str(value) + ", is " + str(sol[self.x][self.y])).center(40))
         self.value = value # Set the value of the cell to the one given 
         self.posVal = None # Therefore, there are no possible values left
         self.addData("therefore") # Add to the data array the data to say that the value is the given 
         self.tellPairs() # Notify all linked cells that the value has been defined
         if printData: # If selected to print the data
-            print(*self.dataToText(), sep = "\n") # Print all the data
-            pdf.printDataOnLaTeX(self.dataToText()) # Add this data to the pdf
-            if self.value == sol[self.x][self.y]: # Check the solution calculated at the begining. Is it the same?
-                print("\n" + "CORRECT".center(40) + "\n") # If correct, print Correct (and do nothing)
-            else: # End execution. The algorithim has failed
-                print("\n" + ("ERROR, NOT CORRECT VALUE -> " + str(sol[self.x][self.y])).center(40) + "\n")
-                raise Exception(("ERROR, NOT CORRECT VALUE -> " + str(sol[self.x][self.y])).center(40))
+            d = self.dataToText() # Data on text format
+            print(*d, sep = "\n") # Print all the data
+            pdf.printDataOnLaTeX(d) # Add this data to the pdf
+        if value != sol[self.x][self.y]: # If not correct value
+            print("\n\n\n")
+            raise Exception(("ERROR, NOT CORRECT VALUE -> Cell" + str(self.getPos()) + " is not " + str(value) + ", is " + str(sol[self.x][self.y])).center(40))
                 
     def getValue(self): # Returns the value of the cell. If not defined, return 0
         return self.value if self.value != None else 0
@@ -142,14 +144,15 @@ class Cell():
 
     def tellPairs(self): # when value is defined, this method is called to tell all pairs this event has occured
         for p in self.getPairs(): # for each pair-mate tuple
-            print(p)
+            # print(p)
             p[0].delPair(self, self.value) # Tell the mate pair there is no pair relation anymore
         self.setPairs(None) # Once done, do not store them anymore
     
     def delPair(self, matePair, mateValue): # Executed when matePair gets its value defined
         if self.getValue() != 0: return # If already with value, do nothing
 
-        self.getPosVal().remove(mateValue) # If linked and mateValue now defined => this cell can not be mateValue
+        # print(str(self.getPosVal()) + " --- " + str(mateValue))
+        self.getPosVal().discard(mateValue) # If linked and mateValue now defined => this cell can not be mateValue
         self.addData("delPair remove value", matePair.getPos(), mateValue) # The cell (matePair.pos) has now the value v1 and these cells are linked, so this cell can not be v1
 
         for p in self.getPairs(): # for each mate linked with this cell
@@ -157,10 +160,10 @@ class Cell():
             v = p[1] # value that make the link
             if v == mateValue: # if "cell" has same value-relation as mate (the one who called this) => "cell" has that value
                 cell.addData("delPair set value", self.getPos(), mateValue) # The cell (self.pos) is no longer matevalue and these cells were linked, so the value of this cell is matevalue
-                cell.setValue(v) # Set the value 
+                cell.setValue(v) # Set the value
 
-        if len(self.getPosVal()) == 1: # We have the value
-            self.setValue(next(iter(self.getPosVal())))
+        # if len(self.getPosVal()) == 1: # We have the value
+        #     self.setValue(next(iter(self.getPosVal())))
 
 
 
@@ -177,16 +180,14 @@ class Cell():
                         d[1].extend(dataArr[1]) # Update the previous data (Basic: row, col, 3by3)
                         return # end Execution
             
-            if "cell" in key: # "pair one cell" is eq to: "pair row cell" and "pair col cell"
+            elif "cell" in key: # "pair one cell" is eq to: "pair row cell" and "pair col cell"
                 for d in self.data:
                     if "cell" in d[0] and dataArr[1:] == d[1:]: # If the data entered now has already been added
                         return # Do not added
             self.data.append(dataArr) # If not founded or not basic, add it as new data
-            if "pair" in key: # If new pair added
-                self.addPair(dataArr[1], dataArr[2]) # add the new pair
 
     def dataToText(self): # Return a array of strings with the data ready to be red.
-        s = ["Let's focus on the cell on the position " + str(self.getPos())] # Start by giving the position of the cell
+        s = ["\nLet's focus on the cell on the position " + str(self.getPos())] # Start by giving the position of the cell
         for d in self.data: # For each data piece stored on the array
             key = d[0] # Type of data on this piece d
             dataToAdd = "" # Here the data of this piece will be stored based on the key (then added to s)
@@ -212,7 +213,7 @@ class Cell():
                         dataToAdd = "Having on mind that one of the cells " + str(d[1].getPos()) + " and " + str(d[2].getPos()) + " is a " + str(d[3]) + ", this cell can not be " + str(d[3]) + "."
                     elif "cell" in key:
                         dataToAdd = "This cell and " + str(d[1].getPos()) + " are linked. Value " + str(d[2]) + " is on one of these 2 cells."
-            elif "delPairs" in key:
+            elif "delPair" in key:
                 if "remove" in key:
                     dataToAdd = "The cell " + str(d[1]) + " has now the value " + str(d[2]) + " and these cells are linked, so this cell can not be " + str(d[2])
                 elif "set" in key:

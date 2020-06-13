@@ -25,7 +25,6 @@ import latexToPDF as pdf
 
 
 # Sudoku vars:
-# grid = np.matrix([[tool.Cell(x, y) for y in range(9)] for x in range(9)])
 grid = [[tool.Cell(x, y) for y in range(9)] for x in range(9)]
 # data = [ #canonical (solved)
 #     [9, 8, 4, 0, 3, 1, 0, 7, 2],
@@ -107,6 +106,7 @@ nIte = 0
 print("Searching for solutions...")
 sol = []
 tool.sudokuSolution(data, sol)
+tool.sol = sol[0]
 
 for i in range(9):
     for j in range(9):
@@ -120,7 +120,6 @@ if len(sol) == 0:
 elif len(sol) == 1:
     print("Solution founded\n")
     tool.printSudoku(sol[0])
-    tool.sol = sol[0]
     while True:
         response = input("\nDo you want to see the steps to solve it? [yes/no]")
         if "y" in response:
@@ -292,6 +291,8 @@ while gameRunning:
                             print("Pair founded with the value " + str(val) + ": " + str(cell1.getPos()) + ", " + str(cell2.getPos()))
                             cell1.addData("pairs one cell", cell2, val)
                             cell2.addData("pairs one cell", cell1, val)
+                            cell1.addPair(cell2, val)
+                            cell2.addPair(cell1, val)
                             candidates.append([cell1, cell2, val]) # Added
 
                             # pair by one value: all cells on the line can not be this value
@@ -368,6 +369,8 @@ while gameRunning:
                         print("Pair ROW founded with the value " + str(val) + ": " + str(cell1.getPos()) + ", " + str(cell2.getPos()))
                         cell1.addData("pairs row cell", cell2, val)
                         cell2.addData("pairs row cell", cell1, val)
+                        cell1.addPair(cell2, val)
+                        cell2.addPair(cell1, val)
                         candidates.append([cell1, cell2, val]) # Added
 
                         # pair by one value: all cells on the line can not be this value
@@ -435,6 +438,8 @@ while gameRunning:
                         print("Pair COL founded with the value " + str(val) + ": " + str(cell1.getPos()) + ", " + str(cell2.getPos()))
                         cell1.addData("pairs col cell", cell2, val)
                         cell2.addData("pairs col cell", cell1, val)
+                        cell1.addPair(cell2, val)
+                        cell2.addPair(cell1, val)
                         candidates.append([cell1, cell2, val]) # Added
 
                         # pair by one value: all cells on the line can not be this value
