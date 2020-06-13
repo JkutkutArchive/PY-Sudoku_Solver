@@ -158,7 +158,7 @@ while gameRunning:
 
     nIte = nIte + 1
     print("\n\n-----------    Iteration "+ str(nIte) +"   ------------\n")
-    print("len of the cells: " + str(len(cells)))
+    print("Missing cells: " + str(len(cells)))
     tool.printSudoku(grid)
     pdf.newIteration(grid, data)
     print()
@@ -300,7 +300,7 @@ while gameRunning:
                         candidates.append([cell1, cell2, val]) # Added
 
                         # pair by one value: all cells on the line can not be this value
-                        for k in range(1, 9, 1): # for all cells on line (1º = same cell => start at 2º)
+                        for k in range(9): # for all cells on line (1º = same cell => start at 2º)
                             cell = grid[r][k]
                             if (cell != cell1) and (cell != cell2) and cell.getValue() == 0 and (val in cell.getPosVal()):
                                 cell.addData("pairs val", cell1, cell2, val)
