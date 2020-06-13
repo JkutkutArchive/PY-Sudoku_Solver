@@ -129,6 +129,14 @@ class Cell():
     def getPosVal(self): # Returns the set with the possible values.
         return self.posVal
 
+    def removePosVal(self, value):
+        self.posVal.discard(value) # this cell can no longer be the value "value"
+        for p in self.pairs: # for each pair in this cell (format of p: tuple(cell, value))
+            if p[1] == value: # If there is a pair with this value => the mate should be this value
+                p[0].addData("delPair set value", self.getPos(), value) # Add the data
+                p[0].setValue(value) # Set the value
+
+
     def setPairs(self, ps):
         self.pairs = ps
 
@@ -200,19 +208,15 @@ class Cell():
                 tipo = key[6:] # only enter the <TYPE>
                 dataToAdd = "If we look at the " + tipo + " containing this cell, we know that this cell should be " + str(d[1]) + "."
             elif "pairs" in key:
-                if "one" in key:
-                    if "val" in key:
-                        dataToAdd = "Having on mind that one of the cells " + str(d[1].getPos()) + " and " + str(d[2].getPos()) + " is a " + str(d[3]) + ", this cell can not be " + str(d[3]) + "."
-                    elif "cell" in key:
-                        dataToAdd = "This cell and " + str(d[1].getPos()) + " are linked. Value " + str(d[2]) + " is on one of these 2 cells."
-                elif "two" in key:
+                if "two" in key:
                     dataToAdd = "If we take a look, this and the " + str(d[1].getPos()) + " cell are eather " + str(d[2]) + ". Both cells can only be these values."
-                
-                elif "row" in key or "col" in key:
+                # elif "one" in key or "row" in key or "col" in key: # If type of pair: 3by3, row or col
+                else: # If type of pair: 3by3, row or col
                     if "val" in key:
                         dataToAdd = "Having on mind that one of the cells " + str(d[1].getPos()) + " and " + str(d[2].getPos()) + " is a " + str(d[3]) + ", this cell can not be " + str(d[3]) + "."
                     elif "cell" in key:
                         dataToAdd = "This cell and " + str(d[1].getPos()) + " are linked. Value " + str(d[2]) + " is on one of these 2 cells."
+                
             elif "delPair" in key:
                 if "remove" in key:
                     dataToAdd = "The cell " + str(d[1]) + " has now the value " + str(d[2]) + " and these cells are linked, so this cell can not be " + str(d[2])
