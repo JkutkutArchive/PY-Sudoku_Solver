@@ -106,7 +106,6 @@ def endFile(grid, data):
     addSudokuOnLaTeX(data, place=end)
     end.append("is the following:")
     addSudokuOnLaTeX(grid, data, place=end)
-    for i in range(5): end.append(NewLine())
     end.append("If you want to see or use the code that abled this file to exist, check the authors GitHub: ")
     end.append(NoEscape(r"\href{https://github.com/Jkutkut/PY-Sudoku-Solver}{Jkutkut's GitHub}"))
     toPDF()
