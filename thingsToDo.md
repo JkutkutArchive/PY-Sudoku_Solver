@@ -3,6 +3,7 @@
 - expert sudokus
 - at pairs, search pairs using "+" directions instead of 3 by 3 
 - If no new discovery, no sudoku print (base this print on discovery) ---> ERROR
+- Update techniques used
 - BUGS:
   - pairs bug: "pair one cell" is eq to: "pair row cell" and "pair col cell"
 
