@@ -8,8 +8,6 @@ import latexToPDF as pdf
 
 # https://www.conceptispuzzles.com/index.aspx?uri=puzzle/sudoku/techniques
 
-# add:
-
 # -Scanning techniques
 # 1. Scanning in one direction:(basic + unique)
 # 2. Scanning in two directions:(basic + unique)
