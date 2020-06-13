@@ -85,6 +85,13 @@ class Cell():
     def __str__(self):
         return str(self.getValue()) # Just print the value of the cell calling the method "getValue()"
 
+    def cellToString(self):
+        return "Cell " + str(self.getPos()) + \
+            "\n - Value: " + str(self.getValue()) + \
+            "\n - PosVal: " + str(self.getPosVal()) + \
+            "\n - Pairs: " + "\n".join(["    - Pair with " + str(p[0].getPos()) + " -> " + str(p[1]) for p in self.pairs]) + \
+            "\n - Pairs: " + "\n".join(["    - " + str(d) for d in self.data])
+
     def __eq__(self, other, exactComparation=False): # Enable us to compare it to other cells or to integers by the value
         if type(other) == int: # if comparing to an integer
             return self.getValue() == other # Return if the values are the same
@@ -130,11 +137,13 @@ class Cell():
         return self.posVal
 
     def removePosVal(self, value):
-        self.posVal.discard(value) # this cell can no longer be the value "value"
+        self.getPosVal().discard(value) # this cell can no longer be the value "value"
         for p in self.pairs: # for each pair in this cell (format of p: tuple(cell, value))
             if p[1] == value: # If there is a pair with this value => the mate should be this value
                 p[0].addData("delPair set value", self.getPos(), value) # Add the data
                 p[0].setValue(value) # Set the value
+        if len(self.getPosVal()) == 1: # If only one possible value
+            self.setValue(next(iter(self.getPosVal())))
 
 
     def setPairs(self, ps):
