@@ -167,6 +167,7 @@ while gameRunning:
 
     # ------------------------------    actual algorithm   ------------------------------
     for cell in cells: # Check 3 by 3, row and col
+        if cell.getValue() != 0: continue # if during this loop, this cell got it's value defined, go to next one
         # ----------    BASIC   ----------
         values = [[], [], []] # Values in row, col, 3by3
 
@@ -268,8 +269,6 @@ while gameRunning:
     # # Pairs on row and col
     # # Row: x = cte, Col: y = cte
     for r in range(9): # For each row
-        if r == 1:
-            print(*[cell.cellToString() for cell in grid[r]], sep="\n\n")
         candidates = [] # set of pairs
         valuesToTest = set([i for i in range(1, 10, 1)]) # Values that is possible to make a pair with
         for i in range(8): # for each cell in row but last one
