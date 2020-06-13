@@ -1,23 +1,20 @@
 ## main:
 - handle Errors
 - expert sudokus
-- at pairs, search pairs using "+" directions instead of 3 by 3 
 - If no new discovery, no sudoku print (base this print on discovery) ---> ERROR
 - Update techniques used
 - BUGS:
-  - pairs bug: "pair one cell" is eq to: "pair row cell" and "pair col cell"
+
 
 ## functions:
 - at AddData, handle errors
-- at AddData, pairs on one and row may be merged
+- comment the code
 
 ## Final version:
 - COLORS
 - If more than one posible sol -> show all without steps
 - When printing the sudoku:
-  - Invert Axis
   - not 0 based coord
-  - print focused cell
 
 
 
@@ -33,7 +30,4 @@
   - pip3 install pylatex
   - sudo apt-get install latexmk
   - sudo apt install texlive-latex-extra
-- Add title:
-  - Author
-  - url to github
 - Tutorial/description/introduction?
