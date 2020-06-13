@@ -116,7 +116,7 @@ class Cell():
         # if value != sol[self.x][self.y]: # If not correct value
         #     raise Exception(("ERROR, NOT CORRECT VALUE -> Cell" + str(self.getPos()) + " is not " + str(value) + ", is " + str(sol[self.x][self.y])).center(40))
         self.value = value # Set the value of the cell to the one given 
-        self.posVal = None # Therefore, there are no possible values left
+        self.posVal.clear() # Therefore, there are no possible values left => clear the set of possible values
         self.addData("therefore") # Add to the data array the data to say that the value is the given 
         self.tellPairs() # Notify all linked cells that the value has been defined
         if printData: # If selected to print the data
@@ -136,13 +136,13 @@ class Cell():
     def getPosVal(self): # Returns the set with the possible values.
         return self.posVal
 
-    def removePosVal(self, value):
+    def removePosVal(self, value, cleverCell=True):
         self.getPosVal().discard(value) # this cell can no longer be the value "value"
         for p in self.pairs: # for each pair in this cell (format of p: tuple(cell, value))
             if p[1] == value: # If there is a pair with this value => the mate should be this value
                 p[0].addData("delPair set value", self.getPos(), value) # Add the data
                 p[0].setValue(value) # Set the value
-        if len(self.getPosVal()) == 1: # If only one possible value
+        if cleverCell and len(self.getPosVal()) == 1: # If cleverCell on and only one possible value
             self.setValue(next(iter(self.getPosVal())))
 
 

@@ -174,19 +174,19 @@ while gameRunning:
             if i != cell.y: # Rows (x=cte) -- If not the same cell
                 otherValue = grid[cell.x][i].getValue()
                 if otherValue > 0 and (otherValue in cell.getPosVal()):
-                    cell.removePosVal(otherValue)
+                    cell.removePosVal(otherValue, cleverCell=False)
                     values[0] = values[0] + [otherValue]
             if i != cell.x: # Cols (y=cte) -- If not the same cell
                 otherValue = grid[i][cell.y].getValue()
                 if otherValue > 0 and (otherValue in cell.getPosVal()):
-                    cell.removePosVal(otherValue)
+                    cell.removePosVal(otherValue, cleverCell=False)
                     values[1] = values[1] + [otherValue]
             x = (cell.x // 3) * 3 + (i // 3)
             y = (cell.y // 3) * 3 + (i % 3)
             if cell.x != x or cell.y != y: # 3 by 3 -- If not the same cell
                 otherValue = grid[x][y].getValue()
                 if otherValue > 0 and (otherValue in cell.getPosVal()):
-                    cell.removePosVal(otherValue)
+                    cell.removePosVal(otherValue, cleverCell=False)
                     values[2] = values[2] + [otherValue]
 
         if len(values[0]) > 0: # Row
