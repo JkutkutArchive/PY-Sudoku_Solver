@@ -107,11 +107,12 @@ print("Searching for solutions...")
 sol = []
 tool.sudokuSolution(data, sol)
 tool.sol = sol[0]
+tool.grid = grid
 
 for i in range(9):
     for j in range(9):
         if data[i][j] != 0:
-            grid[i][j].setValue(data[i][j], False)
+            grid[i][j].setValue(data[i][j], False, cleverCell=False)
 
 #-------    Analice data    -------
 if len(sol) == 0:
@@ -128,8 +129,7 @@ elif len(sol) == 1:
             break
         elif "n" in response:
             gameRunning = False
-            break
-        
+            break   
 else:
     print("Multiple solutions founded. All of them are:")
     for sols in sol: 
@@ -173,12 +173,12 @@ while gameRunning:
         for i in range(9):
             if i != cell.y: # Rows (x=cte) -- If not the same cell
                 otherValue = grid[cell.x][i].getValue()
-                if otherValue > 0 and (otherValue in cell.getPosVal()):
+                if otherValue != 0 and (otherValue in cell.getPosVal()):
                     cell.removePosVal(otherValue, cleverCell=False)
                     values[0] = values[0] + [otherValue]
             if i != cell.x: # Cols (y=cte) -- If not the same cell
                 otherValue = grid[i][cell.y].getValue()
-                if otherValue > 0 and (otherValue in cell.getPosVal()):
+                if otherValue != 0 and (otherValue in cell.getPosVal()):
                     cell.removePosVal(otherValue, cleverCell=False)
                     values[1] = values[1] + [otherValue]
             x = (cell.x // 3) * 3 + (i // 3)
@@ -268,6 +268,8 @@ while gameRunning:
     # # Pairs on row and col
     # # Row: x = cte, Col: y = cte
     for r in range(9): # For each row
+        if r == 1:
+            print(*[cell.cellToString() for cell in grid[r]], sep="\n\n")
         candidates = [] # set of pairs
         valuesToTest = set([i for i in range(1, 10, 1)]) # Values that is possible to make a pair with
         for i in range(8): # for each cell in row but last one

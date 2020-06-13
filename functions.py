@@ -1,5 +1,6 @@
 import latexToPDF as pdf
 sol = []
+grid = []
 
 def printSudoku(arr):
     print(*["  Y "] + [str(i) + " " for i in range(3)] + ["  "] + [str(3+i) + " " for i in range(3)] + ["  "] + [str(6+i) + " " for i in range(3)], sep = "")
@@ -71,6 +72,28 @@ def pError(**kwargs):
     print(kwargs)
     print("***END ERROR***".center(30))
 
+#   --------------------------------    METHODS     --------------------------------
+def tellCells(cell, cleverCell=True): # When a cell defines its value, this function is called to update the rest
+    value = cell.getValue()
+    for i in range(9):
+        if i != cell.y: # Row
+            c = grid[cell.x][i]
+            if c.getValue() != value and value in c.getPosVal():
+                cell.addData("basic row", value)
+                c.removePosVal(value, cleverCell=cleverCell)
+        if i != cell.x: # Col
+            c = grid[i][cell.y]
+            if c.getValue() != value and value in c.getPosVal():
+                cell.addData("basic col", value)
+                c.removePosVal(value, cleverCell=cleverCell)
+        x = (cell.x // 3) * 3 + (i // 3)
+        y = (cell.y // 3) * 3 + (i % 3)
+        if i != cell.x or i != cell.y: # 3by3
+            c = grid[x][y]
+            if c.getValue() != value and value in c.getPosVal():
+                cell.addData("basic 3 by 3", value)
+                c.removePosVal(value, cleverCell=cleverCell)
+        
 
 #   --------------------------------    CLASSES     --------------------------------
 class Cell():
@@ -111,18 +134,19 @@ class Cell():
         return hash(self.x) ^ hash(self.y) # This make the hash unique because there is not 2 cells on the same coordinates
 
     # ******    GETTERS AND SETTERS:    ******
-    def setValue(self, value, printData=True):
+    def setValue(self, value, printData=True, cleverCell=True):
         if self.getValue() != 0: return # if already called, do not continue
         # if value != sol[self.x][self.y]: # If not correct value
         #     raise Exception(("ERROR, NOT CORRECT VALUE -> Cell" + str(self.getPos()) + " is not " + str(value) + ", is " + str(sol[self.x][self.y])).center(40))
         self.value = value # Set the value of the cell to the one given 
         self.posVal.clear() # Therefore, there are no possible values left => clear the set of possible values
         self.addData("therefore") # Add to the data array the data to say that the value is the given 
-        self.tellPairs() # Notify all linked cells that the value has been defined
         if printData: # If selected to print the data
             d = self.dataToText() # Data on text format
             print(*[""] + d, sep = "\n") # Print all the data
             pdf.printDataOnLaTeX(d) # Add this data to the pdf
+        self.tellPairs() # Notify all linked cells that the value has been defined
+        tellCells(self, cleverCell=cleverCell) # update the cells on the grid of this change in value
         if value != sol[self.x][self.y]: # If not correct value
             print("\n\n\n ERROR: \n"+self.cellToString())
             raise Exception(("ERROR, NOT CORRECT VALUE -> Cell" + str(self.getPos()) + " is not " + str(value) + ", is " + str(sol[self.x][self.y])).center(40))
@@ -179,8 +203,8 @@ class Cell():
                 cell.addData("delPair set value", self.getPos(), mateValue) # The cell (self.pos) is no longer matevalue and these cells were linked, so the value of this cell is matevalue
                 cell.setValue(v) # Set the value
 
-        # if len(self.getPosVal()) == 1: # We have the value
-        #     self.setValue(next(iter(self.getPosVal())))
+        if len(self.getPosVal()) == 1: # We have the value
+            self.setValue(next(iter(self.getPosVal())))
 
 
 
