@@ -19,8 +19,16 @@ import latexToPDF as pdf
 # 1. Eliminating squares using Naked Pairs in a box (pairs two values)
 # 2. Eliminating squares using Naked Pairs in rows and columns (pairs two values)
 # 3. Eliminating squares using Hidden Pairs in rows and columns (unique)
-# 4. Eliminating squares using X-Wing (pair on row and col)
+# 4. Eliminating squares using X-Wing ()
 
+
+# https://www.learn-sudoku.com/advanced-techniques.html
+
+# 1. X-Wing ()
+# 2. Sworldfish ()
+# 3. XY Wing () 
+# 4. Unique Rectangle () 
+# 5. Extremely advanced techniques () 
 
 # Sudoku vars:
 grid = [[tool.Cell(x, y) for y in range(9)] for x in range(9)]
@@ -46,17 +54,17 @@ grid = [[tool.Cell(x, y) for y in range(9)] for x in range(9)]
 #     [0, 3, 0, 0, 0, 2, 0, 0, 0],
 #     [9, 4, 0, 0, 0, 6, 0, 0, 2]
 # ]
-data = [ # hard (solved)
-    [0, 0, 7, 0, 0, 0, 3, 0, 2],
-    [2, 0, 0, 0, 0, 5, 0, 1, 0],
-    [0, 0, 0, 8, 0, 1, 4, 0, 0],
-    [0, 1, 0, 0, 9, 6, 0, 0, 8],
-    [7, 6, 0, 0, 0, 0, 0, 4, 9],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 1, 0, 3, 0, 0, 0],
-    [8, 0, 1, 0, 6, 0, 0, 0, 0],
-    [0, 0, 0, 7, 0, 0, 0, 6, 3]
-]
+# data = [ # hard (solved)
+#     [0, 0, 7, 0, 0, 0, 3, 0, 2],
+#     [2, 0, 0, 0, 0, 5, 0, 1, 0],
+#     [0, 0, 0, 8, 0, 1, 4, 0, 0],
+#     [0, 1, 0, 0, 9, 6, 0, 0, 8],
+#     [7, 6, 0, 0, 0, 0, 0, 4, 9],
+#     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+#     [0, 0, 0, 1, 0, 3, 0, 0, 0],
+#     [8, 0, 1, 0, 6, 0, 0, 0, 0],
+#     [0, 0, 0, 7, 0, 0, 0, 6, 3]
+# ]
 
 # data = [ # multiple solutions
 #     [0, 0, 7, 0, 0, 0, 0, 0, 2],
@@ -70,17 +78,17 @@ data = [ # hard (solved)
 #     [0, 0, 0, 7, 0, 0, 0, 6, 3]
 # ]
 
-# data = [ # expert
-#     [0, 0, 0, 0, 0, 0, 9, 2, 6],
-#     [0, 7, 0, 0, 9, 0, 8, 5, 0],
-#     [0, 0, 1, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 3, 0, 0, 0, 5, 0, 0],
-#     [8, 6, 0, 0, 0, 0, 0, 0, 0],
-#     [5, 0, 4, 8, 0, 0, 0, 9, 0],
-#     [0, 4, 0, 0, 2, 1, 0, 0, 0],
-#     [6, 0, 0, 0, 0, 0, 0, 3, 0],
-#     [0, 0, 0, 0, 4, 7, 0, 0, 0]
-# ]
+data = [ # expert
+    [0, 0, 0, 0, 0, 0, 9, 2, 6],
+    [0, 7, 0, 0, 9, 0, 8, 5, 0],
+    [0, 0, 1, 0, 0, 0, 0, 0, 0],
+    [0, 0, 3, 0, 0, 0, 5, 0, 0],
+    [8, 6, 0, 0, 0, 0, 0, 0, 0],
+    [5, 0, 4, 8, 0, 0, 0, 9, 0],
+    [0, 4, 0, 0, 2, 1, 0, 0, 0],
+    [6, 0, 0, 0, 0, 0, 0, 3, 0],
+    [0, 0, 0, 0, 4, 7, 0, 0, 0]
+]
 
 # data = [ # epmty
 #     [0, 0, 0, 0, 0, 0, 0, 0, 0],
