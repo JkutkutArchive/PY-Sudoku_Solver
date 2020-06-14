@@ -1,3 +1,7 @@
+## ALL CODE:
+- Remove code based on x,y => base it on r,c
+
+
 ## main:
 - handle Errors
 - expert sudokus
