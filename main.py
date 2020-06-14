@@ -380,7 +380,7 @@ while gameRunning:
         for i in range(2):
             if len(matches[i]) == 1:
                 p2 = next(iter(matches[i]))
-                print("X-Wing with value " + str(value) + " and pos " + str(i) + ":")
+                print("X-Wing row with value " + str(value) + " and pos " + str(i) + ":")
                 print("  - p1: " + str(p1[0].getPos()) + ", " + str(p1[1].getPos()))
                 print("  - p2: " + str(p2[0].getPos()) + ", " + str(p2[1].getPos()))
                 for j in range(9):
@@ -389,6 +389,30 @@ while gameRunning:
                         print(c.getPos())
                         c.addData("X-Wing row", p1, p2, value)
                         c.removePosVal(value)
+
+    for p1 in pairs[1]: # For each pair made on a col (format of p1: (cell1, cell2, value))
+        value = p1[2]
+        matches = [set(), set()] # sets with valid 
+        for p2 in pairs[1]: # For the rest of the pairs
+            if p1 == p2: continue # If same pair, go to next one
+            if p2[2] != value: continue # If not same value, go to next one 
+            if p1[0].x != p2[0].x or p1[1].x != p2[1].x: continue # If not on the same row, next one
+            for i in range(2):
+                if (p1[i], p2[i], value) not in pairs[1]: # If (0=right, 1=left) side is not linked on al col pair
+                    matches[i].add(p2)
+        for i in range(2):
+            if len(matches[i]) == 1:
+                p2 = next(iter(matches[i]))
+                print("X-Wing col with value " + str(value) + " and pos " + str(i) + ":")
+                print("  - p1: " + str(p1[0].getPos()) + ", " + str(p1[1].getPos()))
+                print("  - p2: " + str(p2[0].getPos()) + ", " + str(p2[1].getPos()))
+                for j in range(9):
+                    c = grid[p1[i].x][j]
+                    if c != p1[i] and c != p2[i] and value in c.getPosVal():
+                        print(c.getPos())
+                        c.addData("X-Wing col", p1, p2, value)
+                        c.removePosVal(value)
+    
 
 
     response = input("Continue?")
