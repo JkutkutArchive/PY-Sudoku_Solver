@@ -19,12 +19,12 @@ import latexToPDF as pdf
 # 1. Eliminating squares using Naked Pairs in a box (pairs two values)
 # 2. Eliminating squares using Naked Pairs in rows and columns (pairs two values)
 # 3. Eliminating squares using Hidden Pairs in rows and columns (unique)
-# 4. Eliminating squares using X-Wing ()
+# 4. Eliminating squares using X-Wing (X-Wing algo)
 
 
 # https://www.learn-sudoku.com/advanced-techniques.html
 
-# 1. X-Wing ()
+# 1. X-Wing (X-Wing algo)
 # 2. Sworldfish ()
 # 3. XY Wing () 
 # 4. Unique Rectangle () 
@@ -367,51 +367,79 @@ while gameRunning:
     #       - but same col coordinates (forming rectangle): pair1 = ((1, 2), (1, 5), 4) and pair2 = ((4, 2), (4, 5), 4)
     #   - These does not form col pairs
 
-    for p1 in pairs[0]: # For each pair made on a row (format of p1: (cell1, cell2, value))
-        value = p1[2]
-        matches = [set(), set()] # sets with valid 
-        for p2 in pairs[0]: # For the rest of the pairs
-            if p1 == p2: continue # If same pair, go to next one
-            if p2[2] != value: continue # If not same value, go to next one 
-            if p1[0].y != p2[0].y or p1[1].y != p2[1].y: continue # If not on the same column, next one
+    for t in range(2): # For each type of X-Wing: 0 = Row; 1 = Col
+        for p1 in pairs[t]: # For each pair made on a Row or Col (format of p: (cell1, cell2, value))
+            value = p1[2]
+            matches = [set(), set()] # sets with valid 
+            for p2 in pairs[t]: # For the rest of the pairs
+                if p1 == p2: continue # If same pair, go to next one
+                if p2[2] != value: continue # If not same value, go to next one
+                if t == 0 and (p1[0].y != p2[0].y or p1[1].y != p2[1].y): continue # If not on the same column when using X-Wing row, next one
+                if t == 1 and (p1[0].x != p2[0].x or p1[1].x != p2[1].x): continue # If not on the same row when using X-Wing col, next one
+                for i in range(2):
+                    if (p1[i], p2[i], value) not in pairs[(t + 1) % 2]: # If (0=right, 1=left) side is not linked on al col pair
+                        matches[i].add(p2)
             for i in range(2):
-                if (p1[i], p2[i], value) not in pairs[1]: # If (0=right, 1=left) side is not linked on al col pair
-                    matches[i].add(p2)
-        for i in range(2):
-            if len(matches[i]) == 1:
-                p2 = next(iter(matches[i]))
-                print("X-Wing row with value " + str(value) + " and pos " + str(i) + ":")
-                print("  - p1: " + str(p1[0].getPos()) + ", " + str(p1[1].getPos()))
-                print("  - p2: " + str(p2[0].getPos()) + ", " + str(p2[1].getPos()))
-                for j in range(9):
-                    c = grid[j][p1[i].y]
-                    if c != p1[i] and c != p2[i] and value in c.getPosVal():
-                        print(c.getPos())
-                        c.addData("X-Wing row", p1, p2, value)
-                        c.removePosVal(value)
+                if len(matches[i]) == 1: # If only one match
+                    p2 = next(iter(matches[i])) # Get the pair
+                    print("X-Wing " + ["row", "col"][t] + " with value " + str(value) + " and pos " + str(i) + ":" + \
+                        "\n  - p1: " + str(p1[0].getPos()) + ", " + str(p1[1].getPos()) + \
+                        "\n  - p2: " + str(p2[0].getPos()) + ", " + str(p2[1].getPos()))
+                    for j in range(9): # For each row or col
+                        if t == 0: # X-Wing row
+                            c = grid[j][p1[i].y] # Go on cols
+                        else: # t == 1: X-Wing col
+                            c = grid[p1[i].x][j] # Go on rows
+                        if c != p1[i] and c != p2[i] and value in c.getPosVal(): # If c is not one on the cells on consideration and the value can be removed
+                            print(c.getPos())
+                            c.addData("X-Wing " + ["row", "col"][t], p1, p2, value) # Add Data
+                            c.removePosVal(value) # Remove this value from possible values
 
-    for p1 in pairs[1]: # For each pair made on a col (format of p1: (cell1, cell2, value))
-        value = p1[2]
-        matches = [set(), set()] # sets with valid 
-        for p2 in pairs[1]: # For the rest of the pairs
-            if p1 == p2: continue # If same pair, go to next one
-            if p2[2] != value: continue # If not same value, go to next one 
-            if p1[0].x != p2[0].x or p1[1].x != p2[1].x: continue # If not on the same row, next one
-            for i in range(2):
-                if (p1[i], p2[i], value) not in pairs[1]: # If (0=right, 1=left) side is not linked on al col pair
-                    matches[i].add(p2)
-        for i in range(2):
-            if len(matches[i]) == 1:
-                p2 = next(iter(matches[i]))
-                print("X-Wing col with value " + str(value) + " and pos " + str(i) + ":")
-                print("  - p1: " + str(p1[0].getPos()) + ", " + str(p1[1].getPos()))
-                print("  - p2: " + str(p2[0].getPos()) + ", " + str(p2[1].getPos()))
-                for j in range(9):
-                    c = grid[p1[i].x][j]
-                    if c != p1[i] and c != p2[i] and value in c.getPosVal():
-                        print(c.getPos())
-                        c.addData("X-Wing col", p1, p2, value)
-                        c.removePosVal(value)
+    # for p1 in pairs[0]: # For each pair made on a row (format of p1: (cell1, cell2, value))
+    #     value = p1[2]
+    #     matches = [set(), set()] # sets with valid 
+    #     for p2 in pairs[0]: # For the rest of the pairs
+    #         if p1 == p2: continue # If same pair, go to next one
+    #         if p2[2] != value: continue # If not same value, go to next one 
+    #         if p1[0].y != p2[0].y or p1[1].y != p2[1].y: continue # If not on the same column, next one
+    #         for i in range(2):
+    #             if (p1[i], p2[i], value) not in pairs[1]: # If (0=right, 1=left) side is not linked on al col pair
+    #                 matches[i].add(p2)
+    #     for i in range(2):
+    #         if len(matches[i]) == 1:
+    #             p2 = next(iter(matches[i]))
+    #             print("X-Wing row with value " + str(value) + " and pos " + str(i) + ":")
+    #             print("  - p1: " + str(p1[0].getPos()) + ", " + str(p1[1].getPos()))
+    #             print("  - p2: " + str(p2[0].getPos()) + ", " + str(p2[1].getPos()))
+    #             for j in range(9):
+    #                 c = grid[j][p1[i].y]
+    #                 if c != p1[i] and c != p2[i] and value in c.getPosVal():
+    #                     print(c.getPos())
+    #                     c.addData("X-Wing row", p1, p2, value)
+    #                     c.removePosVal(value)
+
+    # for p1 in pairs[1]: # For each pair made on a col (format of p1: (cell1, cell2, value))
+    #     value = p1[2]
+    #     matches = [set(), set()] # sets with valid 
+    #     for p2 in pairs[1]: # For the rest of the pairs
+    #         if p1 == p2: continue # If same pair, go to next one
+    #         if p2[2] != value: continue # If not same value, go to next one 
+    #         if p1[0].x != p2[0].x or p1[1].x != p2[1].x: continue # If not on the same row, next one
+    #         for i in range(2):
+    #             if (p1[i], p2[i], value) not in pairs[1]: # If (0=right, 1=left) side is not linked on al col pair
+    #                 matches[i].add(p2)
+    #     for i in range(2):
+    #         if len(matches[i]) == 1:
+    #             p2 = next(iter(matches[i]))
+    #             print("X-Wing col with value " + str(value) + " and pos " + str(i) + ":")
+    #             print("  - p1: " + str(p1[0].getPos()) + ", " + str(p1[1].getPos()))
+    #             print("  - p2: " + str(p2[0].getPos()) + ", " + str(p2[1].getPos()))
+    #             for j in range(9):
+    #                 c = grid[p1[i].x][j]
+    #                 if c != p1[i] and c != p2[i] and value in c.getPosVal():
+    #                     print(c.getPos())
+    #                     c.addData("X-Wing col", p1, p2, value)
+    #                     c.removePosVal(value)
     
 
 
