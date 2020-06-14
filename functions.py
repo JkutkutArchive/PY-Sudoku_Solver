@@ -196,13 +196,15 @@ class Cell():
         # print(str(self.getPosVal()) + " --- " + str(mateValue))
         self.getPosVal().discard(mateValue) # If linked and mateValue now defined => this cell can not be mateValue
         self.addData("delPair remove value", matePair.getPos(), mateValue) # The cell (matePair.pos) has now the value v1 and these cells are linked, so this cell can not be v1
-
+        # self.pairs.discard((matePair, mateValue))
         for p in self.getPairs(): # for each mate linked with this cell
             cell = p[0] # mate cell linked
             v = p[1] # value that make the link
+            if cell == matePair: continue # Skip the pair
             if v == mateValue: # if "cell" has same value-relation as mate (the one who called this) => "cell" has that value
                 cell.addData("delPair set value", self.getPos(), mateValue) # The cell (self.pos) is no longer matevalue and these cells were linked, so the value of this cell is matevalue
                 cell.setValue(v) # Set the value
+            if len(self.pairs) == 0: return # If setting the value of cell makes me change my value. Stop
 
         if len(self.getPosVal()) == 1: # We have the value
             self.setValue(next(iter(self.getPosVal())))
