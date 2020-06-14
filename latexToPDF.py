@@ -102,11 +102,15 @@ def endFile(grid, data):
     doc.append(NewPage()) # Go to a new page
     end = Section("Algorithm ended")
     doc.append(end)
-    end.append("With all these iterations, we can determine that the solution for this sudoku:")
-    addSudokuOnLaTeX(data, place=end)
-    end.append("is the following:")
-    addSudokuOnLaTeX(grid, data, place=end)
-    end.append("If you want to see or use the code that abled this file to exist, check the authors GitHub: ")
+    if grid == None: # Multiple solution
+        end.append("All the sudokus showed above are solutions of the sudoku:")
+        addSudokuOnLaTeX(data, place=end)
+    else:
+        end.append("With all these iterations, we can determine that the solution for this sudoku:")
+        addSudokuOnLaTeX(data, place=end)
+        end.append("is the following:")
+        addSudokuOnLaTeX(grid, data, place=end)
+    end.append("If you want to see or use the code that abled this file to exist or you would like to see more code like this, check the authors GitHub: ")
     end.append(NoEscape(r"\href{https://github.com/Jkutkut/PY-Sudoku-Solver}{Jkutkut's GitHub}"))
     toPDF()
 
