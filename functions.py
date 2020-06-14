@@ -196,7 +196,6 @@ class Cell():
         # print(str(self.getPosVal()) + " --- " + str(mateValue))
         self.getPosVal().discard(mateValue) # If linked and mateValue now defined => this cell can not be mateValue
         self.addData("delPair remove value", matePair.getPos(), mateValue) # The cell (matePair.pos) has now the value v1 and these cells are linked, so this cell can not be v1
-        # self.pairs.discard((matePair, mateValue))
         for p in self.getPairs(): # for each mate linked with this cell
             cell = p[0] # mate cell linked
             v = p[1] # value that make the link
@@ -258,6 +257,16 @@ class Cell():
                     dataToAdd = "The cell " + str(d[1]) + " has now the value " + str(d[2]) + " and these cells are linked, so this cell can not be " + str(d[2])
                 elif "set" in key:
                     dataToAdd = "The cell " + str(d[1]) + " is no longer " + str(d[2]) + " and these cells were linked, so the value of this cell is " + str(d[2])
+            elif "X-Wing" in key: # Format: ["X-Wing <TYPE>", p1, p2, value]; <TYPE>=[row, col]
+                conclusion = ""
+                if "row" in key:
+                    conclusion = "column"
+                else:
+                    conclusion = "row"
+                dataToAdd = "Let's have a look at the following:" + \
+                    "\n  - Either the cell " + str(d[1][0].getPos()) + " or " + str(d[1][1].getPos()) + " has the value " + str(d[3]) + \
+                    "\n  - Either the cell " + str(d[2][0].getPos()) + " or " + str(d[2][1].getPos()) + " has the value " + str(d[3]) + \
+                    "\nAcording to this facts, none of the cells on the " + conclusion + "s " + str(d[1][0].y) + " or " + str(d[1][1].y) + " can be this value. Therefore, this cell can not be " + str(d[3])
 
             s.append(dataToAdd) # Add it to the array with the rest
         return s # Return all the data on text format
