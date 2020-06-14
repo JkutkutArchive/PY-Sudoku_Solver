@@ -240,7 +240,7 @@ class Cell():
                 dataToAdd = "If we look at the " + tipo + " on this cell, this cell can not be " + str(d[1]) + "."
             elif "unique" in key: # Format: ["unique <TYPE>", <VALUE>]
                 tipo = key[6:] # only enter the <TYPE>
-                dataToAdd = "If we look at the " + tipo + " containing this cell, we know that this cell should be " + str(d[1]) + "."
+                dataToAdd = "If we look at the " + tipo + " containing this cell, we know that this cell should be " + str(d[1]) + " because no one this " + tipo + " can be this value."
             elif "pairs" in key:
                 if "two" in key:
                     dataToAdd = "If we take a look, this and the " + str(d[1].getPos()) + " cell are eather " + str(d[2]) + ". Both cells can only be these values."
