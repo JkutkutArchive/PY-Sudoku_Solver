@@ -46,8 +46,20 @@ grid = [[tool.Cell(x, y) for y in range(9)] for x in range(9)]
 #     [0, 3, 0, 0, 0, 2, 0, 0, 0],
 #     [9, 4, 0, 0, 0, 6, 0, 0, 2]
 # ]
+# data = [ # hard (solved)
+#     [0, 0, 7, 0, 0, 0, 3, 0, 2],
+#     [2, 0, 0, 0, 0, 5, 0, 1, 0],
+#     [0, 0, 0, 8, 0, 1, 4, 0, 0],
+#     [0, 1, 0, 0, 9, 6, 0, 0, 8],
+#     [7, 6, 0, 0, 0, 0, 0, 4, 9],
+#     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+#     [0, 0, 0, 1, 0, 3, 0, 0, 0],
+#     [8, 0, 1, 0, 6, 0, 0, 0, 0],
+#     [0, 0, 0, 7, 0, 0, 0, 6, 3]
+# ]
+
 data = [ # hard (solved)
-    [0, 0, 7, 0, 0, 0, 3, 0, 2],
+    [0, 0, 7, 0, 0, 0, 0, 0, 2],
     [2, 0, 0, 0, 0, 5, 0, 1, 0],
     [0, 0, 0, 8, 0, 1, 4, 0, 0],
     [0, 1, 0, 0, 9, 6, 0, 0, 8],
@@ -57,6 +69,7 @@ data = [ # hard (solved)
     [8, 0, 1, 0, 6, 0, 0, 0, 0],
     [0, 0, 0, 7, 0, 0, 0, 6, 3]
 ]
+
 
 # data = [ # pair test1
 #     [0, 0, 0, 0, 0, 0, 3, 0, 2],
@@ -130,9 +143,12 @@ elif len(sol) == 1:
             break   
 else:
     print("Multiple solutions founded. All of them are:")
+    pdf.init(data)
     for sols in sol: 
         print("\n")
         tool.printSudoku(sols)
+        pdf.addSudokuOnLaTeX(sols, data)
+    pdf.endFile(None, data)
     gameRunning = False
 
 while gameRunning:
@@ -267,6 +283,13 @@ while gameRunning:
     
     # # Pairs on row and col
     # # Row: x = cte, Col: y = cte
+
+    # coord1 = [
+    #             [r, i], # Row
+    #             [i, r], # Col
+    #             [(r // 3) * 3 + (i // 3), (r % 3) * 3 + (i % 3)] # 3by3
+    #         ]
+
     for r in range(9): # For each row
         candidates = [] # set of pairs
         valuesToTest = set([i for i in range(1, 10, 1)]) # Values that is possible to make a pair with
@@ -325,10 +348,74 @@ while gameRunning:
                 i = i + n - 1 # Skip all pairs not valid on next iteration
             i = i + 1
 
+    # for r in range(9): # For each row
+    #     candidates = [] # set of pairs
+    #     valuesToTest = set([i for i in range(1, 10, 1)]) # Values that is possible to make a pair with
+    #     for i in range(8): # for each cell in row but last one
+    #         if len(valuesToTest) == 0: # If not more values to test, go to next row
+    #             break
+    #         cell1 = grid[r][i]
+    #         if cell1.getValue() != 0: # If cell1 has defined value
+    #             valuesToTest.discard(cell1.getValue()) # No pair can be formed with this value, remove it from possible values
+    #         else: # If cell1 has no value defined
+    #             for val in cell1.getPosVal(): # For values to test that are on cell1.posVal
+    #                 if val not in valuesToTest: # If not on this set, this val can not form any pairs
+    #                     continue # Go to the next val
+    #                 posCandidates = set() # Collection of posible candidates
+    #                 for j in range(i + 1, 9): # For the rest of the cells on the row
+    #                     cell2 = grid[r][j]
+    #                     if cell2.getValue() == 0 and val in cell2.getPosVal(): # if cell2 has no value defined and has that val
+    #                         posCandidates.add(cell2) # This candidate has this val as posVal
+                    
+    #                 if len(posCandidates) != 1: # If more than one or no one with this val => no pair
+    #                     valuesToTest.discard(val) # remove this value, because it can not form any valid pair
+    #                     continue # Go to the next val
+    #                 else: # If only one cell with same val (no one on the row has this val except cell1 and cell2)
+    #                     # We have a valid pair.
+    #                     cell2 = list(posCandidates)[0]
+    #                     print("Pair ROW founded with the value " + str(val) + ": " + str(cell1.getPos()) + ", " + str(cell2.getPos()))
+    #                     cell1.addData("pairs cell", cell2, val)
+    #                     cell2.addData("pairs cell", cell1, val)
+    #                     cell1.addPair(cell2, val)
+    #                     cell2.addPair(cell1, val)
+    #                     candidates.append([cell1, cell2, val]) # Added
+
+    #                     # pair by one value: all cells on the line can not be this value
+    #                     for k in range(9): # for all cells on line (1º = same cell => start at 2º)
+    #                         cell = grid[r][k]
+    #                         if (cell != cell1) and (cell != cell2) and cell.getValue() == 0 and (val in cell.getPosVal()):
+    #                             cell.addData("pairs val", cell1, cell2, val)
+    #                             cell.removePosVal(val)
+    #     i = 0
+    #     while i < len(candidates):
+    #         c1 = set(candidates[i][0:2]) # pair of 2 cells
+    #         n = 0 # ocurrences of the same pair
+    #         for j in range(i + 1, len(candidates)): # for the rest of candidates pairs
+    #             c2 = set(candidates[j][0:2]) #
+    #             if c1 == c2: n = n + 1 # Count the times the pair c1 is repeated
+    #         if n == 1: # if there are exacly 2 times the pair c1 is founded => Double pair
+    #             values = [candidates[i][2], candidates[i + 1][2]] # The values
+    #             cells = list(c1)
+    #             print("** VALID DOUBLE PAIR: cells: " + str(cells[0].getPos()) + ", " + str(cells[1].getPos()) + "; values: " + str(candidates[i][2]) + ", " + str(candidates[i+1][2]))
+    #             cells[0].addData("pairs two", cells[1], values) 
+    #             cells[0].setPosVal(set(values)) # Update the possible values
+    #             cells[1].addData("pairs two", cells[0], values)
+    #             cells[1].setPosVal(set(values)) # Update the possible values
+    #             i = i + 1
+    #         elif n > 1:
+    #             i = i + n - 1 # Skip all pairs not valid on next iteration
+    #         i = i + 1
 
 
 
 
+
+    
+    
+    
+    #------------------------------------------------------------------------------------------------------------------
+    
+    
     # Pairs with one and two values
     # for sector in range(9): # For each sector (like phone numberpad: 012 \n 345 \n 678)
     #     candidates = [] # set of pairs
