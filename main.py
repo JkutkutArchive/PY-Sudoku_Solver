@@ -54,17 +54,17 @@ grid = [[tool.Cell(x, y) for y in range(9)] for x in range(9)]
 #     [0, 3, 0, 0, 0, 2, 0, 0, 0],
 #     [9, 4, 0, 0, 0, 6, 0, 0, 2]
 # ]
-data = [ # hard (solved)
-    [0, 0, 7, 0, 0, 0, 3, 0, 2],
-    [2, 0, 0, 0, 0, 5, 0, 1, 0],
-    [0, 0, 0, 8, 0, 1, 4, 0, 0],
-    [0, 1, 0, 0, 9, 6, 0, 0, 8],
-    [7, 6, 0, 0, 0, 0, 0, 4, 9],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 1, 0, 3, 0, 0, 0],
-    [8, 0, 1, 0, 6, 0, 0, 0, 0],
-    [0, 0, 0, 7, 0, 0, 0, 6, 3]
-]
+# data = [ # hard (solved)
+#     [0, 0, 7, 0, 0, 0, 3, 0, 2],
+#     [2, 0, 0, 0, 0, 5, 0, 1, 0],
+#     [0, 0, 0, 8, 0, 1, 4, 0, 0],
+#     [0, 1, 0, 0, 9, 6, 0, 0, 8],
+#     [7, 6, 0, 0, 0, 0, 0, 4, 9],
+#     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+#     [0, 0, 0, 1, 0, 3, 0, 0, 0],
+#     [8, 0, 1, 0, 6, 0, 0, 0, 0],
+#     [0, 0, 0, 7, 0, 0, 0, 6, 3]
+# ]
 
 # data = [ # multiple solutions
 #     [0, 0, 7, 0, 0, 0, 0, 0, 2],
@@ -77,6 +77,18 @@ data = [ # hard (solved)
 #     [8, 0, 1, 0, 6, 0, 0, 0, 0],
 #     [0, 0, 0, 7, 0, 0, 0, 6, 3]
 # ]
+
+data = [ # X-Wing
+    [0, 0, 3, 8, 0, 0, 5, 1, 0],
+    [0, 0, 8, 7, 0, 0, 9, 3, 0],
+    [1, 0, 0, 3, 0, 5, 7, 2, 8],
+    [0, 0, 0, 2, 0, 0, 8, 4, 9],
+    [8, 0, 1, 9, 0, 6, 2, 5, 7],
+    [0, 0, 0, 5, 0, 0, 1, 6, 3],
+    [9, 6, 4, 1, 2, 7, 3, 8, 5],
+    [3, 8, 2, 6, 5, 9, 4, 7, 1],
+    [0, 1, 0, 4, 0, 0, 6, 9, 2]
+]
 
 # data = [ # expert
 #     [0, 0, 0, 0, 0, 0, 9, 2, 6],
@@ -262,8 +274,6 @@ while gameRunning:
                 print("ERROR at unique 3 by 3")
 
     # ---------------------    advanced algorithm   ---------------------
-    # if not discoveryMade: # If no value discovered on this iteration, use more advanced algorithms
-        # print("No trivial value founded, applying more advanced algorithms")
 
     # ----------    PAIRS   ----------
     # Format:
@@ -271,7 +281,7 @@ while gameRunning:
     #   - "pair val" : This cell is affected by a pair of cells
     
     pairs = [set() for i in range(3)] # Set with all pairs found on the sudoku
-    tToType = ["ROW", "COL", "3BY3"]
+    
     for t in range(3): # For each type of zone: 0 = row, 1 = col, 2 = 3by3
         for z in range(9): # For each row, col or 3by3 => for each zone
             candidates = [] # set of pairs on this zone
@@ -309,7 +319,7 @@ while gameRunning:
                             # We have a valid pair.
                             cell2 = list(posCandidates)[0]
                             if t != 2 or (cell1.x != cell2.x and cell1.y != cell2.y): # If not in 3by3 or (not horizontal nor vertical in 3by3)
-                                print("Pair " + tToType[t] + " founded with the value " + str(val) + ": " + str(cell1.getPos()) + ", " + str(cell2.getPos()))
+                                # print("Pair " + ["ROW", "COL", "3BY3"][t] + " founded with the value " + str(val) + ": " + str(cell1.getPos()) + ", " + str(cell2.getPos()))
                                 cell1.addData("pairs cell", cell2, val)
                                 cell2.addData("pairs cell", cell1, val)
                                 cell1.addPair(cell2, val)
@@ -327,7 +337,7 @@ while gameRunning:
                                     if (cell != cell1) and (cell != cell2) and cell.getValue() == 0 and (val in cell.getPosVal()):
                                         cell.addData("pairs val", cell1, cell2, val)
                                         cell.removePosVal(val)
-            # pairs[t].update(candidates)
+            pairs[t].update(candidates) # Add the candidates to pairs
             i = 0
             while i < len(candidates):
                 c1 = set(candidates[i][0:2]) # pair of 2 cells
@@ -338,7 +348,7 @@ while gameRunning:
                 if n == 1: # if there are exacly 2 times the pair c1 is founded => Double pair
                     values = [candidates[i][2], candidates[i + 1][2]] # The values
                     cells = list(c1)
-                    print("** VALID DOUBLE PAIR: cells: " + str(cells[0].getPos()) + ", " + str(cells[1].getPos()) + "; values: " + str(candidates[i][2]) + ", " + str(candidates[i+1][2]))
+                    # print("** VALID DOUBLE PAIR: cells: " + str(cells[0].getPos()) + ", " + str(cells[1].getPos()) + "; values: " + str(candidates[i][2]) + ", " + str(candidates[i+1][2]))
                     cells[0].addData("pairs two", cells[1], values) 
                     cells[0].setPosVal(set(values)) # Update the possible values
                     cells[1].addData("pairs two", cells[0], values)
@@ -348,7 +358,38 @@ while gameRunning:
                     i = i + n - 1 # Skip all pairs not valid on next iteration
                 i = i + 1
 
-    print([pairs])
+    # print(pairs)
+    # ----------    X Wing   ----------
+    # Row:
+    #   - 2 pairs
+    #   - With the same value
+    #   - On diferent rows
+    #       - but same col coordinates (forming rectangle): pair1 = ((1, 2), (1, 5), 4) and pair2 = ((4, 2), (4, 5), 4)
+    #   - These does not form col pairs
+
+    for p1 in pairs[0]: # For each pair made on a row (format of p1: (cell1, cell2, value))
+        value = p1[2]
+        matches = [set(), set()] # sets with valid 
+        for p2 in pairs[0]: # For the rest of the pairs
+            if p1 == p2: continue # If same pair, go to next one
+            if p2[2] != value: continue # If not same value, go to next one 
+            if p1[0].y != p2[0].y or p1[1].y != p2[1].y: continue # If not on the same column, next one
+            for i in range(2):
+                if (p1[i], p2[i], value) not in pairs[1]: # If (0=right, 1=left) side is not linked on al col pair
+                    matches[i].add(p2)
+        for i in range(2):
+            if len(matches[i]) == 1:
+                p2 = next(iter(matches[i]))
+                print("X-Wing with value " + str(value) + " and pos " + str(i) + ":")
+                print("  - p1: " + str(p1[0].getPos()) + ", " + str(p1[1].getPos()))
+                print("  - p2: " + str(p2[0].getPos()) + ", " + str(p2[1].getPos()))
+                for j in range(9):
+                    c = grid[j][p1[i].y]
+                    if c != p1[i] and c != p2[i] and value in c.getPosVal():
+                        print(c.getPos())
+                        c.addData("X-Wing row", p1, p2, value)
+                        c.removePosVal(value)
+
 
     response = input("Continue?")
     # response = ""
