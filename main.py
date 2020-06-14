@@ -269,12 +269,8 @@ while gameRunning:
     # Format:
     #   - "pair cell": This cell is part of a pair
     #   - "pair val" : This cell is affected by a pair of cells
-     
     
-    # # Pairs on row and col
-    # # Row: x = cte, Col: y = cte
-    
-    # pairs = set() # Set with all pairs found on the sudoku
+    pairs = [set() for i in range(3)] # Set with all pairs found on the sudoku
     tToType = ["ROW", "COL", "3BY3"]
     for t in range(3): # For each type of zone: 0 = row, 1 = col, 2 = 3by3
         for z in range(9): # For each row, col or 3by3 => for each zone
@@ -284,9 +280,9 @@ while gameRunning:
                 if len(valuesToTest) == 0: # If not more values to test, go to next zone
                     break
                 cC1 = [ # Coordinates of cell1
-                    [z, i], # Row
-                    [i, z], # Col
-                    [(z // 3) * 3 + (i // 3), (z % 3) * 3 + (i % 3)] # 3by3
+                    [z, i], # Row: [cte, i]
+                    [i, z], # Col: [i, cte]
+                    [(z // 3) * 3 + (i // 3), (z % 3) * 3 + (i % 3)] # 3by3 [row(sector) + row(i), col(sector) + col(i)]
                 ]
                 cell1 = grid[cC1[t][0]][cC1[t][1]]
                 if cell1.getValue() != 0: # If cell1 has defined value
@@ -318,7 +314,7 @@ while gameRunning:
                                 cell2.addData("pairs cell", cell1, val)
                                 cell1.addPair(cell2, val)
                                 cell2.addPair(cell1, val)
-                                candidates.append([cell1, cell2, val]) # Added
+                                candidates.append((cell1, cell2, val)) # Added
 
                                 if t == 2: continue # if 3by3, skip this last part
                                 # if here: all cells on the line can not be this value
@@ -331,6 +327,7 @@ while gameRunning:
                                     if (cell != cell1) and (cell != cell2) and cell.getValue() == 0 and (val in cell.getPosVal()):
                                         cell.addData("pairs val", cell1, cell2, val)
                                         cell.removePosVal(val)
+            # pairs[t].update(candidates)
             i = 0
             while i < len(candidates):
                 c1 = set(candidates[i][0:2]) # pair of 2 cells
@@ -350,6 +347,8 @@ while gameRunning:
                 elif n > 1:
                     i = i + n - 1 # Skip all pairs not valid on next iteration
                 i = i + 1
+
+    print([pairs])
 
     response = input("Continue?")
     # response = ""
