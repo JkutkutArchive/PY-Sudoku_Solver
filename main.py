@@ -409,13 +409,44 @@ while gameRunning:
 
     # ----------    XY Wing   ----------
     # Row:
-    #   - Row pair (c1, c2) with a value v1
-    #       - No multiple pairs on this pair
+    #   - two cells (c1, c2) with a value v1 (NOT NECCESARRY A PAIR)
+    #       - No multiple pairs on this pair (???)
     #       - len(posVal) on both is 2
-    #   - One of the members (c1) of the pair have another relation on a 3by3 pair: (c1, c3) with value v2
+    #   - One of the members (c1) of the pair have another relation on a 3by3 pair: (c1, c3) with value v2 (NOT SURE IF PAIR)
+    #       - c3.x != c1.x (therefore, c3.x != c1.x)
     #       - len(c3.posVal) = 2
     #       - both c2 and c3 has as second posVal v2
     #   If all OK: cells at (c3.x, T),, T = Sector(c2).y's can not be v2
+
+    # for p in pairs[0]:
+    #     if p[0].getPos() == (0, 2): print("no worries")
+    #     if len(p[0].getPosVal()) > 2 or len(p[1].getPosVal()) > 2: continue # len(posVal) on both should be 2
+    #     singlePair = True
+    #     for i in range(9):
+    #         if i == p[2]: continue # Skip the same pair
+    #         if (p[0], p[1], i) in pairs[0]:
+    #             singlePair = False
+    #             break
+    #     if not singlePair: continue # If double pair (pair with more than one value), go to next pair
+    #     v1 = p[2]
+    #     posV2 = [next(iter(p[i].getPosVal() - set([v1]))) for i in range(2)] # Get possible values of v2
+    #     print("Pair Row" + str(p[0].getPos()) + " and " + str(p[1].getPos()) + " with value " + str(value) + \
+    #         "\n  " + str(p[0].getPosVal()) + " --- " + str(p[1].getPosVal()) + \
+    #         "\n  v1: " + str(v1) + "; posV2: " + str(posV2))
+    #     c3pair = None
+    #     for posC3 in pairs[2]: # for each pair made on a 3by3
+    #         v2 = posC3[2] # Theoretical value of v2
+    #         if p[0] in posC3 and v2 in posV2: # If pair (c1, c3) with a valid v2 value
+    #             # c3pair = posC3
+    #             # print("Pair Row" + str(p[0].getPos()) + " and " + str(p[1].getPos()) + " with value " + str(value) + \
+    #             #     "\n  " + str(p[0].getPosVal()) + " --- " + str(p[1].getPosVal()) + \
+    #             #     "\n  v1: " + str(v1) + "; posV2: " + str(posV2))
+    #             print("founded")
+
+
+
+
+
 
     response = input("Continue?")
     # response = ""
