@@ -561,6 +561,8 @@ while gameRunning:
     #       - both pairs are made based on the same value: v
     #       - one of the cells in each pair has to be alinged on the same column
     #   - That way, each cell on that colum can not be that value v
+    # ERROR! THE PAIRS NEED TO MAKE A CLOSED LOOP IN ORDER TO HAVE A SWORDFISH.
+    # THIS CODE MAY BE SUTIABLE FOR X-WING?
 
     for p1 in pairs[0]: # For each row pair
         v = p1[2]
