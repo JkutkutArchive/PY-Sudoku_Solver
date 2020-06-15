@@ -514,8 +514,6 @@ while gameRunning:
 
 
     sectorsToCheck = [[0],[-1,1]] # Based on the index (sector.x or sector.y you are), get how much you must move to check neighbours
-    # sectorsToCheck = [[1],[0,2]] # Based on the index (sector.x or sector.y you are), get the sector(.x or .y) to check
-    # sectorsToCheck = [[3],[0,6]] # Based on the index (sector.x or sector.y you are), get the 1º cell(.x or .y) of the sector to check
     # for s in range(9): # for each sector (len(pv2Cells))
     for s1 in range(1, 2):
         for c1 in pv2Cells[s1]: # For each possible c1
@@ -534,13 +532,14 @@ while gameRunning:
                             c4 = grid[c3.x][c2.y]
                             if v >= c4.getPosVal(): continue # If at least does not contain the values in v, not correct v4
                             # If here, we have a Unique rectangle!!
-                            # c4.addData("Unique rectangle", [c1, c2, c3], list(v)) # add the data
+                            c4.addData("Unique rectangle", [c1, c2, c3], list(v)) # add the data
+                            print(c4.cellToString(printValue=True))
                             for vn in v: c4.removePosVal(vn) # Remove the values
-                            print("\nFounded!!\nv = " + str(v))
-                            print("c1: " + c1.cellToString(printValue=False, printData=False, printPairs=False))
-                            print("c3: " + c3.cellToString(printValue=False, printData=False, printPairs=False))
-                            print("c2: " + c2.cellToString(printValue=False, printData=False, printPairs=False))
-                            print("c4: " + c4.cellToString(printValue=False, printData=False, printPairs=False))
+                            # print("\nFounded!!\nv = " + str(v))
+                            # print("c1: " + c1.cellToString(printValue=False, printData=False, printPairs=False))
+                            # print("c3: " + c3.cellToString(printValue=False, printData=False, printPairs=False))
+                            # print("c2: " + c2.cellToString(printValue=False, printData=False, printPairs=False))
+                            # print("c4: " + c4.cellToString(printValue=False, printData=False, printPairs=False))
 
 
 
