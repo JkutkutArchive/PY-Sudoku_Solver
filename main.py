@@ -412,12 +412,38 @@ while gameRunning:
     #   - two cells (c1, c2) with a value v1 (NOT NECCESARRY A PAIR)
     #       - No multiple pairs on this pair (???)
     #       - len(posVal) on both is 2
-    #   - One of the members (c1) of the pair have another relation on a 3by3 pair: (c1, c3) with value v2 (NOT SURE IF PAIR)
+    #   - One of the members (c1) of the pair have another relation on the 3by3: (c1, c3) with value v2 (NOT NECCESARRY A PAIR)
     #       - c3.x != c1.x (therefore, c3.x != c1.x)
     #       - len(c3.posVal) = 2
     #       - both c2 and c3 has as second posVal v2
     #   If all OK: cells at (c3.x, T),, T = Sector(c2).y's can not be v2
 
+    ## START WITH 3BY3 PAIR
+
+    xyWc = [] # set of sets
+    for s in range(9): # for each sector
+        sectorC = set() # here the cells of the sector will be stored
+        for p in range(9): # for each cell on sector
+            i = (s // 3) * 3 + (p // 3)
+            j = (s % 3) * 3 + (p % 3)
+            if len(grid[i][j].getPosVal()) == 2: # If value not defined and only 2 possible values
+                sectorC.add(grid[i][j])
+        xyWc.append(sectorC) # Add it to the rest of candidates
+    
+    for s in xyWc:
+        print("\n----New Sector:----")
+        for c1 in s: # For each possible c1
+            for c3 in s: # Look for c3
+                if c3 == c1: continue # Skip the same cell
+                v2 = c1.getPosVal() & c3.getPosVal() # Get common possibles values
+                if len(v2) != 1: continue# If no values in common or to many, continue to next one 
+                v2 = next(iter(v2)) # convert set to single value
+                
+                print("\nFounded!!\nv2 = " + str(v2))
+                print(c1.cellToString(printValue=False, printData=False, printPairs=False))
+                print(c3.cellToString(printValue=False, printData=False, printPairs=False))
+
+    # for p in pairs[2]: # For each pair 
     # for p in pairs[0]:
     #     if p[0].getPos() == (0, 2): print("no worries")
     #     if len(p[0].getPosVal()) > 2 or len(p[1].getPosVal()) > 2: continue # len(posVal) on both should be 2
