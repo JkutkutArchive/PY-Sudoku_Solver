@@ -285,6 +285,14 @@ class Cell():
                             "       - c2 and c3 with the value " + str(d[2][2]) + "\n" + \
                             "   On a first look, we can not determine the value of these cells. However, we can ensure that either c2 or c3 is a " + str(d[2][2]) + \
                             "   For this reason, this cell can not be a " + str(d[2][2])
+            elif "Unique rectangle":
+                dataToAdd = "Let's have a look at the following (Unique rectangle): \n" + \
+                            "   Let's name the following cells:\n" + \
+                            "       c1 = " + str(d[1][0].getPos()) + "; c2 = " + str(d[1][1].getPos()) + "; c3 = " + str(d[1][2].getPos()) + "\n" + \
+                            "   Having on mind these cells, they form a rectangle with this cell. Furthermore, all 4 cells have in common that they can only be " + str(d[2]) + \
+                            " (Except for the cell in consideration witch can be " + str(self.getPosVal()) + ").\n" + \
+                            "   For these reason, if c3 is one of the possible values, c1 should be the other value (and for this reason, the value of c2 should be the same as c3)." + \
+                            " This makes the cell in consideration not able to be neither of these values, and it should be other value different."
 
             s.append(dataToAdd) # Add it to the array with the rest
         return s # Return all the data on text format
