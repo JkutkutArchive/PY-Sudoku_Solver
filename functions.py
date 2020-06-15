@@ -269,10 +269,22 @@ class Cell():
                     conclusion = "column"
                 else:
                     conclusion = "row"
-                dataToAdd = "Let's have a look at the following:" + \
+                dataToAdd = "Let's have a look at the following (X-Wing):" + \
                     "\n  - Either the cell " + str(d[1][0].getPos()) + " or " + str(d[1][1].getPos()) + " has the value " + str(d[3]) + \
                     "\n  - Either the cell " + str(d[2][0].getPos()) + " or " + str(d[2][1].getPos()) + " has the value " + str(d[3]) + \
                     "\nAcording to this facts, none of the cells on the " + conclusion + "s " + str(d[1][0].y) + " or " + str(d[1][1].y) + " can be this value. Therefore, this cell can not be " + str(d[3])
+            elif "XY-Wing" in key: # Format: ["XY-Wing <TYPE>", [c1, c2, c3], [v1, v2, v3]]
+                dataToAdd = "Let's have a look at the following (XY-Wing):" + \
+                            "   Have a look to the cell " + str(d[1][0].getPos()) + ", and let's name it c1. " + \
+                            "The same way, let's name c2 = " + str(d[1][1].getPos()) + " and c3 = " + str(d[1][1].getPos()) + "\n" + \
+                            "   If we take a look at the possible values of the cells, they can only one of the following values:\n" + \
+                            ("c1: " + str((d[2][0], d[2][1])) + "c2: " + str((d[2][0], d[2][2])) + "c3: " + str((d[2][1], d[2][2]))).center(60) + "\n" + \
+                            "   Furthermore, these cells are related with each other with the following values: \n" + \
+                            "       - c1 and c2 with the value " + str(d[2][0]) + "\n" + \
+                            "       - c1 and c3 with the value " + str(d[2][1]) + "\n" + \
+                            "       - c2 and c3 with the value " + str(d[2][2]) + "\n" + \
+                            "   On a first look, we can not determine the value of these cells. However, we can ensure that either c2 or c3 is " + str(d[2][2]) + \
+                            "   For this reason, this cell can not be " + str(d[2][2])
 
             s.append(dataToAdd) # Add it to the array with the rest
         return s # Return all the data on text format
