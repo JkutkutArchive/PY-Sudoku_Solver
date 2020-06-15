@@ -108,12 +108,18 @@ class Cell():
     def __str__(self):
         return str(self.getValue()) # Just print the value of the cell calling the method "getValue()"
 
-    def cellToString(self):
-        return "Cell " + str(self.getPos()) + \
-            "\n - Value: " + str(self.getValue()) + \
-            "\n - PosVal: " + str(self.getPosVal()) + \
-            "\n - Pairs: " + "".join(["\n    - Pair with " + str(p[0].getPos()) + " -> " + str(p[1]) for p in self.pairs]) + \
-            "\n - Data: " + "".join(["\n    - " + str(d) for d in self.dataToText()])
+    def cellToString(self, printValue=True, printPosVal=True, printPairs=True, printData=True):
+        s = "Cell " + str(self.getPos())
+        if printValue:
+            s = s + "\n - Value: " + str(self.getValue())
+        if printPosVal:
+            s = s + "\n - PosVal: " + str(self.getPosVal())
+        if printPairs:
+            s = s + "\n - Pairs: " + "".join(["\n    - Pair with " + str(p[0].getPos()) + " -> " + str(p[1]) for p in self.pairs])
+        if printData:
+            s = s + "\n - Data: " + "".join(["\n    - " + str(d) for d in self.dataToText()])
+        return s
+            
 
     def __eq__(self, other, exactComparation=False): # Enable us to compare it to other cells or to integers by the value
         if type(other) == int: # if comparing to an integer
