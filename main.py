@@ -26,7 +26,7 @@ import latexToPDF as pdf
 
 # 1. X-Wing (X-Wing algo)
 # 2. Sworldfish ()
-# 3. XY Wing () 
+# 3. XY Wing (XY-Wing algo) 
 # 4. Unique Rectangle () 
 # 5. Extremely advanced techniques () 
 
@@ -54,17 +54,17 @@ grid = [[tool.Cell(x, y) for y in range(9)] for x in range(9)]
 #     [0, 3, 0, 0, 0, 2, 0, 0, 0],
 #     [9, 4, 0, 0, 0, 6, 0, 0, 2]
 # ]
-data = [ # hard (solved)
-    [0, 0, 7, 0, 0, 0, 3, 0, 2],
-    [2, 0, 0, 0, 0, 5, 0, 1, 0],
-    [0, 0, 0, 8, 0, 1, 4, 0, 0],
-    [0, 1, 0, 0, 9, 6, 0, 0, 8],
-    [7, 6, 0, 0, 0, 0, 0, 4, 9],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 1, 0, 3, 0, 0, 0],
-    [8, 0, 1, 0, 6, 0, 0, 0, 0],
-    [0, 0, 0, 7, 0, 0, 0, 6, 3]
-]
+# data = [ # hard (solved)
+#     [0, 0, 7, 0, 0, 0, 3, 0, 2],
+#     [2, 0, 0, 0, 0, 5, 0, 1, 0],
+#     [0, 0, 0, 8, 0, 1, 4, 0, 0],
+#     [0, 1, 0, 0, 9, 6, 0, 0, 8],
+#     [7, 6, 0, 0, 0, 0, 0, 4, 9],
+#     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+#     [0, 0, 0, 1, 0, 3, 0, 0, 0],
+#     [8, 0, 1, 0, 6, 0, 0, 0, 0],
+#     [0, 0, 0, 7, 0, 0, 0, 6, 3]
+# ]
 
 # data = [ # multiple solutions
 #     [0, 0, 7, 0, 0, 0, 0, 0, 2],
@@ -101,6 +101,18 @@ data = [ # hard (solved)
 #     [6, 9, 8, 5, 3, 7, 0, 0, 0],
 #     [0, 0, 0, 2, 4, 8, 6, 3, 9]
 # ]
+
+data = [ # unique rentangles
+    [0, 0, 3, 2, 7, 8, 1, 0, 6],
+    [8, 6, 0, 1, 0, 0, 0, 2, 0],
+    [2, 7, 1, 6, 0, 0, 8, 0, 0],
+    [3, 8, 7, 9, 6, 5, 2, 1, 4],
+    [6, 1, 9, 3, 4, 2, 5, 7, 8],
+    [0, 0, 2, 8, 1, 7, 6, 3, 9],
+    [0, 3, 8, 4, 2, 1, 0, 6, 0],
+    [0, 2, 6, 5, 9, 3, 0, 8, 1],
+    [1, 0, 0, 7, 8, 6, 3, 0, 2]
+]
 
 # data = [ # expert
 #     [0, 0, 0, 0, 0, 0, 9, 2, 6],
@@ -394,9 +406,9 @@ while gameRunning:
             for i in range(2):
                 if len(matches[i]) == 1: # If only one match
                     p2 = next(iter(matches[i])) # Get the pair
-                    print("X-Wing " + ["row", "col"][t] + " with value " + str(value) + " and pos " + str(i) + ":" + \
-                        "\n  - p1: " + str(p1[0].getPos()) + ", " + str(p1[1].getPos()) + \
-                        "\n  - p2: " + str(p2[0].getPos()) + ", " + str(p2[1].getPos()))
+                    # print("X-Wing " + ["row", "col"][t] + " with value " + str(value) + " and pos " + str(i) + ":" + \
+                    #     "\n  - p1: " + str(p1[0].getPos()) + ", " + str(p1[1].getPos()) + \
+                    #     "\n  - p2: " + str(p2[0].getPos()) + ", " + str(p2[1].getPos()))
                     for j in range(9): # For each row or col
                         if t == 0: # X-Wing row
                             c = grid[j][p1[i].y] # Go on cols
@@ -407,16 +419,30 @@ while gameRunning:
                             c.addData("X-Wing " + ["row", "col"][t], p1, p2, value) # Add Data
                             c.removePosVal(value) # Remove this value from possible values
 
+
+
+    pv2Cells = [] # list of sets (1 per sector 3by3)
+    for s in range(9): # for each sector
+        sectorC = set() # here the cells of the sector will be stored
+        for p in range(9): # for each cell on sector
+            i = (s // 3) * 3 + (p // 3)
+            j = (s % 3) * 3 + (p % 3)
+            if len(grid[i][j].getPosVal()) == 2: # If value not defined and only 2 possible values
+                sectorC.add(grid[i][j])
+        pv2Cells.append(sectorC) # Add it to the rest of candidates
+
+
     # ----------    XY Wing   ----------
     # Row:
-    #   - two cells (c1, c2) with a value v1 (NOT NECCESARRY A PAIR)
+    #   - two cells (c1, c2) with a value v1
+    #       - Not neccesary a PAIR from pairs 
     #       - On the same row
-    #       - No multiple pairs on this pair (???)
-    #       - len(posVal) on both is 2
-    #   - One of the members (c1) of the pair have another relation on the 3by3: (c1, c3) with value v2 (NOT NECCESARRY A PAIR)
+    #       - len(posVal) on both is 2 => (c1 and c2 can not share more than one posVal)
+    #   - One of the members (c1) of the pair have another relation on the 3by3: (c1, c3) with value v2
+    #       - c1 and c3 not neccesary a PAIR from pairs 
     #       - c3.x != c1.x (therefore, c3.x != c1.x)
     #       - len(c3.posVal) = 2
-    #       - both c2 and c3 has as second posVal v3
+    #       - both c2 and c3 has as second posVal v3 in common
     #   If all OK: cells at (c3.x, T),, T = Sector(c2).y's can not be v2
 
     # Conclusion:
@@ -427,23 +453,10 @@ while gameRunning:
     #    - v2: value in c1 and c3
     #    - v3: value in c2 and c3
 
-
-    ## START WITH 3BY3 PAIR
-
-    xyWc = [] # set of sets
-    for s in range(9): # for each sector
-        sectorC = set() # here the cells of the sector will be stored
-        for p in range(9): # for each cell on sector
-            i = (s // 3) * 3 + (p // 3)
-            j = (s % 3) * 3 + (p % 3)
-            if len(grid[i][j].getPosVal()) == 2: # If value not defined and only 2 possible values
-                sectorC.add(grid[i][j])
-        xyWc.append(sectorC) # Add it to the rest of candidates
-    
-    for s in range(len(xyWc)): # for each sector
+    for s in range(len(pv2Cells)): # for each sector
         # print("\n----New Sector:----")
-        for c1 in xyWc[s]: # For each possible c1
-            for c3 in xyWc[s]: # Look for c3 (note that the pair (c1, c3) is formed as well as (c3, c1)) => always work based on c1 and c3
+        for c1 in pv2Cells[s]: # For each possible c1
+            for c3 in pv2Cells[s]: # Look for c3 (note that the pair (c1, c3) is formed as well as (c3, c1)) => always work based on c1 and c3
                 if c3 == c1: continue # Skip the same cell
                 if c3.x == c1.x: continue # If both cells on the same row, not valid 
                 v2 = c1.getPosVal() & c3.getPosVal() # Get common possibles values
@@ -456,7 +469,7 @@ while gameRunning:
                 c2Sector = [(s + i) % 3 for i in range(1, 3, 1)] # Get the sectors to check (OJO: Row only)
                 # print(str(s) + " -> " + str(c2Sector))
                 for s2 in c2Sector: # for each sector in possible sectors for c2
-                    for c2 in xyWc[s2]: # for each cell on possible sector of c2
+                    for c2 in pv2Cells[s2]: # for each cell on possible sector of c2
                         if c2.x != c1.x: continue # If not on the same row, not valid
                         if v1 not in c2.getPosVal() or v3 not in c2.getPosVal(): continue # If the values of c2 does not make a valid XY-Wing, continue seaching 
                         # if here, c2 is valid => XY-Wing can be applied!! 
@@ -470,11 +483,10 @@ while gameRunning:
                             if v3 in cell.getPosVal():
                                 cell.addData("XY-Wing", [c1, c2, c3], [v1, v2, v3]) # Row
                                 cell.removePosVal(v3)
-                                # print("Cell " + str(cell.getPos()) + " affected with the value: " + str(v3))
                 
                 c2Sector = [(s // 3) * 3 + i for i in range(1, 3, 1)] # Get the sectors to check (OJO: Column only)
                 for s2 in c2Sector: # for each sector in possible sectors for c2
-                    for c2 in xyWc[s2]: # for each cell on possible sector of c2
+                    for c2 in pv2Cells[s2]: # for each cell on possible sector of c2
                         if c2.y != c1.y: continue # If not on the same col, not valid
                         if v1 not in c2.getPosVal() or v3 not in c2.getPosVal(): continue # If the values of c2 does not make a valid XY-Wing, continue seaching 
                         # if here, c2 is valid => XY-Wing can be applied!! 
