@@ -447,13 +447,12 @@ while gameRunning:
 
     # Conclusion:
     #  - Cells: c1, c3, c2
-    #
     #  - Links by value:
     #    - v1: value in c1 and c2
     #    - v2: value in c1 and c3
     #    - v3: value in c2 and c3
 
-    for s in range(len(pv2Cells)): # for each sector
+    for s in range(9): # for each sector (len(pv2Cells))
         # print("\n----New Sector:----")
         for c1 in pv2Cells[s]: # For each possible c1
             for c3 in pv2Cells[s]: # Look for c3 (note that the pair (c1, c3) is formed as well as (c3, c1)) => always work based on c1 and c3
@@ -492,10 +491,61 @@ while gameRunning:
                         # if here, c2 is valid => XY-Wing can be applied!! 
 
                         for i in range(s2 * 3, s2 * 3 + 3): # for all cells at c3.y on the sector where is c2
-                            cell = grid[c3.x][i]
+                            cell = grid[i][c3.y]
                             if v3 in cell.getPosVal():
                                 cell.addData("XY-Wing", [c1, c2, c3], [v1, v2, v3]) # Row
                                 cell.removePosVal(v3)
+
+
+    # ----------    Unique rentangles   ----------
+    # We look for:
+    #   - 4 cells: c1, c2, c3, c4 
+    #       - All has len(posVal) == 2 except 1 that has more (c4)
+    #       - All has v1 and v2 as their values
+    #       - c1 on same sector (s1) than c3
+    #       - c2 on same sector (s2) than c4
+    #   - Two options:
+    #       - Row rect:
+    #           - c1.y == c3.y and c2.y == c4.y
+    #           - c1.x == c2.x and c3.x == c4.x
+    #       - Col rect:
+    #           - c1.x == c3.x and c2.x == c4.x
+    #           - c1.y == c2.y and c3.y == c4.y
+
+
+    sectorsToCheck = [[0],[-1,1]] # Based on the index (sector.x or sector.y you are), get how much you must move to check neighbours
+    # sectorsToCheck = [[1],[0,2]] # Based on the index (sector.x or sector.y you are), get the sector(.x or .y) to check
+    # sectorsToCheck = [[3],[0,6]] # Based on the index (sector.x or sector.y you are), get the 1º cell(.x or .y) of the sector to check
+    # for s in range(9): # for each sector (len(pv2Cells))
+    for s1 in range(1, 2):
+        for c1 in pv2Cells[s1]: # For each possible c1
+            v = c1.getPosVal().copy() # Get v1 and v2 on a set
+            for c3 in pv2Cells[s1]:
+                if c1 == c3: continue # Skip itself
+                if v != c3.getPosVal(): continue # They must have exacly 2 identical posValues
+                # If here, may be valid c3 (depends on position in relation with c1)
+
+                if c1.y == c3.y: # Row rect:    
+                    for m in sectorsToCheck[(s1 % 3) % 2]: # for each move to go to a possible s2
+                        for c2 in pv2Cells[s1 - m]: # for each possible c2 in possible s2
+                            if c2.x != c1.x: continue
+                            if v != c2.getPosVal(): continue # Not valid possible values for v2
+                            #If here, c2 is valid
+                            c4 = grid[c3.x][c2.y]
+                            if v >= c4.getPosVal(): continue # If at least does not contain the values in v, not correct v4
+                            # If here, we have a Unique rectangle!!
+                            # c4.addData("Unique rectangle", [c1, c2, c3], list(v)) # add the data
+                            for vn in v: c4.removePosVal(vn) # Remove the values
+                            print("\nFounded!!\nv = " + str(v))
+                            print("c1: " + c1.cellToString(printValue=False, printData=False, printPairs=False))
+                            print("c3: " + c3.cellToString(printValue=False, printData=False, printPairs=False))
+                            print("c2: " + c2.cellToString(printValue=False, printData=False, printPairs=False))
+                            print("c4: " + c4.cellToString(printValue=False, printData=False, printPairs=False))
+
+
+
+
+
 
 
     response = input("Continue?")
