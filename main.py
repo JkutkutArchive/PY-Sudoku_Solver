@@ -54,17 +54,17 @@ grid = [[tool.Cell(x, y) for y in range(9)] for x in range(9)]
 #     [0, 3, 0, 0, 0, 2, 0, 0, 0],
 #     [9, 4, 0, 0, 0, 6, 0, 0, 2]
 # ]
-# data = [ # hard (solved)
-#     [0, 0, 7, 0, 0, 0, 3, 0, 2],
-#     [2, 0, 0, 0, 0, 5, 0, 1, 0],
-#     [0, 0, 0, 8, 0, 1, 4, 0, 0],
-#     [0, 1, 0, 0, 9, 6, 0, 0, 8],
-#     [7, 6, 0, 0, 0, 0, 0, 4, 9],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 1, 0, 3, 0, 0, 0],
-#     [8, 0, 1, 0, 6, 0, 0, 0, 0],
-#     [0, 0, 0, 7, 0, 0, 0, 6, 3]
-# ]
+data = [ # hard (solved)
+    [0, 0, 7, 0, 0, 0, 3, 0, 2],
+    [2, 0, 0, 0, 0, 5, 0, 1, 0],
+    [0, 0, 0, 8, 0, 1, 4, 0, 0],
+    [0, 1, 0, 0, 9, 6, 0, 0, 8],
+    [7, 6, 0, 0, 0, 0, 0, 4, 9],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 1, 0, 3, 0, 0, 0],
+    [8, 0, 1, 0, 6, 0, 0, 0, 0],
+    [0, 0, 0, 7, 0, 0, 0, 6, 3]
+]
 
 # data = [ # multiple solutions
 #     [0, 0, 7, 0, 0, 0, 0, 0, 2],
@@ -90,17 +90,17 @@ grid = [[tool.Cell(x, y) for y in range(9)] for x in range(9)]
 #     [0, 1, 0, 4, 0, 0, 6, 9, 2]
 # ]
 
-data = [ # XY-Wing
-    [8, 0, 0, 3, 6, 0, 9, 0, 0],
-    [0, 0, 9, 0, 1, 0, 8, 6, 3],
-    [0, 6, 3, 0, 8, 9, 0, 0, 5],
-    [9, 2, 4, 6, 7, 3, 1, 5, 8],
-    [3, 8, 6, 9, 5, 1, 7, 2, 4],
-    [5, 7, 1, 8, 2, 4, 3, 9, 6],
-    [4, 3, 2, 1, 9, 6, 5, 8, 7],
-    [6, 9, 8, 5, 3, 7, 0, 0, 0],
-    [0, 0, 0, 2, 4, 8, 6, 3, 9]
-]
+# data = [ # XY-Wing
+#     [8, 0, 0, 3, 6, 0, 9, 0, 0],
+#     [0, 0, 9, 0, 1, 0, 8, 6, 3],
+#     [0, 6, 3, 0, 8, 9, 0, 0, 5],
+#     [9, 2, 4, 6, 7, 3, 1, 5, 8],
+#     [3, 8, 6, 9, 5, 1, 7, 2, 4],
+#     [5, 7, 1, 8, 2, 4, 3, 9, 6],
+#     [4, 3, 2, 1, 9, 6, 5, 8, 7],
+#     [6, 9, 8, 5, 3, 7, 0, 0, 0],
+#     [0, 0, 0, 2, 4, 8, 6, 3, 9]
+# ]
 
 # data = [ # expert
 #     [0, 0, 0, 0, 0, 0, 9, 2, 6],
@@ -441,7 +441,7 @@ while gameRunning:
         xyWc.append(sectorC) # Add it to the rest of candidates
     
     for s in range(len(xyWc)): # for each sector
-        print("\n----New Sector:----")
+        # print("\n----New Sector:----")
         for c1 in xyWc[s]: # For each possible c1
             for c3 in xyWc[s]: # Look for c3 (note that the pair (c1, c3) is formed as well as (c3, c1)) => always work based on c1 and c3
                 if c3 == c1: continue # Skip the same cell
@@ -454,7 +454,6 @@ while gameRunning:
                 v2 = next(iter(v2)) # convert set to single value
 
                 c2Sector = [(s + i) % 3 for i in range(1, 3, 1)] # Get the sectors to check (OJO: Row only)
-                c2Sector = [1]
                 # print(str(s) + " -> " + str(c2Sector))
                 for s2 in c2Sector: # for each sector in possible sectors for c2
                     for c2 in xyWc[s2]: # for each cell on possible sector of c2
@@ -469,9 +468,22 @@ while gameRunning:
                         for i in range(s2 * 3, s2 * 3 + 3): # for all cells at c3.x on the sector where is c2
                             cell = grid[c3.x][i]
                             if v3 in cell.getPosVal():
-                                cell.addData("XY-Wing row", [c1, c2, c3], [v1, v2, v3])
+                                cell.addData("XY-Wing", [c1, c2, c3], [v1, v2, v3]) # Row
                                 cell.removePosVal(v3)
                                 # print("Cell " + str(cell.getPos()) + " affected with the value: " + str(v3))
+                
+                c2Sector = [(s // 3) * 3 + i for i in range(1, 3, 1)] # Get the sectors to check (OJO: Column only)
+                for s2 in c2Sector: # for each sector in possible sectors for c2
+                    for c2 in xyWc[s2]: # for each cell on possible sector of c2
+                        if c2.y != c1.y: continue # If not on the same col, not valid
+                        if v1 not in c2.getPosVal() or v3 not in c2.getPosVal(): continue # If the values of c2 does not make a valid XY-Wing, continue seaching 
+                        # if here, c2 is valid => XY-Wing can be applied!! 
+
+                        for i in range(s2 * 3, s2 * 3 + 3): # for all cells at c3.y on the sector where is c2
+                            cell = grid[c3.x][i]
+                            if v3 in cell.getPosVal():
+                                cell.addData("XY-Wing", [c1, c2, c3], [v1, v2, v3]) # Row
+                                cell.removePosVal(v3)
 
 
     response = input("Continue?")
