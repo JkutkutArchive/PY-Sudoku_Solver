@@ -25,9 +25,9 @@ import latexToPDF as pdf
 # https://www.learn-sudoku.com/advanced-techniques.html
 
 # 1. X-Wing (X-Wing algo)
-# 2. Sworldfish ()
-# 3. XY Wing (XY-Wing algo) 
-# 4. Unique Rectangle () 
+# 2. XY Wing (XY-Wing algo) 
+# 3. Unique Rectangle (Unique rectangle algo) 
+# 4. Sworldfish ()
 # 5. Extremely advanced techniques () 
 
 # Sudoku vars:
@@ -102,16 +102,28 @@ grid = [[tool.Cell(x, y) for y in range(9)] for x in range(9)]
 #     [0, 0, 0, 2, 4, 8, 6, 3, 9]
 # ]
 
-data = [ # unique rentangles
-    [0, 0, 3, 2, 7, 8, 1, 0, 6],
-    [8, 6, 0, 1, 0, 0, 0, 2, 0],
-    [2, 7, 1, 6, 0, 0, 8, 0, 0],
-    [3, 8, 7, 9, 6, 5, 2, 1, 4],
-    [6, 1, 9, 3, 4, 2, 5, 7, 8],
-    [0, 0, 2, 8, 1, 7, 6, 3, 9],
-    [0, 3, 8, 4, 2, 1, 0, 6, 0],
-    [0, 2, 6, 5, 9, 3, 0, 8, 1],
-    [1, 0, 0, 7, 8, 6, 3, 0, 2]
+# data = [ # unique rentangles
+#     [0, 0, 3, 2, 7, 8, 1, 0, 6],
+#     [8, 6, 0, 1, 0, 0, 0, 2, 0],
+#     [2, 7, 1, 6, 0, 0, 8, 0, 0],
+#     [3, 8, 7, 9, 6, 5, 2, 1, 4],
+#     [6, 1, 9, 3, 4, 2, 5, 7, 8],
+#     [0, 0, 2, 8, 1, 7, 6, 3, 9],
+#     [0, 3, 8, 4, 2, 1, 0, 6, 0],
+#     [0, 2, 6, 5, 9, 3, 0, 8, 1],
+#     [1, 0, 0, 7, 8, 6, 3, 0, 2]
+# ]
+
+data = [ # swordfish
+    [0, 0, 2, 0, 8, 1, 0, 9, 7],
+    [7, 0, 1, 6, 9, 0, 2, 0, 8],
+    [9, 8, 4, 5, 2, 7, 6, 3, 1],
+    [4, 2, 5, 1, 3, 8, 9, 7, 6],
+    [3, 7, 6, 9, 5, 2, 1, 8, 4],
+    [8, 1, 9, 7, 4, 6, 3, 0, 0],
+    [0, 0, 3, 8, 7, 0, 0, 0, 0],
+    [2, 0, 8, 0, 1, 9, 7, 6, 0],
+    [0, 0, 7, 2, 6, 0, 8, 0, 0]
 ]
 
 # data = [ # expert
@@ -540,6 +552,57 @@ while gameRunning:
                             # print("c3: " + c3.cellToString(printValue=False, printData=False, printPairs=False))
                             # print("c2: " + c2.cellToString(printValue=False, printData=False, printPairs=False))
                             # print("c4: " + c4.cellToString(printValue=False, printData=False, printPairs=False))
+
+
+    # ----------    Swordfish   ----------
+    # -Row: 
+    #   - Looking for 2 row pairs: p1, p2 
+    #       - p1.x != p2.x
+    #       - both pairs are made based on the same value: v
+    #       - one of the cells in each pair has to be alinged on the same column
+    #   - That way, each cell on that colum can not be that value v
+
+    for p1 in pairs[0]: # For each row pair
+        v = p1[2]
+        p1 = p1[0:2]
+        for p2 in pairs[0]: # For the rest of the row pairs
+            if p2[2] != v: continue # skip if different value
+            p2 = p2[0:2] # only store the pair
+            if p2 == p1: continue # skip the same pair
+            for p22 in p2: # For element at p2 that can make a swordfish
+                for p11 in p1: # For each element at p1 that can make a swordfish
+                    if p22.y == p11.y: # if on same column
+                        # if here, we have a swordfish at y = p22.y. Now update the rest
+                        # print("\nFounded on row " + str(p1[0].x) + " and " + str(p2[0].x) + "!!\nv = " + str(v))
+                        # print("p1.1: Cell at y " + str(p1[0].y))
+                        # print("p1.2: Cell at y " + str(p1[1].y))
+                        # print("p2.1: Cell at y " + str(p2[0].y))
+                        # print("p2.2: Cell at y " + str(p2[1].y))
+                        for i in range(9):
+                            c = grid[i][p22.y] # Cell to test
+                            if c == p22 or c == p11: continue # c is on p1 or p2, skip
+                            if v in c.getPosVal():
+                                print("Swordfish => y = " + str(p22.y) + " with the value " + str(v))
+                                print(c.cellToString(printData=False, printPairs=False, printValue=False))
+                                c.addData("swordfish", p1, p2, p11, p22, v)
+                                c.removePosVal(v)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
