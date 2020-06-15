@@ -294,6 +294,7 @@ class Cell():
                             "   For these reason, if c3 is one of the possible values, c1 should be the other value (and for this reason, the value of c2 should be the same as c3)." + \
                             " This makes the cell in consideration not able to be neither of these values, and it should be other value different."
             elif "Swordfish" in key: # Format: ["swordfish", p1, p2, p11, p22, v]
+                # dataToAdd = "Let's have a look at the following (Swordfish): \n" + \
                 dataToAdd = ""
 
             s.append(dataToAdd) # Add it to the array with the rest
