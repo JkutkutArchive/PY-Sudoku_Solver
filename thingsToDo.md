@@ -1,5 +1,6 @@
 ## ALL CODE:
 - Remove code based on x,y => base it on r,c
+- Check if can remove possVal based on "val in cell.getPosVal()"
 
 
 ## main:
