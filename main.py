@@ -410,13 +410,23 @@ while gameRunning:
     # ----------    XY Wing   ----------
     # Row:
     #   - two cells (c1, c2) with a value v1 (NOT NECCESARRY A PAIR)
+    #       - On the same row
     #       - No multiple pairs on this pair (???)
     #       - len(posVal) on both is 2
     #   - One of the members (c1) of the pair have another relation on the 3by3: (c1, c3) with value v2 (NOT NECCESARRY A PAIR)
     #       - c3.x != c1.x (therefore, c3.x != c1.x)
     #       - len(c3.posVal) = 2
-    #       - both c2 and c3 has as second posVal v2
+    #       - both c2 and c3 has as second posVal v3
     #   If all OK: cells at (c3.x, T),, T = Sector(c2).y's can not be v2
+
+    # Conclusion:
+    #  - Cells: c1, c3, c2
+    #
+    #  - Links by value:
+    #    - v1: value in c1 and c2
+    #    - v2: value in c1 and c3
+    #    - v3: value in c2 and c3
+
 
     ## START WITH 3BY3 PAIR
 
@@ -430,48 +440,38 @@ while gameRunning:
                 sectorC.add(grid[i][j])
         xyWc.append(sectorC) # Add it to the rest of candidates
     
-    for s in xyWc:
+    for s in range(len(xyWc)): # for each sector
         print("\n----New Sector:----")
-        for c1 in s: # For each possible c1
-            for c3 in s: # Look for c3
+        for c1 in xyWc[s]: # For each possible c1
+            for c3 in xyWc[s]: # Look for c3 (note that the pair (c1, c3) is formed as well as (c3, c1)) => always work based on c1 and c3
                 if c3 == c1: continue # Skip the same cell
+                if c3.x == c1.x: continue # If both cells on the same row, not valid 
                 v2 = c1.getPosVal() & c3.getPosVal() # Get common possibles values
                 if len(v2) != 1: continue# If no values in common or to many, continue to next one 
+                # If here, c3 is valid
+                v1 = next(iter(c1.getPosVal() - v2)) # Get v1 by removing v2 from possibles values of c1
+                v3 = next(iter(c3.getPosVal() - v2)) # Get v3 by the method
                 v2 = next(iter(v2)) # convert set to single value
-                
-                print("\nFounded!!\nv2 = " + str(v2))
-                print(c1.cellToString(printValue=False, printData=False, printPairs=False))
-                print(c3.cellToString(printValue=False, printData=False, printPairs=False))
 
-    # for p in pairs[2]: # For each pair 
-    # for p in pairs[0]:
-    #     if p[0].getPos() == (0, 2): print("no worries")
-    #     if len(p[0].getPosVal()) > 2 or len(p[1].getPosVal()) > 2: continue # len(posVal) on both should be 2
-    #     singlePair = True
-    #     for i in range(9):
-    #         if i == p[2]: continue # Skip the same pair
-    #         if (p[0], p[1], i) in pairs[0]:
-    #             singlePair = False
-    #             break
-    #     if not singlePair: continue # If double pair (pair with more than one value), go to next pair
-    #     v1 = p[2]
-    #     posV2 = [next(iter(p[i].getPosVal() - set([v1]))) for i in range(2)] # Get possible values of v2
-    #     print("Pair Row" + str(p[0].getPos()) + " and " + str(p[1].getPos()) + " with value " + str(value) + \
-    #         "\n  " + str(p[0].getPosVal()) + " --- " + str(p[1].getPosVal()) + \
-    #         "\n  v1: " + str(v1) + "; posV2: " + str(posV2))
-    #     c3pair = None
-    #     for posC3 in pairs[2]: # for each pair made on a 3by3
-    #         v2 = posC3[2] # Theoretical value of v2
-    #         if p[0] in posC3 and v2 in posV2: # If pair (c1, c3) with a valid v2 value
-    #             # c3pair = posC3
-    #             # print("Pair Row" + str(p[0].getPos()) + " and " + str(p[1].getPos()) + " with value " + str(value) + \
-    #             #     "\n  " + str(p[0].getPosVal()) + " --- " + str(p[1].getPosVal()) + \
-    #             #     "\n  v1: " + str(v1) + "; posV2: " + str(posV2))
-    #             print("founded")
+                c2Sector = [(s + i) % 3 for i in range(1, 3, 1)] # Get the sectors to check (OJO: Row only)
+                c2Sector = [1]
+                # print(str(s) + " -> " + str(c2Sector))
+                for s2 in c2Sector: # for each sector in possible sectors for c2
+                    for c2 in xyWc[s2]: # for each cell on possible sector of c2
+                        if c2.x != c1.x: continue # If not on the same row, not valid
+                        if v1 not in c2.getPosVal() or v3 not in c2.getPosVal(): continue # If the values of c2 does not make a valid XY-Wing, continue seaching 
+                        # if here, c2 is valid => XY-Wing can be applied!! 
+                        # print("\nFounded!!\nv1= " + str(v1) + "; v2 = " + str(v2)+ "; v3 = " + str(v3))
+                        # print("c1: " + c1.cellToString(printValue=False, printData=False, printPairs=False))
+                        # print("c3: " + c3.cellToString(printValue=False, printData=False, printPairs=False))
+                        # print("c2: " + c2.cellToString(printValue=False, printData=False, printPairs=False))
 
-
-
-
+                        for i in range(s2 * 3, s2 * 3 + 3): # for all cells at c3.x on the sector where is c2
+                            cell = grid[c3.x][i]
+                            if v3 in cell.getPosVal():
+                                cell.addData("XY-Wing row", [c1, c2, c3], [v1, v2, v3])
+                                cell.removePosVal(v3)
+                                # print("Cell " + str(cell.getPos()) + " affected with the value: " + str(v3))
 
 
     response = input("Continue?")
@@ -490,4 +490,4 @@ while gameRunning:
                 print(grid[int(response[0])][int(response[1])].value)
 
 print("\nThank you for using this code. I hope you liked it.")
-print("If you want to see more code like this, visit\nhttps://github.com/Jkutkut/Jkutkut-projects")
+print("If you want to see more code like this, visit\n\nhttps://github.com/Jkutkut/Jkutkut-projects\n\n")
