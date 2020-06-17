@@ -565,29 +565,33 @@ while gameRunning:
     # THIS CODE MAY BE SUTIABLE FOR X-WING?
 
     for p1 in pairs[0]: # For each row pair
-        v = p1[2]
-        p1 = p1[0:2]
-        for p2 in pairs[0]: # For the rest of the row pairs
-            if p2[2] != v: continue # skip if different value
-            p2 = p2[0:2] # only store the pair
-            if p2 == p1: continue # skip the same pair
-            for p22 in p2: # For element at p2 that can make a swordfish
-                for p11 in p1: # For each element at p1 that can make a swordfish
-                    if p22.y == p11.y: # if on same column
-                        # if here, we have a swordfish at y = p22.y. Now update the rest
-                        # print("\nFounded on row " + str(p1[0].x) + " and " + str(p2[0].x) + "!!\nv = " + str(v))
-                        # print("p1.1: Cell at y " + str(p1[0].y))
-                        # print("p1.2: Cell at y " + str(p1[1].y))
-                        # print("p2.1: Cell at y " + str(p2[0].y))
-                        # print("p2.2: Cell at y " + str(p2[1].y))
-                        for i in range(9):
-                            c = grid[i][p22.y] # Cell to test
-                            if c == p22 or c == p11: continue # c is on p1 or p2, skip
-                            if v in c.getPosVal():
-                                print("Swordfish => y = " + str(p22.y) + " with the value " + str(v))
-                                print(c.cellToString(printData=False, printPairs=False, printValue=False))
-                                c.addData("swordfish", p1, p2, p11, p22, v)
-                                c.removePosVal(v)
+        # print("pair")
+        print(p1[2])
+        # print(p1[0].cellToString(printValue=False, printPairs=False, printData=False))
+        # print(p1[1].cellToString(printValue=False, printPairs=False, printData=False))
+        # v = p1[2]
+        # p1 = p1[0:2]
+        # for p2 in pairs[0]: # For the rest of the row pairs
+        #     if p2[2] != v: continue # skip if different value
+        #     p2 = p2[0:2] # only store the pair
+        #     if p2 == p1: continue # skip the same pair
+        #     for p22 in p2: # For element at p2 that can make a swordfish
+        #         for p11 in p1: # For each element at p1 that can make a swordfish
+        #             if p22.y == p11.y: # if on same column
+        #                 # if here, we have a swordfish at y = p22.y. Now update the rest
+        #                 # print("\nFounded on row " + str(p1[0].x) + " and " + str(p2[0].x) + "!!\nv = " + str(v))
+        #                 # print("p1.1: Cell at y " + str(p1[0].y))
+        #                 # print("p1.2: Cell at y " + str(p1[1].y))
+        #                 # print("p2.1: Cell at y " + str(p2[0].y))
+        #                 # print("p2.2: Cell at y " + str(p2[1].y))
+        #                 for i in range(9):
+        #                     c = grid[i][p22.y] # Cell to test
+        #                     if c == p22 or c == p11: continue # c is on p1 or p2, skip
+        #                     if v in c.getPosVal():
+        #                         print("Swordfish => y = " + str(p22.y) + " with the value " + str(v))
+        #                         print(c.cellToString(printData=False, printPairs=False, printValue=False))
+        #                         c.addData("swordfish", p1, p2, p11, p22, v)
+        #                         c.removePosVal(v)
 
 
 
@@ -623,9 +627,10 @@ while gameRunning:
             if "e" in response: # exit, e, ex
                 break
             else: # 58 => view data on the cell (5,8)
-                print(*grid[int(response[0])][int(response[1])].dataToText(), sep="\n")
-                print(*grid[int(response[0])][int(response[1])].posVal, sep=", ")
-                print(grid[int(response[0])][int(response[1])].value)
+                print(grid[int(response[0])][int(response[1])].cellToString())
+                # print(*grid[int(response[0])][int(response[1])].dataToText(), sep="\n")
+                # print(*grid[int(response[0])][int(response[1])].posVal, sep=", ")
+                # print(grid[int(response[0])][int(response[1])].value)
 
 print("\nThank you for using this code. I hope you liked it.")
 print("If you want to see more code like this, visit\n\nhttps://github.com/Jkutkut/Jkutkut-projects\n\n")
