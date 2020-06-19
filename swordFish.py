@@ -120,24 +120,23 @@ pairs = set([
     (p181, p182, 3)
     ])
 
-def swordfish(v, pairs, y, nY, yUsed=[]):
+
+def swordfish(v, pairs, iniPos, currentPos, cellToPos, used=[]):
     # print("Iteration")
     if len(pairs) == 0:
         return None
-    if y == nY:
-        if len(yUsed) == 1: return None # If here, this is a double pair => nope
-        return yUsed + [y]
+    if iniPos == currentPos:
+        if len(used) == 1: return None # If here, this is a double pair => nope
+        return used + [iniPos]
     for p in pairs:
         if p[2] != v: continue # if different value, 
-        if nY == p[0].y: # If I can continue this path
-            return swordfish(v, pairs - set([p]), y, p[1].y, yUsed + [nY])
+        if currentPos == cellToPos(p[0]): # If I can continue this path
+            return swordfish(v, pairs - set([p]), iniPos, cellToPos(p[1]), cellToPos, used + [currentPos])
         
-        elif nY == p[1].y: # If I can continue this path
-            return swordfish(v, pairs - set([p]), y, p[0].y, yUsed + [nY])
+        elif currentPos == cellToPos(p[1]): # If I can continue this path
+            return swordfish(v, pairs - set([p]), iniPos, cellToPos(p[0]), cellToPos, used + [currentPos])
     # If here, not possible
     return None
-    
-
 
 
 # What I Know:
@@ -148,6 +147,6 @@ def swordfish(v, pairs, y, nY, yUsed=[]):
 # print(len(pairs))
 # print(len(pairs - set([(p11, p12, 4)])))
 for p in pairs:
-    result = swordfish(p[2], pairs - set(p), p[0].y, p[1].y)
+    result = swordfish(p[2], pairs - set(p), p[0].y, p[1].y, lambda x: x.y)
     if result != None:
         print(str(result) + " -> start = " + str(p[0].getPos()) + "; value: " + str(p[2]))
