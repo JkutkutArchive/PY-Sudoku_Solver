@@ -139,7 +139,7 @@ def swordfish(v, pairs, iniPos, currentPos, cellToPosF, cells=[]):
 
     if len(pairs) != 0: # If still pairs to search (and still running this algo)
         if iniPos == currentPos: # If loop made (may be a correct swordfish)
-            return set() if len(cells) == 2 else cells # Return the sol only if it is not a double pair
+            return [] if len(cells) == 2 else cells # Return the sol only if it is not a double pair
         for p in pairs: # For the rest of the pairs
             if p[2] != v: continue # if different value, no possible to form it with this pair, go to the next one
             for i in range(2): # Try to continue the loop with both cells as connector
@@ -147,7 +147,7 @@ def swordfish(v, pairs, iniPos, currentPos, cellToPosF, cells=[]):
                     result = swordfish(v, pairs - set([p]), iniPos, cellToPosF(p[(i + 1) % 2]), cellToPosF, cells + [p[i], p[(i + 1) % 2]])
                     if len(result) > 0: return result # If correct swordfish found return that solution. Else, continue searching
     # If here, not possible or no more pairs to checks
-    return set()
+    return []
 
 
 
