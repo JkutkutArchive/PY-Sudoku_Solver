@@ -84,8 +84,6 @@ def tellCells(cell, cleverCell=True): # When a cell defines its value, this func
         if i != cell.x: # Col
             c = grid[i][cell.y]
             if c.getValue() != value and value in c.getPosVal():
-                # if c.getPos() == (8, 0) and value == 5:
-                #     print("foundeddd  value = " + str(value) + " -> " + cell.cellToString())
                 c.addData("basic col", [value])
                 c.removePosVal(value, cleverCell=cleverCell)
         x = (cell.x // 3) * 3 + (i // 3)
@@ -146,7 +144,6 @@ class Cell():
         if self.getValue() != 0: return # if already called, do not continue
         if value != sol[self.x][self.y]: # If not correct value
             print("\n\n\n ERROR: \n"+self.cellToString())
-            print("\n\n"+grid[1][1].cellToString())
             print(("ERROR, NOT CORRECT VALUE -> Cell" + str(self.getPos()) + " is not " + str(value) + ", is " + str(sol[self.x][self.y])).center(40))
             raise Exception("Not correct value")
         self.value = value # Set the value of the cell to the one given 
@@ -297,7 +294,7 @@ class Cell():
                             " (Except for the cell in consideration witch can be " + str(self.getPosVal()) + ").\n" + \
                             "   For these reason, if c3 is one of the possible values, c1 should be the other value (and for this reason, the value of c2 should be the same as c3)." + \
                             " This makes the cell in consideration not able to be neither of these values, and it should be other value different."
-            elif "Swordfish" in key: # Format: ["swordfish", p1, p2, p11, p22, v]
+            elif "Swordfish" in key: # Format: ["swordfish", , v]
                 # dataToAdd = "Let's have a look at the following (Swordfish): \n" + \
                 dataToAdd = ""
 
