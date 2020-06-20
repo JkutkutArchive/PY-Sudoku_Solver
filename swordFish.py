@@ -123,7 +123,7 @@ pairs = set([
     ])
 
 
-def swordfish(v, pairs, iniPos, currentPos, cellToPosF, cells=set()):
+def swordfish(v, pairs, iniPos, currentPos, cellToPosF, cells=[]):
     '''Finds a list of pairs valid to form a swordfish.
     
     - v (int): value that all pairs must have as their pair-value
@@ -131,10 +131,10 @@ def swordfish(v, pairs, iniPos, currentPos, cellToPosF, cells=set()):
     - iniPos (int): first cell's coordinate (therefore, the goal coordinate)
     - currentPos (int): current cell's coordinate
     - cellToPosF (function): function to get the coordinate of a cell (this way, this code can be used for rows and columns)
-    - cells (set): A set to keep track of the path taken to make the loop (also the output)
+    - cells (list): To keep track of the path taken to make the loop (also the output)
 
     Returns:
-    set: set with the cells used to make this algorithm possible (cellsPos)
+    list: With the cells used to make this algorithm possible (cellsPos)
     '''
 
     if len(pairs) != 0: # If still pairs to search (and still running this algo)
@@ -144,8 +144,8 @@ def swordfish(v, pairs, iniPos, currentPos, cellToPosF, cells=set()):
             if p[2] != v: continue # if different value, no possible to form it with this pair, go to the next one
             for i in range(2): # Try to continue the loop with both cells as connector
                 if currentPos == cellToPosF(p[i]): # If I can continue this path with the first member of the pair
-                    result = swordfish(v, pairs - set([p]), iniPos, cellToPosF(p[(i + 1) % 2]), cellToPosF, cells ^ set(p[0:2]))
-                    if len(result) > 0: return result # If correct swordfish found return that solution
+                    result = swordfish(v, pairs - set([p]), iniPos, cellToPosF(p[(i + 1) % 2]), cellToPosF, cells + [p[i], p[(i + 1) % 2]])
+                    if len(result) > 0: return result # If correct swordfish found return that solution. Else, continue searching
     # If here, not possible or no more pairs to checks
     return set()
 
@@ -161,6 +161,6 @@ while len(pairss) > 3:
     p = pairss.pop() # Remove and return element to pairss
     result = swordfish(p[2], pairss, p[0].y, p[1].y, lambda x: x.y)
     if len(result) > 0:
-        print(str([c.getPos() for c in (result ^ set(p[0:2]))]) + " -> start = " + str(p[0].getPos()) + "; value: " + str(p[2]))
+        print(str([c.getPos() for c in (list(p[0:2]) + result)]) + " -> start = " + str(p[0].getPos()) + "; value: " + str(p[2]))
         coordinates = set([c.y for c in result])
         print(coordinates)
