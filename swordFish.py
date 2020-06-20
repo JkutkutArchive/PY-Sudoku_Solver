@@ -163,6 +163,19 @@ pairs = set([
 #     return []
 
 def swordfish(v, pairs, iniPos, currentPos, cellToPosF, cellsPos=[]):
+    '''Finds a list of pairs valid to form a swordfish.
+    
+    - v (int): value that all pairs must have as their pair-value
+    - pairs (list): list of pairs made on rows or columns (one type only)
+    - iniPos (int): first cell's coordinate (therefore, the goal coordinate)
+    - currentPos (int): current cell's coordinate
+    - cellToPosF (function): function to get the coordinate of a cell (this way, this code can be used for rows and columns)
+    - cellsPos (set): A list to keep track of the path taken to make the loop (also the output)
+
+    Returns:
+    set: set with the cells used to make this algorithm possible (cellsPos)
+    '''
+
     if len(pairs) != 0: # If still pairs to search (and still running this algo)
         if iniPos == currentPos: # If loop made (may be a correct swordfish)
             return [] if len(cellsPos) == 1 else cellsPos # Return the sol only if it is not a double pair
