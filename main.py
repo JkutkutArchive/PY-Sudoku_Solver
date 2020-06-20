@@ -153,6 +153,31 @@ data = [ # swordfish
 # --------------------------    CODE    --------------------------
 
 # Functions
+def swordfish(v, pairs, iniPos, currentPos, cellToPosF, cells=set()):
+    '''Finds a list of pairs valid to form a swordfish.
+    
+    - v (int): value that all pairs must have as their pair-value
+    - pairs (list): list of pairs made on rows or columns (one type only)
+    - iniPos (int): first cell's coordinate (therefore, the goal coordinate)
+    - currentPos (int): current cell's coordinate
+    - cellToPosF (function): function to get the coordinate of a cell (this way, this code can be used for rows and columns)
+    - cells (set): A set to keep track of the path taken to make the loop (also the output)
+
+    Returns:
+    set: set with the cells used to make this algorithm possible (cellsPos)
+    '''
+
+    if len(pairs) != 0: # If still pairs to search (and still running this algo)
+        if iniPos == currentPos: # If loop made (may be a correct swordfish)
+            return set() if len(cells) == 2 else cells # Return the sol only if it is not a double pair
+        for p in pairs: # For the rest of the pairs
+            if p[2] != v: continue # if different value, no possible to form it with this pair, go to the next one
+            for i in range(2): # Try to continue the loop with both cells as connector
+                if currentPos == cellToPosF(p[i]): # If I can continue this path with the first member of the pair
+                    result = swordfish(v, pairs - set([p]), iniPos, cellToPosF(p[(i + 1) % 2]), cellToPosF, cells ^ set(p[0:2]))
+                    if len(result) > 0: return result # If correct swordfish found return that solution
+    # If here, not possible or no more pairs to checks
+    return set()
 
 # Vars:
 gameRunning = True
@@ -318,7 +343,7 @@ while gameRunning:
     #   - "pair cell": This cell is part of a pair
     #   - "pair val" : This cell is affected by a pair of cells
     
-    pairs = [set() for i in range(3)] # Set with all pairs found on the sudoku
+    pairs = [set() for i in range(3)] # list with Sets with all pairs found on the sudoku (pairs = [set(row pairs, col pairs, 3by3 pairs)])
     
     for t in range(3): # For each type of zone: 0 = row, 1 = col, 2 = 3by3
         for z in range(9): # For each row, col or 3by3 => for each zone
@@ -566,36 +591,23 @@ while gameRunning:
     # ERROR! THE PAIRS NEED TO MAKE A CLOSED LOOP IN ORDER TO HAVE A SWORDFISH.
     # THIS CODE MAY BE SUTIABLE FOR X-WING?
 
-    for p1 in pairs[0]: # For each row pair
-        # print("pair")
-        print(p1[2])
-        # print(p1[0].cellToString(printValue=False, printPairs=False, printData=False))
-        # print(p1[1].cellToString(printValue=False, printPairs=False, printData=False))
-        # v = p1[2]
-        # p1 = p1[0:2]
-        # for p2 in pairs[0]: # For the rest of the row pairs
-        #     if p2[2] != v: continue # skip if different value
-        #     p2 = p2[0:2] # only store the pair
-        #     if p2 == p1: continue # skip the same pair
-        #     for p22 in p2: # For element at p2 that can make a swordfish
-        #         for p11 in p1: # For each element at p1 that can make a swordfish
-        #             if p22.y == p11.y: # if on same column
-        #                 # if here, we have a swordfish at y = p22.y. Now update the rest
-        #                 # print("\nFounded on row " + str(p1[0].x) + " and " + str(p2[0].x) + "!!\nv = " + str(v))
-        #                 # print("p1.1: Cell at y " + str(p1[0].y))
-        #                 # print("p1.2: Cell at y " + str(p1[1].y))
-        #                 # print("p2.1: Cell at y " + str(p2[0].y))
-        #                 # print("p2.2: Cell at y " + str(p2[1].y))
-        #                 for i in range(9):
-        #                     c = grid[i][p22.y] # Cell to test
-        #                     if c == p22 or c == p11: continue # c is on p1 or p2, skip
-        #                     if v in c.getPosVal():
-        #                         print("Swordfish => y = " + str(p22.y) + " with the value " + str(v))
-        #                         print(c.cellToString(printData=False, printPairs=False, printValue=False))
-        #                         c.addData("swordfish", p1, p2, p11, p22, v)
-        #                         c.removePosVal(v)
+    pairss = pairs[0].copy()
+    while len(pairss) > 3:
+        p = pairss.pop() # Remove and return element to pairss
+        value = p[2]
+        result = swordfish(value, pairss, p[0].y, p[1].y, lambda x: x.y)
+        if len(result) == 0: continue # If not valid swordfish, continue
+        # If here, there is a valid swordfish on the coordinates "coordinates"
+        print(str([c.getPos() for c in (result ^ set(p[0:2]))]) + " -> start = " + str(p[0].getPos()) + "; value: " + str(p[2]))
+        coordinates = set([c.y for c in result])
+        # for coord in coordinates: # For each valid coordinate
+        #     for i in range(9): # for all the line/col
+        #         cell = grid[i][coord]
+        #         if cell in result: continue # skip the cells used to make this algorithm
+        #         if value in cell.getPosVal(): # If the value can be removed from posVal
+        #             cell.removePosVal(value) # Remove it from there
 
-
+        print(coordinates)
 
 
 
