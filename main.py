@@ -253,6 +253,7 @@ while gameRunning:
     # ------------------------------    actual algorithm   ------------------------------
     for cell in cells: # Check 3 by 3, row and col
         if cell.getValue() != 0: continue # if during this loop, this cell got it's value defined, go to next one
+
         # ----------    BASIC   ----------
         values = [[], [], []] # Values in row, col, 3by3
 
@@ -260,19 +261,19 @@ while gameRunning:
             if i != cell.y: # Rows (x=cte) -- If not the same cell
                 otherValue = grid[cell.x][i].getValue()
                 if otherValue != 0 and (otherValue in cell.getPosVal()):
-                    cell.removePosVal(otherValue, cleverCell=False)
+                    cell.removePosVal(otherValue)
                     values[0] = values[0] + [otherValue]
             if i != cell.x: # Cols (y=cte) -- If not the same cell
                 otherValue = grid[i][cell.y].getValue()
                 if otherValue != 0 and (otherValue in cell.getPosVal()):
-                    cell.removePosVal(otherValue, cleverCell=False)
+                    cell.removePosVal(otherValue)
                     values[1] = values[1] + [otherValue]
             x = (cell.x // 3) * 3 + (i // 3)
             y = (cell.y // 3) * 3 + (i % 3)
             if cell.x != x or cell.y != y: # 3 by 3 -- If not the same cell
                 otherValue = grid[x][y].getValue()
                 if otherValue > 0 and (otherValue in cell.getPosVal()):
-                    cell.removePosVal(otherValue, cleverCell=False)
+                    cell.removePosVal(otherValue)
                     values[2] = values[2] + [otherValue]
 
         if len(values[0]) > 0: # Row
@@ -598,14 +599,17 @@ while gameRunning:
         result = swordfish(value, pairss, p[0].y, p[1].y, lambda x: x.y)
         if len(result) == 0: continue # If not valid swordfish, continue
         # If here, there is a valid swordfish on the coordinates "coordinates"
-        print(str([c.getPos() for c in (result ^ set(p[0:2]))]) + " -> start = " + str(p[0].getPos()) + "; value: " + str(p[2]))
+        result = result ^ set(p[0:2]) # result + pair of cells
+        print(str([c.getPos() for c in result]) + " -> start = " + str(p[0].getPos()) + "; value: " + str(p[2]))
         coordinates = set([c.y for c in result])
-        # for coord in coordinates: # For each valid coordinate
-        #     for i in range(9): # for all the line/col
-        #         cell = grid[i][coord]
-        #         if cell in result: continue # skip the cells used to make this algorithm
-        #         if value in cell.getPosVal(): # If the value can be removed from posVal
-        #             cell.removePosVal(value) # Remove it from there
+        for coord in coordinates: # For each valid coordinate
+            for i in range(9): # for all the line/col
+                cell = grid[i][coord]
+                if cell in result: continue # skip the cells used to make this algorithm
+                if value in cell.getPosVal(): # If the value can be removed from posVal
+                    # cell.addData("")
+                    print(cell.getPos())
+                    cell.removePosVal(value) # Remove it from there
 
         print(coordinates)
 
@@ -642,9 +646,6 @@ while gameRunning:
                 break
             else: # 58 => view data on the cell (5,8)
                 print(grid[int(response[0])][int(response[1])].cellToString())
-                # print(*grid[int(response[0])][int(response[1])].dataToText(), sep="\n")
-                # print(*grid[int(response[0])][int(response[1])].posVal, sep=", ")
-                # print(grid[int(response[0])][int(response[1])].value)
 
 print("\nThank you for using this code. I hope you liked it.")
 print("If you want to see more code like this, visit\n\nhttps://github.com/Jkutkut/Jkutkut-projects\n\n")

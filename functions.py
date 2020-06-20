@@ -84,6 +84,8 @@ def tellCells(cell, cleverCell=True): # When a cell defines its value, this func
         if i != cell.x: # Col
             c = grid[i][cell.y]
             if c.getValue() != value and value in c.getPosVal():
+                # if c.getPos() == (8, 0) and value == 5:
+                #     print("foundeddd  value = " + str(value) + " -> " + cell.cellToString())
                 c.addData("basic col", [value])
                 c.removePosVal(value, cleverCell=cleverCell)
         x = (cell.x // 3) * 3 + (i // 3)
@@ -142,21 +144,23 @@ class Cell():
     # ******    GETTERS AND SETTERS:    ******
     def setValue(self, value, printData=True, cleverCell=True):
         if self.getValue() != 0: return # if already called, do not continue
-        # if value != sol[self.x][self.y]: # If not correct value
-        #     raise Exception(("ERROR, NOT CORRECT VALUE -> Cell" + str(self.getPos()) + " is not " + str(value) + ", is " + str(sol[self.x][self.y])).center(40))
+        if value != sol[self.x][self.y]: # If not correct value
+            print("\n\n\n ERROR: \n"+self.cellToString())
+            print("\n\n"+grid[1][1].cellToString())
+            print(("ERROR, NOT CORRECT VALUE -> Cell" + str(self.getPos()) + " is not " + str(value) + ", is " + str(sol[self.x][self.y])).center(40))
+            raise Exception("Not correct value")
         self.value = value # Set the value of the cell to the one given 
         self.posVal.clear() # Therefore, there are no possible values left => clear the set of possible values
         self.addData("therefore") # Add to the data array the data to say that the value is the given 
         if printData: # If selected to print the data
             d = self.dataToText() # Data on text format
             print(*[""] + d, sep = "\n") # Print all the data
+            print(sol[self.x][self.y])
             pdf.printDataOnLaTeX(d) # Add this data to the pdf
         self.tellPairs() # Notify all linked cells that the value has been defined
         tellCells(self, cleverCell=cleverCell) # update the cells on the grid of this change in value
-        if value != sol[self.x][self.y]: # If not correct value
-            print("\n\n\n ERROR: \n"+self.cellToString())
-            raise Exception(("ERROR, NOT CORRECT VALUE -> Cell" + str(self.getPos()) + " is not " + str(value) + ", is " + str(sol[self.x][self.y])).center(40))
-                
+        
+
     def getValue(self): # Returns the value of the cell. If not defined, return 0
         return self.value if self.value != None else 0
 
@@ -199,17 +203,17 @@ class Cell():
     def delPair(self, matePair, mateValue): # Executed when matePair gets its value defined
         if self.getValue() != 0: return # If already with value, do nothing
 
-        # print(str(self.getPosVal()) + " --- " + str(mateValue))
-        self.getPosVal().discard(mateValue) # If linked and mateValue now defined => this cell can not be mateValue
-        self.addData("delPair remove value", matePair.getPos(), mateValue) # The cell (matePair.pos) has now the value v1 and these cells are linked, so this cell can not be v1
-        for p in self.getPairs(): # for each mate linked with this cell
-            cell = p[0] # mate cell linked
-            v = p[1] # value that make the link
-            if cell == matePair: continue # Skip the pair
-            if v == mateValue: # if "cell" has same value-relation as mate (the one who called this) => "cell" has that value
-                cell.addData("delPair set value", self.getPos(), mateValue) # The cell (self.pos) is no longer matevalue and these cells were linked, so the value of this cell is matevalue
-                cell.setValue(v) # Set the value
-            if len(self.pairs) == 0: return # If setting the value of cell makes me change my value. Stop
+        if mateValue in self.getPosVal():
+            self.addData("delPair remove value", matePair.getPos(), mateValue) # The cell (matePair.pos) has now the value v1 and these cells are linked, so this cell can not be v1
+            self.getPosVal().discard(mateValue) # If linked and mateValue now defined => this cell can not be mateValue
+            for p in self.getPairs(): # for each mate linked with this cell
+                cell = p[0] # mate cell linked
+                v = p[1] # value that make the link
+                if cell == matePair: continue # Skip the pair
+                if v == mateValue: # if "cell" has same value-relation as mate (the one who called this) => "cell" has that value
+                    cell.addData("delPair set value", self.getPos(), mateValue) # The cell (self.pos) is no longer matevalue and these cells were linked, so the value of this cell is matevalue
+                    cell.setValue(v) # Set the value
+                if len(self.pairs) == 0: return # If setting the value of cell makes me change my value. Stop
 
         if len(self.getPosVal()) == 1: # We have the value
             self.setValue(next(iter(self.getPosVal())))
