@@ -152,6 +152,8 @@ data = [ # swordfish
 
 # --------------------------    CODE    --------------------------
 
+# Functions
+
 # Vars:
 gameRunning = True
 nIte = 0
