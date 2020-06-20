@@ -1,6 +1,8 @@
 # Code to develop the logic to make the logic of the swordfish
 import functions as f
 
+# values = 4, 5, 6, 2, 9, 3, 5, 1, 6, 3, 1, 9, 3, 4, 2, 4, 5, 3
+
 p11 = f.Cell(0, 3)
 p11.posVal = set([3, 4])
 p12 = f.Cell(0, 6)
@@ -141,22 +143,35 @@ pairs = set([
 #     # If here, not possible
 #     return []
 
+# def swordfish(v, pairs, iniPos, currentPos, cellToPos, cellsPos=[]):
+#     if len(pairs) != 0: # If still pairs to search (and still running this algo)
+#         if iniPos == currentPos: # If loop made (may be a correct swordfish)
+#             if len(cellsPos) == 1: return [] # If here, this is a double pair => nope
+#             return cellsPos # Else, return the sol
+#         for p in pairs: # For the rest of the pairs
+#             if p[2] != v: continue # if different value, no possible to form it with this pair, go to the next one
+#             if currentPos == cellToPos(p[0]): # If I can continue this path with the first member of the pair
+#                 result = swordfish(v, pairs - set([p]), iniPos, cellToPos(p[1]), cellToPos, cellsPos + [p[1].getPos()])
+#                 if len(result) > 0: # If correct swordfish found
+#                     return result
+                
+#             elif currentPos == cellToPos(p[1]): # If I can continue this path with the second member of the pair
+#                 result = swordfish(v, pairs - set([p]), iniPos, cellToPos(p[0]), cellToPos, cellsPos + [p[0].getPos()])
+#                 if len(result) > 0: # If correct swordfish found
+#                     return result
+#     # If here, not possible
+#     return []
+
 def swordfish(v, pairs, iniPos, currentPos, cellToPos, cellsPos=[]):
     if len(pairs) != 0: # If still pairs to search (and still running this algo)
         if iniPos == currentPos: # If loop made (may be a correct swordfish)
-            if len(cellsPos) == 1: return [] # If here, this is a double pair => nope
-            return cellsPos # Else, return the sol
+            return [] if len(cellsPos) == 1 else cellsPos # Return the sol only if it is not a double pair
         for p in pairs: # For the rest of the pairs
             if p[2] != v: continue # if different value, no possible to form it with this pair, go to the next one
-            if currentPos == cellToPos(p[0]): # If I can continue this path with the first member of the pair
-                result = swordfish(v, pairs - set([p]), iniPos, cellToPos(p[1]), cellToPos, cellsPos + [p[1].getPos()])
-                if len(result) > 0: # If correct swordfish found
-                    return result
-                
-            elif currentPos == cellToPos(p[1]): # If I can continue this path with the second member of the pair
-                result = swordfish(v, pairs - set([p]), iniPos, cellToPos(p[0]), cellToPos, cellsPos + [p[0].getPos()])
-                if len(result) > 0: # If correct swordfish found
-                    return result
+            for i in range(2):
+                if currentPos == cellToPos(p[i]): # If I can continue this path with the first member of the pair
+                    result = swordfish(v, pairs - set([p]), iniPos, cellToPos(p[(i + 1) % 2]), cellToPos, cellsPos + [p[(i + 1) % 2].getPos()])
+                    if len(result) > 0: return result # If correct swordfish found return that solution
     # If here, not possible
     return []
 
@@ -165,15 +180,7 @@ def swordfish(v, pairs, iniPos, currentPos, cellToPos, cellsPos=[]):
 
 # If this proccess is correct, it doesn't matter the way you circle the pairs
 
-
-# print(len(pairs))
-# print(len(pairs - set([(p11, p12, 4)])))
 pairss = pairs.copy()
-# for p in pairs:
-#     result = swordfish(p[2], pairs - set(p), p[0].y, p[1].y, lambda x: x.y)
-#     if len(result) > 0:
-#         print(str(result + [p[0].getPos()]) + " -> start = " + str(p[0].getPos()) + "; value: " + str(p[2]))
-
 while len(pairss) > 3:
     p = pairss.pop() # Remove and return elemet to pairs
     result = swordfish(p[2], pairss, p[0].y, p[1].y, lambda x: x.y)
