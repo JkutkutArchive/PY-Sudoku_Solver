@@ -240,7 +240,7 @@ class Cell():
         s = ["Let's focus on the cell on the position " + str(self.getPos())] # Start by giving the position of the cell
         for d in self.data: # For each data piece stored on the array
             key = d[0] # Type of data on this piece d
-            dataToAdd = "" # Here the data of this piece will be stored based on the key (then added to s)
+            dataToAdd = "\n\n" # Here the data of this piece will be stored based on the key (then added to s)
             if "therefore" == key:
                 dataToAdd = "Therefore, the value of this cell is " + str(self.value)
             elif "basic" in key: # Format: ["basic <TYPE>", <VALUE>]
@@ -286,7 +286,7 @@ class Cell():
                             "       - c2 and c3 with the value " + str(d[2][2]) + "\n" + \
                             "   On a first look, we can not determine the value of these cells. However, we can ensure that either c2 or c3 is a " + str(d[2][2]) + \
                             "   For this reason, this cell can not be a " + str(d[2][2])
-            elif "Unique rectangle":
+            elif "Unique rectangle" in key:
                 dataToAdd = "Let's have a look at the following (Unique rectangle): \n" + \
                             "   Let's name the following cells:\n" + \
                             "       c1 = " + str(d[1][0].getPos()) + "; c2 = " + str(d[1][1].getPos()) + "; c3 = " + str(d[1][2].getPos()) + "\n" + \
@@ -294,10 +294,18 @@ class Cell():
                             " (Except for the cell in consideration witch can be " + str(self.getPosVal()) + ").\n" + \
                             "   For these reason, if c3 is one of the possible values, c1 should be the other value (and for this reason, the value of c2 should be the same as c3)." + \
                             " This makes the cell in consideration not able to be neither of these values, and it should be other value different."
-            elif "Swordfish" in key: # Format: ["swordfish", , v]
-                # dataToAdd = "Let's have a look at the following (Swordfish): \n" + \
-                dataToAdd = ""
-
+            elif "Swordfish" in key: # Format: ["Swordfish <TYPE>", result, coordinates, v]
+                tipo = "col"
+                if "col" in key: # Col type
+                    tipo = "row"
+                dataToAdd = "Let's have a look at the following (Swordfish): \n" + \
+                            "If we look at the following cells: " + ", ".join([str(c.getPos()) for c in d[1]]) + "\n" + \
+                            "These cells all are pairs (divide them in groups of 2) that share the value " + str(d[3]) + ". Additionally, " + \
+                            "these cells are linked between each other (see how the coordinates are the same: if one cell has the same " + \
+                            "row coordinate with the next one, this cell is also connected with the following one with the column cell)\n" + \
+                            "For this reason, all the cells on the " + tipo + "s with the values " + ", ".join([str(c) for c in d[2]]) + \
+                            " (except the mencioned ones) can not be the value " + str(d[3]) + ".\nFor this reason, this cell can not be " + str(d[3])
+                print(dataToAdd)
             s.append(dataToAdd) # Add it to the array with the rest
         return s # Return all the data on text format
 

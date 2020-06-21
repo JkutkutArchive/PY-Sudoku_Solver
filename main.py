@@ -153,7 +153,7 @@ data = [ # swordfish
 # --------------------------    CODE    --------------------------
 
 # Functions
-def swordfish(v, pairs, iniPos, currentPos, cellToPosF, cells=set()):
+def swordfish(v, pairs, iniPos, currentPos, cellToPosF, cells=[]):
     '''Finds a list of pairs valid to form a swordfish.
     
     - v (int): value that all pairs must have as their pair-value
@@ -161,23 +161,23 @@ def swordfish(v, pairs, iniPos, currentPos, cellToPosF, cells=set()):
     - iniPos (int): first cell's coordinate (therefore, the goal coordinate)
     - currentPos (int): current cell's coordinate
     - cellToPosF (function): function to get the coordinate of a cell (this way, this code can be used for rows and columns)
-    - cells (set): A set to keep track of the path taken to make the loop (also the output)
+    - cells (list): To keep track of the path taken to make the loop (also the output)
 
     Returns:
-    set: set with the cells used to make this algorithm possible (cellsPos)
+    list: With the cells used to make this algorithm possible (cellsPos)
     '''
 
     if len(pairs) != 0: # If still pairs to search (and still running this algo)
         if iniPos == currentPos: # If loop made (may be a correct swordfish)
-            return set() if len(cells) == 2 else cells # Return the sol only if it is not a double pair
+            return [] if len(cells) == 2 else cells # Return the sol only if it is not a double pair
         for p in pairs: # For the rest of the pairs
             if p[2] != v: continue # if different value, no possible to form it with this pair, go to the next one
             for i in range(2): # Try to continue the loop with both cells as connector
                 if currentPos == cellToPosF(p[i]): # If I can continue this path with the first member of the pair
-                    result = swordfish(v, pairs - set([p]), iniPos, cellToPosF(p[(i + 1) % 2]), cellToPosF, cells ^ set(p[0:2]))
-                    if len(result) > 0: return result # If correct swordfish found return that solution
+                    result = swordfish(v, pairs - set([p]), iniPos, cellToPosF(p[(i + 1) % 2]), cellToPosF, cells + [p[i], p[(i + 1) % 2]])
+                    if len(result) > 0: return result # If correct swordfish found return that solution. Else, continue searching
     # If here, not possible or no more pairs to checks
-    return set()
+    return []
 
 # Vars:
 gameRunning = True
@@ -593,25 +593,27 @@ while gameRunning:
     # THIS CODE MAY BE SUTIABLE FOR X-WING?
 
     pairss = pairs[0].copy()
+    # f = [lambda x: x.x, lambda x: x.y]
+
     while len(pairss) > 3:
         p = pairss.pop() # Remove and return element to pairss
         value = p[2]
         result = swordfish(value, pairss, p[0].y, p[1].y, lambda x: x.y)
         if len(result) == 0: continue # If not valid swordfish, continue
         # If here, there is a valid swordfish on the coordinates "coordinates"
-        result = result ^ set(p[0:2]) # result + pair of cells
-        print(str([c.getPos() for c in result]) + " -> start = " + str(p[0].getPos()) + "; value: " + str(p[2]))
+        result = list(p[0:2]) + result # result + pair of cells
+        # print(str([c.getPos() for c in result]) + " -> start = " + str(p[0].getPos()) + "; value: " + str(p[2]))
         coordinates = set([c.y for c in result])
+        # print(coordinates)
         for coord in coordinates: # For each valid coordinate
             for i in range(9): # for all the line/col
                 cell = grid[i][coord]
                 if cell in result: continue # skip the cells used to make this algorithm
                 if value in cell.getPosVal(): # If the value can be removed from posVal
-                    # cell.addData("")
-                    print(cell.getPos())
+                    cell.addData("Swordfish row", result, coordinates, value) # ["Swordfish <TYPE>", result, coordinates, v]
                     cell.removePosVal(value) # Remove it from there
+                    # print(cell.cellToString())
 
-        print(coordinates)
 
 
 
