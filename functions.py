@@ -1,6 +1,8 @@
 import latexToPDF as pdf
 sol = []
 grid = []
+# nNewValues = 0 
+
 
 def printSudoku(arr):
     print(*["  Y "] + [str(i) + " " for i in range(3)] + ["  "] + [str(3+i) + " " for i in range(3)] + ["  "] + [str(6+i) + " " for i in range(3)], sep = "")
@@ -120,7 +122,6 @@ class Cell():
             s = s + "\n - Data: " + "".join(["\n    - " + str(d) for d in self.dataToText()])
         return s
             
-
     def __eq__(self, other, exactComparation=False): # Enable us to compare it to other cells or to integers by the value
         if type(other) == int: # if comparing to an integer
             return self.getValue() == other # Return if the values are the same
@@ -156,7 +157,8 @@ class Cell():
             pdf.printDataOnLaTeX(d) # Add this data to the pdf
         self.tellPairs() # Notify all linked cells that the value has been defined
         tellCells(self, cleverCell=cleverCell) # update the cells on the grid of this change in value
-        
+        global nNewValues
+        nNewValues = nNewValues + 1
 
     def getValue(self): # Returns the value of the cell. If not defined, return 0
         return self.value if self.value != None else 0
@@ -176,7 +178,6 @@ class Cell():
                 break
         if cleverCell and len(self.getPosVal()) == 1: # If cleverCell on and only one possible value
             self.setValue(next(iter(self.getPosVal())))
-
 
     def setPairs(self, ps):
         self.pairs = ps
@@ -214,11 +215,6 @@ class Cell():
 
         if len(self.getPosVal()) == 1: # We have the value
             self.setValue(next(iter(self.getPosVal())))
-
-
-
-
-
 
     # ******    DATA:    ******
     def addData(self, *dataArr): # Add data. If already added, do not duplicate the info

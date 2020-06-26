@@ -1,7 +1,4 @@
 #!/usr/bin/env python3
-# import pygame # library to generate the graphic interface
-import numpy as np # library to handle matrices
-import time # to set a delay between each iteration
 
 import functions as tool
 import latexToPDF as pdf
@@ -27,7 +24,7 @@ import latexToPDF as pdf
 # 1. X-Wing (X-Wing algo)
 # 2. XY Wing (XY-Wing algo) 
 # 3. Unique Rectangle (Unique rectangle algo) 
-# 4. Sworldfish ()
+# 4. Sworldfish ()import numpy as np # library to handle matrices
 # 5. Extremely advanced techniques () 
 
 # Sudoku vars:
@@ -54,17 +51,17 @@ grid = [[tool.Cell(x, y) for y in range(9)] for x in range(9)]
 #     [0, 3, 0, 0, 0, 2, 0, 0, 0],
 #     [9, 4, 0, 0, 0, 6, 0, 0, 2]
 # ]
-# data = [ # hard (solved)
-#     [0, 0, 7, 0, 0, 0, 3, 0, 2],
-#     [2, 0, 0, 0, 0, 5, 0, 1, 0],
-#     [0, 0, 0, 8, 0, 1, 4, 0, 0],
-#     [0, 1, 0, 0, 9, 6, 0, 0, 8],
-#     [7, 6, 0, 0, 0, 0, 0, 4, 9],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 1, 0, 3, 0, 0, 0],
-#     [8, 0, 1, 0, 6, 0, 0, 0, 0],
-#     [0, 0, 0, 7, 0, 0, 0, 6, 3]
-# ]
+data = [ # hard (solved)
+    [0, 0, 7, 0, 0, 0, 3, 0, 2],
+    [2, 0, 0, 0, 0, 5, 0, 1, 0],
+    [0, 0, 0, 8, 0, 1, 4, 0, 0],
+    [0, 1, 0, 0, 9, 6, 0, 0, 8],
+    [7, 6, 0, 0, 0, 0, 0, 4, 9],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 1, 0, 3, 0, 0, 0],
+    [8, 0, 1, 0, 6, 0, 0, 0, 0],
+    [0, 0, 0, 7, 0, 0, 0, 6, 3]
+]
 
 # data = [ # multiple solutions
 #     [0, 0, 7, 0, 0, 0, 0, 0, 2],
@@ -114,17 +111,17 @@ grid = [[tool.Cell(x, y) for y in range(9)] for x in range(9)]
 #     [1, 0, 0, 7, 8, 6, 3, 0, 2]
 # ]
 
-data = [ # swordfish
-    [0, 0, 2, 0, 8, 1, 0, 9, 7],
-    [7, 0, 1, 6, 9, 0, 2, 0, 8],
-    [9, 8, 4, 5, 2, 7, 6, 3, 1],
-    [4, 2, 5, 1, 3, 8, 9, 7, 6],
-    [3, 7, 6, 9, 5, 2, 1, 8, 4],
-    [8, 1, 9, 7, 4, 6, 3, 0, 0],
-    [0, 0, 3, 8, 7, 0, 0, 0, 0],
-    [2, 0, 8, 0, 1, 9, 7, 6, 0],
-    [0, 0, 7, 2, 6, 0, 8, 0, 0]
-]
+# data = [ # swordfish
+#     [0, 0, 2, 0, 8, 1, 0, 9, 7],
+#     [7, 0, 1, 6, 9, 0, 2, 0, 8],
+#     [9, 8, 4, 5, 2, 7, 6, 3, 1],
+#     [4, 2, 5, 1, 3, 8, 9, 7, 6],
+#     [3, 7, 6, 9, 5, 2, 1, 8, 4],
+#     [8, 1, 9, 7, 4, 6, 3, 0, 0],
+#     [0, 0, 3, 8, 7, 0, 0, 0, 0],
+#     [2, 0, 8, 0, 1, 9, 7, 6, 0],
+#     [0, 0, 7, 2, 6, 0, 8, 0, 0]
+# ]
 
 # data = [ # expert
 #     [0, 0, 0, 0, 0, 0, 9, 2, 6],
@@ -181,7 +178,11 @@ def swordfish(v, pairs, iniPos, currentPos, cellToPosF, cells=[]):
 
 # Vars:
 gameRunning = True
-nIte = 0
+nIte = 0 # Number of iterations
+nNoNewValues = 0 # Number of consecutive iterations with nNewValues = 0
+tool.nNewValues = 0 # Number of cells defined on a single interation
+print(tool.nNewValues) 
+
 
 #-------    Update matrices    -------
 print("Searching for solutions...")
@@ -189,6 +190,8 @@ sol = []
 tool.sudokuSolution(data, sol)
 tool.sol = sol[0]
 tool.grid = grid
+
+
 
 for i in range(9):
     for j in range(9):
@@ -222,6 +225,19 @@ else:
     gameRunning = False
 
 while gameRunning:
+
+    if tool.nNewValues == 0: # If iteration without new values
+        nNoNewValues = nNoNewValues + 1
+        if nNoNewValues == 3: # If algo is not working 
+            print("\n\n")
+            print("Congratulations, you have found a sudoku this algorithm can not solve with steps")
+            print("However, here is the solution:\n")
+            tool.printSudoku(sol[0])
+            break
+    else: # Reset variables 
+        nNoNewValues = 0 
+        tool.nNewValues = 0
+
     #-------    Update matrix    -------
     cells = set() # Set with all undone cells
     for i in range(9):
@@ -589,7 +605,6 @@ while gameRunning:
     #       - both pairs are made based on the same value: v
     #       - one of the cells in each pair has to be alinged on the same column
     #   - That way, each cell on that colum can not be that value v
-    # ERROR! THE PAIRS NEED TO MAKE A CLOSED LOOP IN ORDER TO HAVE A SWORDFISH.
     # THIS CODE MAY BE SUTIABLE FOR X-WING?
 
     # pairss = pairs[0:2].copy()
@@ -602,38 +617,17 @@ while gameRunning:
             if len(result) == 0: continue # If not valid swordfish, continue
             # If here, there is a valid swordfish on the coordinates "coordinates"
             result = list(p[0:2]) + result # result + pair of cells
-            print([c.getPos() for c in result])
+            # print([c.getPos() for c in result])
             coordinates = set([c.y for c in result])
-            print(coordinates)
+            # print(coordinates)
             for coord in coordinates: # For each valid coordinate
-                for i in range(9): # for all the line/col
-                    cell = grid[i][coord]
+                for j in range(9): # for all the line/col
+                    cell = grid[j][coord]
                     if cell in result: continue # skip the cells used to make this algorithm
                     if value in cell.getPosVal(): # If the value can be removed from posVal
                         cell.addData("Swordfish row", result, coordinates, value) # ["Swordfish <TYPE>", result, coordinates, v]
                         cell.removePosVal(value) # Remove it from there
                         # print(cell.cellToString())
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     response = input("Continue?")
