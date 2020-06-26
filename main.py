@@ -24,8 +24,8 @@ import latexToPDF as pdf
 # 1. X-Wing (X-Wing algo)
 # 2. XY Wing (XY-Wing algo) 
 # 3. Unique Rectangle (Unique rectangle algo) 
-# 4. Sworldfish ()import numpy as np # library to handle matrices
-# 5. Extremely advanced techniques () 
+# 4. Sworldfish (swordfish)
+# 5. Extremely advanced techniques (??) 
 
 # Sudoku vars:
 grid = [[tool.Cell(x, y) for y in range(9)] for x in range(9)]
