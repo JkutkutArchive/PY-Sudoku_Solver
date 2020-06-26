@@ -33,8 +33,10 @@
     - Tutorial to install?
 
 ### LaTeX:
-- Commands:
-  - pip3 install pylatex
-  - sudo apt-get install latexmk
-  - sudo apt install texlive-latex-extra
 - Tutorial/description/introduction?
+
+
+## Installation:
+- pip3 install pylatex
+- sudo apt-get install latexmk
+- sudo apt install texlive-latex-extra
