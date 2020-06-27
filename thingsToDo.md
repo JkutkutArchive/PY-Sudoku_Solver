@@ -13,12 +13,9 @@
 
 
 ## functions:
-- at AddData, add format comment
 - comment the code
 
 ## Final version:
-- COLORS
-- If more than one posible sol -> show all without steps
 - When printing the sudoku:
   - not 0 based coord
 
