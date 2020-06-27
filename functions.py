@@ -237,7 +237,7 @@ class Cell():
         for d in self.data: # For each data piece stored on the array
             key = d[0] # Type of data on this piece d
             dataToAdd = "\n\n" # Here the data of this piece will be stored based on the key (then added to s)
-            if "therefore" == key:
+            if "therefore" == key: # Format: ["therefore"]
                 dataToAdd = "Therefore, the value of this cell is " + str(self.value)
             elif "basic" in key: # Format: ["basic <TYPE>", <VALUE>]
                 tipo = key[6:] # only enter the <TYPE>
@@ -245,7 +245,7 @@ class Cell():
             elif "unique" in key: # Format: ["unique <TYPE>", <VALUE>]
                 tipo = key[6:] # only enter the <TYPE>
                 dataToAdd = "If we look at the " + tipo + " containing this cell, we know that this cell should be " + str(d[1]) + " because no one this " + tipo + " can be this value."
-            elif "pairs" in key:
+            elif "pairs" in key: # Format: ["pairs (two) <TYPE>", MATECELL, <VALUE>]
                 if "two" in key:
                     dataToAdd = "If we take a look, this and the " + str(d[1].getPos()) + " cell are eather " + str(d[2]) + ". Both cells can only be these values."
                 # elif "one" in key or "row" in key or "col" in key: # If type of pair: 3by3, row or col
@@ -255,11 +255,12 @@ class Cell():
                     elif "cell" in key:
                         dataToAdd = "This cell and " + str(d[1].getPos()) + " are linked. Value " + str(d[2]) + " is on one of these 2 cells."
                 
-            elif "delPair" in key:
+            elif "delPair" in key: # Format: ["delPair <TYPE> value", <MATECELL.pos()>, <VALUE>]
                 if "remove" in key:
                     dataToAdd = "The cell " + str(d[1]) + " has now the value " + str(d[2]) + " and these cells are linked, so this cell can not be " + str(d[2])
                 elif "set" in key:
                     dataToAdd = "The cell " + str(d[1]) + " is no longer " + str(d[2]) + " and these cells were linked, so the value of this cell is " + str(d[2])
+            
             elif "X-Wing" in key: # Format: ["X-Wing <TYPE>", p1, p2, value]; <TYPE>=[row, col]
                 conclusion = ""
                 if "row" in key:
