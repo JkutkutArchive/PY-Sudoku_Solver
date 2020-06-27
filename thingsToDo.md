@@ -8,13 +8,11 @@
 ## main:
 - handle Errors
 - expert sudokus
-- If no new discovery, no sudoku print (base this print on discovery) ---> ERROR
 - Update techniques used
 - BUGS:
 
 
 ## functions:
-- at AddData, handle errors
 - at AddData, add format comment
 - comment the code
 
@@ -27,8 +25,6 @@
 
 
 ## README:
-- Intro
-- Description of algo
 - LaTeX documentation:
   - Pylatex
     - Tutorial to install?
