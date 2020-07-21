@@ -3,7 +3,8 @@
 This proyect makes easy to find the solution of a sudoku, show the steps to follow in order to solve it and even show all possible solutions of a multiple solution sudoku.
 
 ## How it works:
-At the begining, the code checks all the possible solutions of the given sudoku. Acording to the number of solutions:
+In order for this code to work, fill the **input.py file** with the desired sudoku. Keep in mind that it must follow the Python3 syntax as the examples given.
+At the begining, the code checks all the possible solutions of the sudoku. Acording to the number of solutions:
 - One solution: It shows the solution and atempts to find the steps a human would take to get there (see the *steps algorithm*).
 - More than one solution: Shows all the possible solutions for the given sudoku.
 - No solutions: Ends the code
