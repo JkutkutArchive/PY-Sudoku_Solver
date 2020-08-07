@@ -28,6 +28,9 @@ import input as inputData
 # 4. Sworldfish (swordfish)
 # 5. Extremely advanced techniques (??) 
 
+
+# - Triplets and Quads
+
 # Sudoku vars:
 grid = [[tool.Cell(x, y) for y in range(9)] for x in range(9)]
 data = inputData.data
