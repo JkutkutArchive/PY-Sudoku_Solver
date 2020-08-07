@@ -28,7 +28,6 @@ import input as inputData
 # 4. Sworldfish (swordfish)
 # 5. Extremely advanced techniques (??) 
 
-
 # - Triplets and Quads
 
 # Sudoku vars:
@@ -326,7 +325,22 @@ while gameRunning:
                     i = i + n - 1 # Skip all pairs not valid on next iteration
                 i = i + 1
 
-    # print(pairs)
+    
+    # ----------    TRIPLETS AND QUADS   ----------
+    # what is a triplet:
+    #   - 3 cells on 3by3, row or col.
+    #   - 3 values in game
+    #   - at least 1 value on all cells, rest pairs:
+    #       - 3 triple value
+    #       - 2 triple value + pair
+    #       - 1 triple value + 2 pairs (no double pair)
+    # 
+    # 
+    # 
+    # If all correct, those cells can only be these values
+
+
+
     # ----------    X Wing   ----------
     # Row:
     #   - 2 pairs
