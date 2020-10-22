@@ -330,14 +330,34 @@ while gameRunning:
     # what is a triplet:
     #   - 3 cells on 3by3, row or col.
     #   - 3 values in game
-    #   - at least 1 value on all cells, rest pairs:
+    #   - at least 1 value on all cells
+    #   - Combinations:
     #       - 3 triple value
     #       - 2 triple value + pair
     #       - 1 triple value + 2 pairs (no double pair)
     # 
+    # - WhatToDo
+    #   - find 3 cells with one value in common, unique to the rest
+    # 
     # 
     # 
     # If all correct, those cells can only be these values
+
+
+    triple = set()
+    # 3by3
+    for i in range(0, 9, 1): # For each 3by3
+        for v in range(1, 10, 1):
+            candidates = set()
+            for j in range(9): # for each cell
+                x = (i // 3) * 3 + (j // 3)
+                y = (i % 3) * 3 + (j % 3)
+                c = grid[x][y]
+                if c.getValue() != 0: continue
+                if v in c.getPosVal():
+                    candidates.add(c)
+            if len(candidates) == 3: # if Triplet 
+                triple.add([candidates, v])
 
 
 
