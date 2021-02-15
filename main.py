@@ -347,16 +347,16 @@ while gameRunning:
     triple = set()
     # 3by3
     for i in range(0, 9, 1): # For each 3by3
-        for v in range(1, 10, 1):
+        for v in range(1, 10, 1): # For each value
             candidates = set()
             for j in range(9): # for each cell
                 x = (i // 3) * 3 + (j // 3)
                 y = (i % 3) * 3 + (j % 3)
                 c = grid[x][y]
-                if c.getValue() != 0: continue
-                if v in c.getPosVal():
+                if c.getValue() != 0: continue # If c already has a value, continue
+                if v in c.getPosVal(): # If c can be filled with the value v
                     candidates.add(c)
-            if len(candidates) == 3: # if Triplet 
+            if len(candidates) == 3: # if Triplet (if exact 3 candidates)
                 triple.add([candidates, v])
 
 
