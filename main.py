@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import functions as tool
+import sudokuFunctions as sTool
 import latexToPDF as pdf
 import input as inputData
 
@@ -28,7 +29,7 @@ import input as inputData
 # 4. Sworldfish (swordfish)
 # 5. Extremely advanced techniques (??) 
 
-# - Triplets and Quads
+# - Triplets and Quads (onProgress)
 
 # Sudoku vars:
 grid = [[tool.Cell(x, y) for y in range(9)] for x in range(9)]
@@ -74,7 +75,7 @@ print(tool.nNewValues)
 #-------    Update matrices    -------
 print("Searching for solutions...")
 sol = []
-tool.sudokuSolution(data, sol)
+sTool.sudokuSolution(data, sol)
 tool.sol = sol[0]
 tool.grid = grid
 
@@ -91,7 +92,7 @@ if len(sol) == 0:
     gameRunning = False
 elif len(sol) == 1:
     print("Solution founded\n")
-    tool.printSudoku(sol[0])
+    sTool.printSudoku(sol[0])
     while True:
         response = input("\nDo you want to see the steps to solve it? [yes/no]")
         if "y" in response:
@@ -106,7 +107,7 @@ else:
     pdf.init(data)
     for sols in sol: 
         print("\n")
-        tool.printSudoku(sols)
+        sTool.printSudoku(sols)
         pdf.addSudokuOnLaTeX(sols, data)
     pdf.endFile(None, data)
     gameRunning = False
@@ -119,7 +120,7 @@ while gameRunning:
             print("\n\n")
             print("Congratulations, you have found a sudoku this algorithm can not solve with steps")
             print("However, here is the solution:\n")
-            tool.printSudoku(sol[0])
+            sTool.printSudoku(sol[0])
             break
     else: # Reset variables 
         nNoNewValues = 0 
@@ -136,8 +137,8 @@ while gameRunning:
         print("\n")
         print(" Sudoku finished  ".center(40, "-"))
         print("\nHere is the solution:\n")
-        tool.printSudoku(grid)
-        print("\nThe solution is " + ("" if tool.checkSol(grid) else "IN") + "CORRECT")
+        sTool.printSudoku(grid)
+        print("\nThe solution is " + ("" if sTool.checkSol(grid) else "IN") + "CORRECT")
         gameRunning = False
         print("Generating PDF with the steps to solve this sudoku:")
         pdf.endFile(grid, data) # Make the conclusion of the PDF and render the file
@@ -147,7 +148,7 @@ while gameRunning:
     nIte = nIte + 1
     print("\n\n-----------    Iteration "+ str(nIte) +"   ------------\n")
     print("Missing cells: " + str(len(cells)))
-    tool.printSudoku(grid)
+    sTool.printSudoku(grid)
     pdf.newIteration(grid, data)
     print()
 
@@ -344,20 +345,20 @@ while gameRunning:
     # If all correct, those cells can only be these values
 
 
-    triple = set()
-    # 3by3
-    for i in range(0, 9, 1): # For each 3by3
-        for v in range(1, 10, 1): # For each value
-            candidates = set()
-            for j in range(9): # for each cell
-                x = (i // 3) * 3 + (j // 3)
-                y = (i % 3) * 3 + (j % 3)
-                c = grid[x][y]
-                if c.getValue() != 0: continue # If c already has a value, continue
-                if v in c.getPosVal(): # If c can be filled with the value v
-                    candidates.add(c)
-            if len(candidates) == 3: # if Triplet (if exact 3 candidates)
-                triple.add([candidates, v])
+    # triple = set()
+    # # 3by3
+    # for i in range(0, 9, 1): # For each 3by3
+    #     for v in range(1, 10, 1): # For each value
+    #         candidates = set()
+    #         for j in range(9): # for each cell
+    #             x = (i // 3) * 3 + (j // 3)
+    #             y = (i % 3) * 3 + (j % 3)
+    #             c = grid[x][y]
+    #             if c.getValue() != 0: continue # If c already has a value, continue
+    #             if v in c.getPosVal(): # If c can be filled with the value v
+    #                 candidates.add(c)
+    #         if len(candidates) == 3: # if Triplet (if exact 3 candidates)
+    #             triple.add([candidates, v])
 
 
 
