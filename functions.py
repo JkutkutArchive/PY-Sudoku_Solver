@@ -4,69 +4,8 @@ grid = []
 # nNewValues = 0 
 
 
-def printSudoku(arr):
-    print(*["  Y "] + [str(i) + " " for i in range(3)] + ["  "] + [str(3+i) + " " for i in range(3)] + ["  "] + [str(6+i) + " " for i in range(3)], sep = "")
-    print(*["X +"] + ["-" for i in range(23)] + ["+"], sep = "")#start
 
-    for i in range(3): #rows
-        t = [str(i) + " |"] + arr[i][0:3] + ["|"] + arr[i][3:6] + ["|"] + arr[i][6:9] + ["|"]
-        print(*t, sep = " ")
 
-    print(*["  "]+["".join(["+"] + ["-" for i in range(7)]) for j in range(3)] + ["+"], sep = "")#3 by 3 separators
-
-    for i in range(3, 6): #rows
-        t = [str(i) + " |"] + arr[i][0:3] + ["|"] + arr[i][3:6] + ["|"] + arr[i][6:9] + ["|"]
-        print(*t, sep = " ")
-
-    print(*["  "]+["".join(["+"] + ["-" for i in range(7)]) for j in range(3)] + ["+"], sep = "")#3 by 3 separators
-
-    for i in range(6, 9): #rows
-        t = [str(i) + " |"] + arr[i][0:3] + ["|"] + arr[i][3:6] + ["|"] + arr[i][6:9] + ["|"]
-        print(*t, sep = " ")
-
-    print(*["  +"] + ["-" for i in range(23)] + ["+"], sep = "")#end
-
-def sudokuSolution(data, solutions):
-    for x in range(9):
-        for y in range(9):
-            if data[x][y] == 0:
-                for val in range(1,10):
-                    valid = True
-                    for i in range(9):
-                        xIndex = (x // 3) * 3
-                        yIndex = (y // 3) * 3
-                        if data[x][i] == val or data[i][y] == val or data[xIndex + (i // 3)][yIndex + (i % 3)] == val:
-                            valid = False
-                            break
-                    if valid:
-                        data[x][y] = val
-                        sudokuSolution(data, solutions)
-                        data[x][y] = 0 #if here, the path wasn't good => undo move
-                return
-    ## if here, solution founded
-    solutions.append([[ele for ele in row] for row in data])
-
-# Check if the given sudoku is a valid solution
-def checkSol(arr):
-    for i in range(0, 9, 3):#3 by 3:
-        for j in range(0, 9, 3):
-            suma = 0
-            ele = []
-            for k in range(3):
-                for l in range(3):
-                    suma = suma + arr[k + i][l + j].getValue()
-                    ele = ele + [arr[k + i][l + j].getValue()]
-            if(suma != 45):
-                return False
-    for l in range(9):#lines:
-        solCc = 0
-        solCr = 0
-        for i in range(9):
-            solCc = solCc + arr[i][l].getValue()
-            solCr = solCr + arr[l][i].getValue()
-        if solCc != 45 or solCr != 45:
-            return False
-    return True
 
 ## Prints the status of the arguments (errors)
 def pError(**kwargs):
