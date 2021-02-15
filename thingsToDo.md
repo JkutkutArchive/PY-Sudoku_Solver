@@ -14,6 +14,8 @@
 
 ## functions:
 - comment the code
+- Cell Class:
+  - use __getitem__ function to be able to use the objects also as integers
 
 ## Final version:
 - When printing the sudoku:
