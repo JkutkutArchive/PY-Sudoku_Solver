@@ -1,4 +1,4 @@
-# Code to develop the logic to make the logic of the swordfish
+# Code to develop the logic of the swordfish algorithm
 import functions as f
 
 # values = 4, 5, 6, 2, 9, 3, 5, 1, 6, 3, 1, 9, 3, 4, 2, 4, 5, 3
