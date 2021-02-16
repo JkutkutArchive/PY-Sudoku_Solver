@@ -2,6 +2,7 @@
 
 import functions as tool
 import sudokuFunctions as sTool
+# import cell
 import latexToPDF as pdf
 import input as inputData
 
@@ -33,6 +34,7 @@ import input as inputData
 
 # Sudoku vars:
 grid = [[tool.Cell(x, y) for y in range(9)] for x in range(9)]
+# grid = [[cell.Cell(x, y) for y in range(9)] for x in range(9)]
 data = inputData.data
 
 # --------------------------    CODE    --------------------------
