@@ -244,17 +244,3 @@ class Cell():
                 print(dataToAdd)
             s.append(dataToAdd) # Add it to the array with the rest
         return s # Return all the data on text format
-
-class color():
-    def __init__(self):
-        self.BG = (25, 25, 25)
-        self.GRID = (128, 128, 128)
-        self.BLACK = (0, 0, 0)
-        self.WHITE = (255, 255, 255)
-        self.DBLUE = (0, 153, 255) # L'
-        self.LBLUE = (102, 255, 255) # Straight
-        self.PURPLE = (153, 51, 255) # T
-        self.GREEN = (102, 255, 102) #skew
-        self.YELLOW = (255, 255, 102) #square
-        self.ORANGE = (255, 102, 0) # L
-        self.RED = (255, 80, 80) # Skew'
