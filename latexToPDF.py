@@ -5,9 +5,9 @@ from pylatex.package import Package # To import custom packages
 from pylatex.base_classes import CommandBase #Environment, Arguments
 from pylatex.position import Center
 
-doc = None # Create the var
+doc = None # Create the variable
 
-def init(data, *fileName): # Init the var
+def init(data, *fileName): # Init the variable
     global doc
     fileName = fileName if fileName else "aa-solution"
     doc = Document(fileName) #create the document (argument = name of the file)
@@ -16,8 +16,6 @@ def init(data, *fileName): # Init the var
     doc.packages.append(Package('hyperref')) # package to add links
     
     title = Center()
-    # for i in range(4):
-    #     title.append(NewLine())
     title.append(HugeText(bold("Sudoku's step by step solver")))
     doc.append(title)
     for i in range(8):
