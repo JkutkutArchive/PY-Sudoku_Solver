@@ -4,14 +4,14 @@ grid = []
 # nNewValues = 0 
 
 
-
-
-
-## Prints the status of the arguments (errors)
-def pError(**kwargs):
-    print("***ERROR***".center(30))
-    print(kwargs)
-    print("***END ERROR***".center(30))
+# ## Prints the status of the arguments (errors)
+# def pError(**kwargs):
+#     '''
+#     Console logs the error(s) given
+#     '''
+#     print("***ERROR***".center(30))
+#     print(kwargs)
+#     print("***END ERROR***".center(30))
 
 #   --------------------------------    METHODS     --------------------------------
 def tellCells(cell, cleverCell=True): # When a cell defines its value, this function is called to update the rest
