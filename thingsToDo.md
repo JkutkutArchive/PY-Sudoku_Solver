@@ -3,6 +3,7 @@
 - Remove code based on x,y => base it on r,c
 - Check if can remove possVal based on "val in cell.getPosVal()"
 - Document code
+- Create Class Sudoku, to give it modularity and have all the specific functions together
 
 
 ## main:
