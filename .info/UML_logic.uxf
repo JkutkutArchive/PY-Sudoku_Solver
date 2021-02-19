@@ -1,10 +1,10 @@
-<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>380</x><y>90</y><w>210</w><h>190</h></coordinates><panel_attributes>Sudoku
+<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>410</x><y>100</y><w>210</w><h>190</h></coordinates><panel_attributes>Sudoku
 --
 - board: Cell [9][9]
 - remainingCells: set(Cell)
 --
 - fillBoard()
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>780</x><y>120</y><w>210</w><h>400</h></coordinates><panel_attributes>Cell
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>740</x><y>90</y><w>210</w><h>400</h></coordinates><panel_attributes>Cell
 --
 - x: 
 - y:
@@ -34,4 +34,5 @@
 + __hash__()
 
 
-</panel_attributes><additional_attributes></additional_attributes></element></diagram>
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>610</x><y>120</y><w>150</w><h>40</h></coordinates><panel_attributes>lt=&lt;-
+m1=0..45</panel_attributes><additional_attributes>130;10;10;10</additional_attributes></element></diagram>
