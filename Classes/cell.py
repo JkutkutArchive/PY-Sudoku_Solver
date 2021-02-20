@@ -1,7 +1,7 @@
 class Cell():
-    def __init__(self, x, y):
-        self.x = x # Position on the grid (row)
-        self.y = y # Position on the grid (element in row/column)
+    def __init__(self, r, c):
+        self.r = r # Position on the grid (row)
+        self.c = c # Position on the grid (element in row/column)
         self.value = None # Value of the cell (Now, undefined)
         self.posVal = set([i for i in range(1, 10, 1)]) # Possible values of the cell
         self.pairs = set() # Set with tuple with the linked cell and the value: "(<Cell>, <Value>)"
@@ -38,7 +38,7 @@ class Cell():
         return True # If here, they are exacly equal
     
     def __hash__(self): # Enables to generate a hash to use this class on sets
-        return hash(self.x) ^ hash(self.y) # This make the hash unique because there is not 2 cells on the same coordinates
+        return hash(self.r) ^ hash(self.c) # This make the hash unique because there is not 2 cells on the same coordinates
 
     # ******    GETTERS AND SETTERS:    ******
     def setValue(self, value):
@@ -87,7 +87,7 @@ class Cell():
         return self.pairs
 
     def getPos(self): # returns a tuple with the coordinates (row, column)
-        return (self.x, self.y)
+        return (self.r, self.c)
 
     # ******    PAIRS:    ******
     def addPair(self, other, value): # Add the new pair on a tuple with the value in common
