@@ -23,16 +23,17 @@ class Cell():
         return s
             
     def __eq__(self, other, exactComparation=False): # Enable us to compare it to other cells or to integers by the value
-        if type(other) == int: # if comparing to an integer
+        if type(other) is int: # if comparing to an integer
             return self.getValue() == other # Return if the values are the same
         
         if self.getPos() != other.getPos(): # If cells on different coordinates
             return False # In theory, when well used this class, this should be the only condition used (position unique for each cell)
         
+        if self.getValue() != other.getValue() or self.getPosVal() != other.getPosVal(): # If different values on those variables
+            return False
+
         if exactComparation: # If selected, the fucntion will make a full comparantion
             # (If used this class correctly, this next ifs should never be necessary)
-            if self.value != other.value and self.getPosVal() != other.getPosVal(): # If different values on those variables
-                return False
             if self.data != other.data: # If the data stored is different
                 return False
         return True # If here, they are exacly equal
