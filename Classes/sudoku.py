@@ -97,7 +97,7 @@ class Sudoku():
     def toList(self):
         return [[self.board[i][j] for j in range(9)] for i in range(9)]
 
-    def print(self, arr=None):
+    def print(self, arr=None, returnAsString=False):
         '''
         Prints with sudoku format the 9x9 list given.
 
@@ -107,29 +107,33 @@ class Sudoku():
 
         Please note that the axis are inverted compared with the programming convention.
         '''
-        if arr == None:
-            arr = self.toList()
+        if arr == None: # If no list given
+            arr = self.toList() # Use the objects list
+        stringList = list()
 
-        print(*["  C "] + [str(i) + " " for i in range(3)] + ["  "] + [str(3+i) + " " for i in range(3)] + ["  "] + [str(6+i) + " " for i in range(3)], sep = "")
-        print(*["R +"] + ["-" for i in range(23)] + ["+"], sep = "")#start
+        stringList.append("".join(["  C "] + [str(i) + " " for i in range(3)] + ["  "] + [str(3+i) + " " for i in range(3)] + ["  "] + [str(6+i) + " " for i in range(3)]))
+        stringList.append("".join(["R +"] + ["-" for i in range(23)] + ["+"])) # Start
 
-        for i in range(3): #rows
-            t = [str(i) + " |"] + arr[i][0:3] + ["|"] + arr[i][3:6] + ["|"] + arr[i][6:9] + ["|"]
-            print(*t, sep = " ")
+        separator = "".join(["  "]+["".join(["+"] + ["-" for i in range(7)]) for j in range(3)] + ["+"]) # 3 by 3 separators
 
-        print(*["  "]+["".join(["+"] + ["-" for i in range(7)]) for j in range(3)] + ["+"], sep = "")#3 by 3 separators
+        for s in range(0, 9, 3): # For each sector
+            for i in range(3): #For each row in each sector
+                r = [str(i+s)] #Here the string of each line will be generated
+                for j in range(0, 6, 3): # for each 3 numbers on a row-sector
+                    r.append("|")
+                    for k in range(3): # For each number in a row-sector
+                        r.append(arr[i][j+k].__str__())
+                r.append("|")
+                stringList.append(" ".join(r))
+            stringList.append(separator)
 
-        for i in range(3, 6): #rows
-            t = [str(i) + " |"] + arr[i][0:3] + ["|"] + arr[i][3:6] + ["|"] + arr[i][6:9] + ["|"]
-            print(*t, sep = " ")
+        string = "\n".join(stringList)
+        if not returnAsString:
+            print(string)
+        else:
+            return string
 
-        print(*["  "]+["".join(["+"] + ["-" for i in range(7)]) for j in range(3)] + ["+"], sep = "")#3 by 3 separators
 
-        for i in range(6, 9): #rows
-            t = [str(i) + " |"] + arr[i][0:3] + ["|"] + arr[i][3:6] + ["|"] + arr[i][6:9] + ["|"]
-            print(*t, sep = " ")
-
-        print(*["  +"] + ["-" for i in range(23)] + ["+"], sep = "")#end
 
 if __name__ == "__main__":
     a = Sudoku()
