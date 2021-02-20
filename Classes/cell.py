@@ -23,6 +23,8 @@ class Cell():
         return s
             
     def __eq__(self, other, exactComparation=False): # Enable us to compare it to other cells or to integers by the value
+        if other == None:
+            return False
         if type(other) is int: # if comparing to an integer
             return self.getValue() == other # Return if the values are the same
         
@@ -42,9 +44,9 @@ class Cell():
         return hash(self.r) ^ hash(self.c) # This make the hash unique because there is not 2 cells on the same coordinates
 
     # ******    GETTERS AND SETTERS:    ******
-    def setValue(self, value):
+    def setValue(self, value, force=False):
     # def setValue(self, value, printData=True, cleverCell=True):
-        if self.getValue() != 0: return # if already called, do not continue
+        if self.getValue() != 0 and not force: return # if already called, do not continue
         # if value != sol[self.x][self.y]: # If not correct value
         #     print("\n\n\n ERROR: \n"+self.cellToString())
         #     print(("ERROR, NOT CORRECT VALUE -> Cell" + str(self.getPos()) + " is not " + str(value) + ", is " + str(sol[self.x][self.y])).center(40))
@@ -62,8 +64,14 @@ class Cell():
         # global nNewValues
         # nNewValues = nNewValues + 1
 
-    def getValue(self): # Returns the value of the cell. If not defined, return 0
-        return self.value if self.value != None else 0
+    def getValue(self): 
+        '''
+        The value (int) of the cell. If not defined, return 0
+
+        Returns:
+        int: the value of the cell.
+        '''
+        return int(self.value) if self.value != None else int(0)
 
     def setPosVal(self, set): # Redefine the possible values of the cells
         self.posVal = set # Save the given set as the possible values (Warning, set not copied)
