@@ -129,7 +129,7 @@ class Sudoku():
                 for j in range(0, 7, 3): # for each 3 numbers on a row-sector
                     r.append("|")
                     for k in range(3): # For each number in a row-sector
-                        r.append(arr[i][j+k].__str__())
+                        r.append(arr[i + s][j+k].__str__())
                 r.append("|")
                 stringList.append(" ".join(r))
             stringList.append(separador)
