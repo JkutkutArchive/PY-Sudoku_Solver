@@ -111,21 +111,28 @@ class Sudoku():
             arr = self.toList() # Use the objects list
         stringList = list()
 
-        stringList.append("".join(["  C "] + [str(i) + " " for i in range(3)] + ["  "] + [str(3+i) + " " for i in range(3)] + ["  "] + [str(6+i) + " " for i in range(3)]))
-        stringList.append("".join(["R +"] + ["-" for i in range(23)] + ["+"])) # Start
+        # First line
+        r = []
+        for j in range(0, 7, 3):
+            r.append("".join([str(i+j) + " " for i in range(3)]))
+        stringList.append("  C " + "  ".join(r))
 
-        separator = "".join(["  "]+["".join(["+"] + ["-" for i in range(7)]) for j in range(3)] + ["+"]) # 3 by 3 separators
+        # Rest of the lines
+        separador = "".join(["".join(["+"] + ["-" for i in range(7)]) for j in range(3)] + ["+"]) # divider
+        stringList.append("R " + separador) # Start
+
+        separador = "  " + separador
 
         for s in range(0, 9, 3): # For each sector
             for i in range(3): #For each row in each sector
                 r = [str(i+s)] #Here the string of each line will be generated
-                for j in range(0, 6, 3): # for each 3 numbers on a row-sector
+                for j in range(0, 7, 3): # for each 3 numbers on a row-sector
                     r.append("|")
                     for k in range(3): # For each number in a row-sector
                         r.append(arr[i][j+k].__str__())
                 r.append("|")
                 stringList.append(" ".join(r))
-            stringList.append(separator)
+            stringList.append(separador)
 
         string = "\n".join(stringList)
         if not returnAsString:
