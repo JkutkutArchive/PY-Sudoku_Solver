@@ -9,8 +9,8 @@ def printSudoku(arr):
     Please note that the axis are inverted compared with the programming convention.
     '''
 
-    print(*["  Y "] + [str(i) + " " for i in range(3)] + ["  "] + [str(3+i) + " " for i in range(3)] + ["  "] + [str(6+i) + " " for i in range(3)], sep = "")
-    print(*["X +"] + ["-" for i in range(23)] + ["+"], sep = "")#start
+    print(*["  C "] + [str(i) + " " for i in range(3)] + ["  "] + [str(3+i) + " " for i in range(3)] + ["  "] + [str(6+i) + " " for i in range(3)], sep = "")
+    print(*["R +"] + ["-" for i in range(23)] + ["+"], sep = "")#start
 
     for i in range(3): #rows
         t = [str(i) + " |"] + arr[i][0:3] + ["|"] + arr[i][3:6] + ["|"] + arr[i][6:9] + ["|"]

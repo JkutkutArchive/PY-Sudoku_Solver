@@ -41,24 +41,25 @@ class Cell():
         return hash(self.x) ^ hash(self.y) # This make the hash unique because there is not 2 cells on the same coordinates
 
     # ******    GETTERS AND SETTERS:    ******
-    def setValue(self, value, printData=True, cleverCell=True):
+    def setValue(self, value):
+    # def setValue(self, value, printData=True, cleverCell=True):
         if self.getValue() != 0: return # if already called, do not continue
-        if value != sol[self.x][self.y]: # If not correct value
-            print("\n\n\n ERROR: \n"+self.cellToString())
-            print(("ERROR, NOT CORRECT VALUE -> Cell" + str(self.getPos()) + " is not " + str(value) + ", is " + str(sol[self.x][self.y])).center(40))
-            raise Exception("Not correct value")
+        # if value != sol[self.x][self.y]: # If not correct value
+        #     print("\n\n\n ERROR: \n"+self.cellToString())
+        #     print(("ERROR, NOT CORRECT VALUE -> Cell" + str(self.getPos()) + " is not " + str(value) + ", is " + str(sol[self.x][self.y])).center(40))
+        #     raise Exception("Not correct value")
         self.value = value # Set the value of the cell to the one given 
         self.posVal.clear() # Therefore, there are no possible values left => clear the set of possible values
-        self.addData("therefore") # Add to the data array the data to say that the value is the given 
-        if printData: # If selected to print the data
-            d = self.dataToText() # Data on text format
-            print(*[""] + d, sep = "\n") # Print all the data
-            print(sol[self.x][self.y])
-            pdf.printDataOnLaTeX(d) # Add this data to the pdf
-        self.tellPairs() # Notify all linked cells that the value has been defined
-        tellCells(self, cleverCell=cleverCell) # update the cells on the grid of this change in value
-        global nNewValues
-        nNewValues = nNewValues + 1
+        # self.addData("therefore") # Add to the data array the data to say that the value is the given 
+        # if printData: # If selected to print the data
+        #     d = self.dataToText() # Data on text format
+        #     print(*[""] + d, sep = "\n") # Print all the data
+        #     print(sol[self.x][self.y])
+        #     pdf.printDataOnLaTeX(d) # Add this data to the pdf
+        # self.tellPairs() # Notify all linked cells that the value has been defined
+        # tellCells(self, cleverCell=cleverCell) # update the cells on the grid of this change in value
+        # global nNewValues
+        # nNewValues = nNewValues + 1
 
     def getValue(self): # Returns the value of the cell. If not defined, return 0
         return self.value if self.value != None else 0
