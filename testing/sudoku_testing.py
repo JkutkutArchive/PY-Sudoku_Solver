@@ -51,10 +51,10 @@ class TestStringMethods(unittest.TestCase):
 #   +-----------------------+")
         self.assertEqual(1,2)
 
-# if __name__ == '__main__':
-#   print("Testing...")
+if __name__ == '__main__':
+  print("Testing...")
 
-#   logging.basicConfig( stream=sys.stderr )
-#   logging.getLogger( "TestStringMethods.printSudokuTest" ).setLevel( logging.DEBUG )
+  logging.basicConfig( stream=sys.stderr )
+  logging.getLogger( "TestStringMethods.printSudokuTest" ).setLevel( logging.DEBUG )
   
-#   unittest.main()
+  unittest.main()
