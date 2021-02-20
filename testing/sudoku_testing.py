@@ -28,7 +28,6 @@ class TestStringMethods(unittest.TestCase):
                 self.assertEquals(sud1Board[r][c].getValue(), 0)
                 self.assertEquals(sud2Board[r][c].getValue(), board[r][c])
 
-
     def test_fillSudoku(self):
         testSudoku = sudoku.Sudoku()
         boardTest = testSudoku.toList()
@@ -53,6 +52,13 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(self.sudoku.print(arr=input.easy(), returnAsString=True), espected)
         self.assertIsNone(self.sudoku.print())
 
+    def test_validSolution(self):
+        self.assertFalse(self.sudoku.validSolution())
+        self.sudoku.fillBoard(input.full())
+        self.assertTrue(self.sudoku.validSolution())
+        self.assertTrue(self.sudoku.validSolution(input.full()))
+        self.assertFalse(self.sudoku.validSolution(input.empty()))
+        
 if __name__ == '__main__':
     print("Testing...")
 
