@@ -3,9 +3,11 @@
 from Classes import cell # Custom Class
 
 class Sudoku():
-    def __init__(self):
+    def __init__(self, board=None):
         self.board = [[cell.Cell(x, y) for y in range(9)] for x in range(9)] # Create the board
         self.remainingCells = set()
+        if not board == None:
+            self.fillBoard(board)
     
     def fillBoard(self, data):
         super() # Reset the class
@@ -22,19 +24,25 @@ class Sudoku():
                     self.remainingCells.add(self.board[i][j])
 
 
-    def validSolution(self, arr):
+    def validSolution(self, arr=None):
         '''
         Check if the given sudoku is a valid solution
 
         Given a 9x9 Cell list, check if it forms a valid sudoku.
 
-        - arr (list): 9x9 Cell list
+        - arr (list): 9x9 Cell list. If none given, the board from the object is used
 
         Returns:
         boolean: whenever the input forms a valid sudoku
 
         Note: See the Cell class for more information about who this function works.
         '''
+        if arr == None:
+            arr = self.toList()
+        if type(arr[0][0]) is int:
+            a = Sudoku(arr)
+            arr = a.toList()
+
         for i in range(0, 9, 3):#3 by 3:
             for j in range(0, 9, 3):
                 suma = 0
@@ -103,9 +111,14 @@ class Sudoku():
 
         Given a 9x9 list of integers, prints on console the ASCII representation on the format used by this code.
 
-        - arr (list): 9x9 list with integers
-
+        - arr (list): (optional) 9x9 list with integers or Cells.
+        - returnAsString (boolean): (optional) if true: instead of printing, the string is returned.
+        
         Please note that the axis are inverted compared with the programming convention.
+
+        Returns:
+
+        If returnAsString = True, the output is the string that should be printed.
         '''
         if arr == None: # If no list given
             arr = self.toList() # Use the objects list
