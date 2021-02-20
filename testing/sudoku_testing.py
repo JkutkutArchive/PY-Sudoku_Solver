@@ -15,13 +15,19 @@ class TestStringMethods(unittest.TestCase):
     def setUp(self):
         self.sudoku = sudoku.Sudoku()
 
-    # def test_fillSudoku(self):
-    #     try:
-    #         self.sudoku.fillBoard([])
-    #     except:
-    #         e = sys.exc_info()[0]
-    #         print(e)
-    #     self.assertTrue(False)
+    def test_fillSudoku(self):
+        testSudoku = sudoku.Sudoku()
+        boardTest = testSudoku.toList()
+
+        spected = input.hard()
+        self.sudoku.fillBoard(spected)
+        board = self.sudoku.toList()
+        for r in range(9):
+            for c in range(9):
+                self.assertEquals(boardTest[r][c].getValue(), 0)
+                self.assertEquals(board[r][c].getValue(), spected[r][c])
+
+        
 
     def test_printSudokuTest(self):
         self.sudoku.fillBoard(input.easy())
