@@ -110,28 +110,48 @@ class Cell():
     def getPairs(self):
         return self.pairs
 
-    def getPos(self): # returns a tuple with the coordinates (row, column)
+    def getPos(self):
+        '''
+        Returns a tuple with the coordinates (row, column)
+
+        Returns:
+        tuple: Tuple with the coordinates
+        '''
         return (self.r, self.c)
     
     def getRow(self):
         '''
         Returns the current row of the Cell
+        
+        Returns:
+        int: the value required
         '''
         return self.r
+    
     def gR(self):
         '''
         Other way to call the getRow method
+        
+        Returns:
+        int: the value required
         '''
         return self.getRow()
 
     def getCol(self):
         '''
         Returns the current column of the Cell
+        
+        Returns:
+        int: the value required
         '''
         return self.c
+    
     def gC(self):
         '''
         Other way to call the getCol method
+        
+        Returns:
+        int: the value required
         '''
         return self.getCol()
 
