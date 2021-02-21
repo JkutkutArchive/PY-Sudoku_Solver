@@ -29,51 +29,15 @@ class Sudoku():
                     # self.board[i][j].setValue(data[i][j], False, cleverCell=False)
                 else:
                     self.remainingCells.add(self.board[i][j])
-
-    def validSolution(self, arr=None):
-        '''
-        Check if the given sudoku is a valid solution
-
-        Given a 9x9 Cell list, check if it forms a valid sudoku.
-
-        - arr (list): (optional) 9x9 list (integer of Cell). If None given, the board from the object is used.
-
-        Returns:
-        boolean: whenever the input forms a valid sudoku
-
-        Note: See the Cell class for more information about who this function works.
-        '''
-        if arr == None:
-            arr = self.toList()
-        elif type(arr[0][0]) is int:
-            a = Sudoku(arr)
-            arr = a.toList()
-        elif any([not type(arr[i][j]) is cell.Cell for i in range(9) for j in range(9)]):
-            raise Exception("The list given must be a list of Cells")
-
-        for i in range(0, 9, 3):#3 by 3:
-            for j in range(0, 9, 3):
-                suma = 0
-                for k in range(3):
-                    for l in range(3):
-                        suma = suma + arr[i + k][j + l].getValue()
-                if(suma != 45):
-                    return False
-        for l in range(9):#lines:
-            solCc = 0
-            solCr = 0
-            for i in range(9):
-                solCc = solCc + arr[i][l].getValue()
-                solCr = solCr + arr[l][i].getValue()
-            if solCc != 45 or solCr != 45:
-                return False
-        return True
     
 
-    # ******    Visualization:    ******
+    # ******    Visualization / getters:    ******
     def toList(self):
         # return [[self.board[i][j] for j in range(9)] for i in range(9)]
         return self.board
+
+    def getRemainingCells(self):
+        return self.remainingCells()
 
     def print(self, arr=None, returnAsString=False):
         '''
@@ -194,6 +158,45 @@ class Sudoku():
         if newSolution.validSolution(): # Check if solution founded is correct
             solutions.append(newSolution.toList()) # Add the current solution to the solution list
 
+    def validSolution(self, arr=None):
+        '''
+        Check if the given sudoku is a valid solution
+
+        Given a 9x9 Cell list, check if it forms a valid sudoku.
+
+        - arr (list): (optional) 9x9 list (integer of Cell). If None given, the board from the object is used.
+
+        Returns:
+        boolean: whenever the input forms a valid sudoku
+
+        Note: See the Cell class for more information about who this function works.
+        '''
+        if arr == None:
+            arr = self.toList()
+        elif type(arr[0][0]) is int:
+            a = Sudoku(arr)
+            arr = a.toList()
+        elif any([not type(arr[i][j]) is cell.Cell for i in range(9) for j in range(9)]):
+            raise Exception("The list given must be a list of Cells")
+
+        for i in range(0, 9, 3):#3 by 3:
+            for j in range(0, 9, 3):
+                suma = 0
+                for k in range(3):
+                    for l in range(3):
+                        suma = suma + arr[i + k][j + l].getValue()
+                if(suma != 45):
+                    return False
+        for l in range(9):#lines:
+            solCc = 0
+            solCr = 0
+            for i in range(9):
+                solCc = solCc + arr[i][l].getValue()
+                solCr = solCr + arr[l][i].getValue()
+            if solCc != 45 or solCr != 45:
+                return False
+        return True
+
     def findSolutionWithSteps(self):
         correctSolution = []
         self.findSolutions(solutions=correctSolution) # Search possible solutions for the current sudoku
@@ -205,8 +208,15 @@ class Sudoku():
             print("ups2")
             raise Exception("There are more than one possible solution.")
 
-        print("not failed")
+        # If here, there is only one possible solution. Let's find it
 
+
+
+    def solver_basic(self):
+        for cell in self.getRemainingCells(): # Values in row, col, 3by3
+            if cell.getValue() != 0: continue # if during this loop, this cell got it's value defined, go to next one
+
+            
     
 
 
