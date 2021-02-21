@@ -105,16 +105,18 @@ class TestStringMethods(unittest.TestCase):
 
 
     def test_findSolutionWithSteps(self):
-        test1 = sudoku.Sudoku(input.noSolution())
-        # self.failUnlessRaises(Exception("No solutions founded for the current sudoku."), test1.findSolutionWithSteps)
+        # Check invalid sudokus
+        test = []
+        test.append(sudoku.Sudoku(input.noSolution()))
+        test.append(sudoku.Sudoku(input.tripleSolutions()))
 
-        # test2 = sudoku.Sudoku(input.tripleSolutions())
-        # self.assertRaises("No solutions founded for the current sudoku.", test2.findSolutionWithSteps())
-        
-        with self.assertRaises(Exception) as context:
-            test1.findSolutionWithSteps()
-
-        self.assertTrue("No solutions founded for the current sudoku." in str(context.exception))
+        exceptions = ["No solutions founded for the current sudoku.",\
+                      "There are more than one possible solution."]
+        for t in range(len(test)):
+            with self.assertRaises(Exception) as context:
+                test[t].findSolutionWithSteps()
+            
+            self.assertTrue(exceptions[t] in str(context.exception))
 
 if __name__ == '__main__':
     print("Testing...")

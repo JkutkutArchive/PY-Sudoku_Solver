@@ -93,9 +93,9 @@ class Sudoku():
     # https://www.conceptispuzzles.com/index.aspx?uri=puzzle/sudoku/techniques
 
     # -Scanning techniques
-    # 1. Scanning in one direction:(basic + unique)
-    # 2. Scanning in two directions:(basic + unique)
-    # 3. Searching for Single Candidates: (unique)
+    # 1. Scanning in one direction:(basic + unique) (solver_basic())
+    # 2. Scanning in two directions:(basic + unique) (solver_basic())
+    # 3. Searching for Single Candidates: (unique) (solver_basic())
     # 4. Eliminating numbers from rows, columns and boxes: (pairs)
     # 5. Searching for missing numbers in rows and columns: (basic)
 
@@ -200,12 +200,9 @@ class Sudoku():
     def findSolutionWithSteps(self):
         correctSolution = []
         self.findSolutions(solutions=correctSolution) # Search possible solutions for the current sudoku
-        print("hey!")
         if len(correctSolution) == 0:
-            print("ups1")
             raise Exception("No solutions founded for the current sudoku.")
         if len(correctSolution) > 1: # If more than one possible solutions
-            print("ups2")
             raise Exception("There are more than one possible solution.")
 
         # If here, there is only one possible solution. Let's find it
@@ -213,10 +210,48 @@ class Sudoku():
 
 
     def solver_basic(self):
-        for cell in self.getRemainingCells(): # Values in row, col, 3by3
+        '''
+        This code tries to find values of the cells using basic scanning techniques.
+        '''
+
+        board = self.toList()
+
+        for cell in self.getRemainingCells(): 
             if cell.getValue() != 0: continue # if during this loop, this cell got it's value defined, go to next one
 
-            
+            # ----------    BASIC   ----------
+            values = [[], [], []] # Values in row, col, 3by3
+
+            for i in range(9):
+                if i != cell.gC(): # Rows (r=cte) -- If not the same cell
+                    otherValue = board[cell.gr()][i].getValue()
+                    if otherValue != 0 and (otherValue in cell.getPosVal()):
+                        # cell.removePosVal(otherValue)
+                        values[0] = values[0] + [otherValue]
+                if i != cell.gR(): # Cols (c=cte) -- If not the same cell
+                    otherValue = board[i][cell.gC()].getValue()
+                    if otherValue != 0 and (otherValue in cell.getPosVal()):
+                        # cell.removePosVal(otherValue)
+                        values[1] = values[1] + [otherValue]
+                r = (cell.gR() // 3) * 3 + (i // 3)
+                c = (cell.gC() // 3) * 3 + (i % 3)
+                if cell.gR() != r or cell.gC() != c: # 3 by 3 -- If not the same cell
+                    otherValue = board[r][c].getValue()
+                    if otherValue != 0 and (otherValue in cell.getPosVal()):
+                        # cell.removePosVal(otherValue)
+                        values[2] = values[2] + [otherValue]
+
+            # If possible values of cell can be removed
+            # if len(values[0]) > 0: # Row
+            #     cell.addData("basic row", values[0])
+            # if len(values[1]) > 0: # Col 
+            #     cell.addData("basic col", values[1])
+            # if len(values[2]) > 0: # 3by3
+            #     cell.addData("basic 3 by 3", values[2])
+
+            # if len(cell.getPosVal()) == 1: # We got the value
+            #     cell.setValue(list(cell.getPosVal())[0])
+            #     continue
     
 
 
