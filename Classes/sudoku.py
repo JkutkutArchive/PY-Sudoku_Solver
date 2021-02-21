@@ -18,11 +18,13 @@ class Sudoku():
         for i in range(9):
             for j in range(9):
                 if data[i][j] != 0:
-                    self.board[i][j].setValue(data[i][j])
+                    if type(data[i][j]) is int:
+                        self.board[i][j].setValue(data[i][j])
+                    elif type(data[i][j]) is cell.Cell:
+                        self.board[i][j].setValue(data[i][j].getValue())
                     # self.board[i][j].setValue(data[i][j], False, cleverCell=False)
                 else:
                     self.remainingCells.add(self.board[i][j])
-
 
     def validSolution(self, arr=None):
         '''
@@ -30,7 +32,7 @@ class Sudoku():
 
         Given a 9x9 Cell list, check if it forms a valid sudoku.
 
-        - arr (list): 9x9 Cell list. If none given, the board from the object is used
+        - arr (list): (optional) 9x9 list (integer of Cell). If None given, the board from the object is used.
 
         Returns:
         boolean: whenever the input forms a valid sudoku
@@ -39,18 +41,33 @@ class Sudoku():
         '''
         if arr == None:
             arr = self.toList()
-        if type(arr[0][0]) is int:
+        elif type(arr[0][0]) is int:
             a = Sudoku(arr)
             arr = a.toList()
+        elif any([not type(arr[i][j]) is cell.Cell for i in range(9) for j in range(9)]):
+            raise Exception("The list given must be a list of Cells")
 
         for i in range(0, 9, 3):#3 by 3:
             for j in range(0, 9, 3):
                 suma = 0
-                ele = []
+                # ele = []
                 for k in range(3):
                     for l in range(3):
-                        suma = suma + arr[k + i][l + j].getValue()
-                        ele = ele + [arr[k + i][l + j].getValue()]
+                        # print("*************")
+                        # print(arr[i + k][j + l])
+                        # print(arr[i + k][j + l].getPos())
+                        # print(type(arr[i + k][j + l]))
+                        # print(arr[i + k][j + l].value)
+                        # print(type(arr[i + k][j + l].value))
+                        # print(arr[i + k][j + l].getValue())
+                        # print(type(arr[i + k][j + l].getValue()))
+                        # print(suma)
+                        # print(type(suma))
+                        # print("*************")
+
+                        suma = suma + arr[i + k][j + l].getValue()
+                        
+                        # ele = ele + [arr[k + i][l + j].getValue()]
                 if(suma != 45):
                     return False
         for l in range(9):#lines:
@@ -63,47 +80,51 @@ class Sudoku():
                 return False
         return True
 
-    def findSolutions(self, data, solutions):
+    def findSolutions(self, solutions, arr=None):
         '''
         Gets the possible solution(s) of the given sudoku.
 
         Given a 9x9 integer list, all the possible solutions of the input are found using a classic implementation of a recursive algorithm.
 
-        - data (list): 9x9 integer list with the data of the current state of the sudoku
+        - arr (list): 9x9 integer list with the data of the current state of the sudoku
         - solutions (list) Nx9x9 with the solutions found. This works as a "output".
         
         Returns:
 
         list: the object solutions works as output
         '''
-        if data == None: # If no sudoku list given, use current
-            data = self.toList()
+        if arr == None: # If no sudoku list given, use current
+            arr = self.toList()
+        # if type(arr[0][0]) is int:
+        #     a = Sudoku(arr)
+        #     arr = a.toList()
 
-        for x in range(9): # For each colum
-            for y in range(9): # For each row
-                if data[x][y] == 0: # If empty cell
+        for c in range(9): # For each colum
+            for r in range(9): # For each row
+                if arr[r][c] == 0: # If empty cell
                     for val in range(1,10): # For each possible value
                         valid = True # If the current value (val) is viable to be the correct value of the cell(x, y)
                         for i in range(9): # for each neighbour cell (row, col or 3by3)
-                            xIndex = (x // 3) * 3 # X 3by3
-                            yIndex = (y // 3) * 3 # Y 3by3
-                            if data[x][i] == val or data[i][y] == val or data[xIndex + (i // 3)][yIndex + (i % 3)] == val:
+                            rIndex = (r // 3) * 3 # R 3by3
+                            cIndex = (c // 3) * 3 # C 3by3
+                            if arr[r][i] == val or arr[i][c] == val or arr[rIndex + (i // 3)][cIndex + (i % 3)] == val:
                                 # If neighbour already has the value val, this value can not be on this cell => val not valid
                                 valid = False
                                 break
                         if valid: # If the value val may be correct
-                            data[x][y] = val # Try to solve the sudoku using this value as correct
-                            self.findSolutions(data, solutions)
-                            data[x][y] = 0 # if here, the path wasn't good => undo move
+                            arr[r][c].setValue(val, force=True) # Try to solve the sudoku using this value as correct
+                            self.findSolutions(solutions, arr)
+                            arr[r][c].setValue(0, force=True) # if here, the path wasn't good => undo move
                     return # If here, all posible valid combinations have been tested => end execution
         
         ## if here, solution founded
-        solutions.append([[ele for ele in row] for row in data]) # Add the current solution to the solution list
+        solutions.append([[ele for ele in row] for row in arr]) # Add the current solution to the solution list
     
 
     # ******    Visualization:    ******
     def toList(self):
-        return [[self.board[i][j] for j in range(9)] for i in range(9)]
+        # return [[self.board[i][j] for j in range(9)] for i in range(9)]
+        return self.board
 
     def print(self, arr=None, returnAsString=False):
         '''
