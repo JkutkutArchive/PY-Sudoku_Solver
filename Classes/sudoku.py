@@ -54,24 +54,9 @@ class Sudoku():
         for i in range(0, 9, 3):#3 by 3:
             for j in range(0, 9, 3):
                 suma = 0
-                # ele = []
                 for k in range(3):
                     for l in range(3):
-                        # print("*************")
-                        # print(arr[i + k][j + l])
-                        # print(arr[i + k][j + l].getPos())
-                        # print(type(arr[i + k][j + l]))
-                        # print(arr[i + k][j + l].value)
-                        # print(type(arr[i + k][j + l].value))
-                        # print(arr[i + k][j + l].getValue())
-                        # print(type(arr[i + k][j + l].getValue()))
-                        # print(suma)
-                        # print(type(suma))
-                        # print("*************")
-
                         suma = suma + arr[i + k][j + l].getValue()
-                        
-                        # ele = ele + [arr[k + i][l + j].getValue()]
                 if(suma != 45):
                     return False
         for l in range(9):#lines:
@@ -122,7 +107,8 @@ class Sudoku():
                     return # If here, all posible valid combinations have been tested => end execution
         
         ## if here, solution founded
-        solutions.append([[ele for ele in row] for row in arr]) # Add the current solution to the solution list
+        newSolution = Sudoku(arr) # Create a new Sudoku object to clone the solution to a new object (current will be modified)
+        solutions.append(newSolution.toList()) # Add the current solution to the solution list
     
 
     # ******    Visualization:    ******
