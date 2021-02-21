@@ -8,7 +8,6 @@ import pytest
 from Classes import sudoku
 # import random
 
-import sudokuFunctions
 import input
 
 class TestStringMethods(unittest.TestCase):
