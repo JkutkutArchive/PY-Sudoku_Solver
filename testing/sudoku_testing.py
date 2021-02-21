@@ -46,7 +46,6 @@ class TestStringMethods(unittest.TestCase):
             for c in range(9):
                 self.assertNotEqual(board2[r][c].getValue(), spected2[r][c])
                 self.assertEqual(board2[r][c].getValue(), board[r][c].getValue())
-                
 
     def test_printSudokuTest(self):
         self.sudoku.fillBoard(input.easy())
@@ -68,6 +67,13 @@ class TestStringMethods(unittest.TestCase):
         self.assertFalse(self.sudoku.validSolution(input.empty()))
         
     def test_findSolutions(self):
+        # None solution
+        noSolutionSudoku = sudoku.Sudoku(input.noSolution())
+        noSolutionsFound = []
+        noSolutionSudoku.findSolutions(noSolutionsFound)
+        self.assertEqual(len(noSolutionsFound), 0)
+
+        # One solution
         self.sudoku.fillBoard(input.full())
         solutions = []
         self.sudoku.findSolutions(solutions=solutions)
@@ -90,7 +96,6 @@ class TestStringMethods(unittest.TestCase):
             solutionSudoku2Objects = [sudoku.Sudoku(i) for i in solutionSudoku2]
             
             for solutionObject in solutionSudoku2Objects:
-                solutionObject.print()
                 self.assertTrue(solutionObject.validSolution())
             
             #Check all solutions are unique
@@ -98,6 +103,18 @@ class TestStringMethods(unittest.TestCase):
                 for j in range(i + 1, len(solutionSudoku2Objects)):
                     self.assertNotEqual(solutionSudoku2Objects[i], solutionSudoku2Objects[j])
 
+
+    def test_findSolutionWithSteps(self):
+        test1 = sudoku.Sudoku(input.noSolution())
+        # self.failUnlessRaises(Exception("No solutions founded for the current sudoku."), test1.findSolutionWithSteps)
+
+        # test2 = sudoku.Sudoku(input.tripleSolutions())
+        # self.assertRaises("No solutions founded for the current sudoku.", test2.findSolutionWithSteps())
+        
+        with self.assertRaises(Exception) as context:
+            test1.findSolutionWithSteps()
+
+        self.assertTrue("No solutions founded for the current sudoku." in str(context.exception))
 
 if __name__ == '__main__':
     print("Testing...")
