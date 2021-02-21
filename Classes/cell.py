@@ -1,5 +1,7 @@
 class Cell():
     def __init__(self, r, c):
+        if not type(r) is int or not type(c) is int:
+            raise Exception("r and c must be integers")
         self.r = r # Position on the grid (row)
         self.c = c # Position on the grid (element in row/column)
         self.value = None # Value of the cell (Now, undefined)
@@ -51,7 +53,13 @@ class Cell():
         #     print("\n\n\n ERROR: \n"+self.cellToString())
         #     print(("ERROR, NOT CORRECT VALUE -> Cell" + str(self.getPos()) + " is not " + str(value) + ", is " + str(sol[self.x][self.y])).center(40))
         #     raise Exception("Not correct value")
-        self.value = value # Set the value of the cell to the one given 
+        if type(value) is Cell:
+            self.value = value.getValue() # Set the value of the cell to the one given 
+        elif type(value) is int:
+            self.value = value # Set the value of the cell to the one given 
+        else:
+            raise Exception("Can not set the value of the cell. Value not valid.")
+        
         self.posVal.clear() # Therefore, there are no possible values left => clear the set of possible values
         # self.addData("therefore") # Add to the data array the data to say that the value is the given 
         # if printData: # If selected to print the data
@@ -69,9 +77,9 @@ class Cell():
         The value (int) of the cell. If not defined, return 0
 
         Returns:
-        int: the value of the cell.
+        int: the value of the cell
         '''
-        return int(self.value) if self.value != None else int(0)
+        return self.value if self.value != None else 0
 
     def setPosVal(self, set): # Redefine the possible values of the cells
         self.posVal = set # Save the given set as the possible values (Warning, set not copied)
