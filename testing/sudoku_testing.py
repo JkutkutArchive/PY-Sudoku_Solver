@@ -25,20 +25,29 @@ class TestStringMethods(unittest.TestCase):
 
         for r in range(9):
             for c in range(9):
-                self.assertEquals(sud1Board[r][c].getValue(), 0)
-                self.assertEquals(sud2Board[r][c].getValue(), board[r][c])
+                self.assertEqual(sud1Board[r][c].getValue(), 0)
+                self.assertEqual(sud2Board[r][c].getValue(), board[r][c])
 
-    def test_fillSudoku(self):
+    def test_fillBoard(self):
         testSudoku = sudoku.Sudoku()
         boardTest = testSudoku.toList()
 
-        spected = input.hard()
+        spected = input.full()
         self.sudoku.fillBoard(spected)
         board = self.sudoku.toList()
         for r in range(9):
             for c in range(9):
-                self.assertEquals(boardTest[r][c].getValue(), 0)
-                self.assertEquals(board[r][c].getValue(), spected[r][c])
+                self.assertEqual(boardTest[r][c].getValue(), 0)
+                self.assertEqual(board[r][c].getValue(), spected[r][c])
+        
+        spected2 = input.empty()
+        self.sudoku.fillBoard(spected2)
+        board2 = self.sudoku.toList()
+        for r in range(9):
+            for c in range(9):
+                self.assertNotEqual(board2[r][c].getValue(), spected2[r][c])
+                self.assertEqual(board2[r][c].getValue(), board[r][c].getValue())
+                
 
     def test_printSudokuTest(self):
         self.sudoku.fillBoard(input.easy())
@@ -59,6 +68,32 @@ class TestStringMethods(unittest.TestCase):
         self.assertTrue(self.sudoku.validSolution(input.full()))
         self.assertFalse(self.sudoku.validSolution(input.empty()))
         
+    def test_findSolutions(self):
+        self.sudoku.fillBoard(input.full())
+        solutions = []
+        self.sudoku.findSolutions(solutions=solutions)
+        self.assertEqual(len(solutions), 1)
+        
+        solutionSudoku = sudoku.Sudoku(solutions[0])
+        self.assertTrue(solutionSudoku.validSolution())
+
+        miniTests = [input.tripleSolutions(), input.hexSolutions()]
+        spectedSolutions = [3, 6]
+
+        for miniTest in range(len(miniTests)):
+
+            sudoku2 = sudoku.Sudoku(miniTests[miniTest])
+            solutionSudoku2 = []
+            sudoku2.findSolutions(solutionSudoku2)
+            
+            self.assertEqual(len(solutionSudoku2), spectedSolutions[miniTest])
+            solutionSudoku2Objects = [sudoku.Sudoku(i) for i in solutionSudoku2]
+            
+            for solutionObject in solutionSudoku2Objects:
+                solutionObject.print()
+                self.assertTrue(solutionObject.validSolution())
+
+
 if __name__ == '__main__':
     print("Testing...")
 
