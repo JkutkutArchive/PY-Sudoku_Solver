@@ -68,47 +68,6 @@ class Sudoku():
             if solCc != 45 or solCr != 45:
                 return False
         return True
-
-    def findSolutions(self, solutions, arr=None):
-        '''
-        Gets the possible solution(s) of the given sudoku.
-
-        Given a 9x9 integer list, all the possible solutions of the input are found using a classic implementation of a recursive algorithm.
-
-        - arr (list): 9x9 integer list with the data of the current state of the sudoku
-        - solutions (list) Nx9x9 with the solutions found. This works as a "output".
-        
-        Returns:
-
-        list: the object solutions works as output
-        '''
-        if arr == None: # If no sudoku list given, use current
-            arr = self.toList()
-        # if type(arr[0][0]) is int:
-        #     a = Sudoku(arr)
-        #     arr = a.toList()
-
-        for c in range(9): # For each colum
-            for r in range(9): # For each row
-                if arr[r][c] == 0: # If empty cell
-                    for val in range(1,10): # For each possible value
-                        valid = True # If the current value (val) is viable to be the correct value of the cell(x, y)
-                        for i in range(9): # for each neighbour cell (row, col or 3by3)
-                            rIndex = (r // 3) * 3 # R 3by3
-                            cIndex = (c // 3) * 3 # C 3by3
-                            if arr[r][i] == val or arr[i][c] == val or arr[rIndex + (i // 3)][cIndex + (i % 3)] == val:
-                                # If neighbour already has the value val, this value can not be on this cell => val not valid
-                                valid = False
-                                break
-                        if valid: # If the value val may be correct
-                            arr[r][c].setValue(val, force=True) # Try to solve the sudoku using this value as correct
-                            self.findSolutions(solutions, arr)
-                            arr[r][c].setValue(0, force=True) # if here, the path wasn't good => undo move
-                    return # If here, all posible valid combinations have been tested => end execution
-        
-        ## if here, solution founded
-        newSolution = Sudoku(arr) # Create a new Sudoku object to clone the solution to a new object (current will be modified)
-        solutions.append(newSolution.toList()) # Add the current solution to the solution list
     
 
     # ******    Visualization:    ******
@@ -164,6 +123,91 @@ class Sudoku():
         else:
             return string
 
+
+    # ******    Solver:    ******
+
+    # https://www.conceptispuzzles.com/index.aspx?uri=puzzle/sudoku/techniques
+
+    # -Scanning techniques
+    # 1. Scanning in one direction:(basic + unique)
+    # 2. Scanning in two directions:(basic + unique)
+    # 3. Searching for Single Candidates: (unique)
+    # 4. Eliminating numbers from rows, columns and boxes: (pairs)
+    # 5. Searching for missing numbers in rows and columns: (basic)
+
+    # -Analyzing techniques:
+    # 1. Eliminating squares using Naked Pairs in a box (pairs two values)
+    # 2. Eliminating squares using Naked Pairs in rows and columns (pairs two values)
+    # 3. Eliminating squares using Hidden Pairs in rows and columns (unique)
+    # 4. Eliminating squares using X-Wing (X-Wing algo)
+
+
+    # https://www.learn-sudoku.com/advanced-techniques.html
+
+    # 1. X-Wing (X-Wing algo)
+    # 2. XY Wing (XY-Wing algo) 
+    # 3. Unique Rectangle (Unique rectangle algo) 
+    # 4. Sworldfish (swordfish)
+    # 5. Extremely advanced techniques (??) 
+
+    # - Triplets and Quads (onProgress)
+
+    def findSolutions(self, solutions, arr=None):
+        '''
+        Gets the possible solution(s) of the given sudoku.
+
+        Given a 9x9 integer list, all the possible solutions of the input are found using a classic implementation of a recursive algorithm.
+
+        - arr (list): 9x9 integer list with the data of the current state of the sudoku
+        - solutions (list) Nx9x9 with the solutions found. This works as a "output".
+        
+        Returns:
+
+        list: the object solutions works as output
+        '''
+        if arr == None: # If no sudoku list given, use current
+            arr = self.toList()
+        # if type(arr[0][0]) is int:
+        #     a = Sudoku(arr)
+        #     arr = a.toList()
+
+        for c in range(9): # For each colum
+            for r in range(9): # For each row
+                if arr[r][c] == 0: # If empty cell
+                    for val in range(1,10): # For each possible value
+                        valid = True # If the current value (val) is viable to be the correct value of the cell(x, y)
+                        for i in range(9): # for each neighbour cell (row, col or 3by3)
+                            rIndex = (r // 3) * 3 # R 3by3
+                            cIndex = (c // 3) * 3 # C 3by3
+                            if arr[r][i] == val or arr[i][c] == val or arr[rIndex + (i // 3)][cIndex + (i % 3)] == val:
+                                # If neighbour already has the value val, this value can not be on this cell => val not valid
+                                valid = False
+                                break
+                        if valid: # If the value val may be correct
+                            arr[r][c].setValue(val, force=True) # Try to solve the sudoku using this value as correct
+                            self.findSolutions(solutions, arr)
+                            arr[r][c].setValue(0, force=True) # if here, the path wasn't good => undo move
+                    return # If here, all posible valid combinations have been tested => end execution
+        
+        ## if here, solution founded
+        newSolution = Sudoku(arr) # Create a new Sudoku object to clone the solution to a new object (current will be modified)
+        if newSolution.validSolution(): # Check if solution founded is correct
+            solutions.append(newSolution.toList()) # Add the current solution to the solution list
+
+    def findSolutionWithSteps(self):
+        correctSolution = []
+        self.findSolutions(solutions=correctSolution) # Search possible solutions for the current sudoku
+        print("hey!")
+        if len(correctSolution) == 0:
+            print("ups1")
+            raise Exception("No solutions founded for the current sudoku.")
+        if len(correctSolution) > 1: # If more than one possible solutions
+            print("ups2")
+            raise Exception("There are more than one possible solution.")
+
+        print("not failed")
+
+    
 
 
 if __name__ == "__main__":
