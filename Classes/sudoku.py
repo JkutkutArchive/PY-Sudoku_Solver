@@ -10,7 +10,11 @@ class Sudoku():
             self.fillBoard(board)
     
     def fillBoard(self, data):
-        super() # Reset the class
+        '''
+        Fills the board with the elements given.
+
+        data (list): List of integers or Cells (Or even both!) with the values desired. If some value = 0, the cell will be tagged as a remaining cell.
+        '''
         if len(data) != 9 or len(data[0]) != 9:
             raise Exception("The data should be a 9x9 list")
 
