@@ -80,6 +80,7 @@ class TestStringMethods(unittest.TestCase):
         miniTests = [input.tripleSolutions(), input.hexSolutions()]
         spectedSolutions = [3, 6]
 
+        # Multiple solutions
         for miniTest in range(len(miniTests)):
 
             sudoku2 = sudoku.Sudoku(miniTests[miniTest])
@@ -92,6 +93,11 @@ class TestStringMethods(unittest.TestCase):
             for solutionObject in solutionSudoku2Objects:
                 solutionObject.print()
                 self.assertTrue(solutionObject.validSolution())
+            
+            #Check all solutions are unique
+            for i in range(len(solutionSudoku2Objects) - 1):
+                for j in range(i + 1, len(solutionSudoku2Objects)):
+                    self.assertNotEqual(solutionSudoku2Objects[i], solutionSudoku2Objects[j])
 
 
 if __name__ == '__main__':
