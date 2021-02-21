@@ -79,7 +79,7 @@ class Cell():
         # global nNewValues
         # nNewValues = nNewValues + 1
 
-    def getValue(self): 
+    def getValue(self) -> int: 
         '''
         The value (int) of the cell. If not defined, return 0
 
@@ -91,7 +91,7 @@ class Cell():
     def setPosVal(self, set): # Redefine the possible values of the cells
         self.posVal = set # Save the given set as the possible values (Warning, set not copied)
 
-    def getPosVal(self): # Returns the set with the possible values.
+    def getPosVal(self) -> set: # Returns the set with the possible values.
         return self.posVal
 
     def removePosVal(self, value, cleverCell=True):
