@@ -112,6 +112,28 @@ class Cell():
 
     def getPos(self): # returns a tuple with the coordinates (row, column)
         return (self.r, self.c)
+    
+    def getRow(self):
+        '''
+        Returns the current row of the Cell
+        '''
+        return self.r
+    def gR(self):
+        '''
+        Other way to call the getRow method
+        '''
+        return self.getRow()
+
+    def getCol(self):
+        '''
+        Returns the current column of the Cell
+        '''
+        return self.c
+    def gC(self):
+        '''
+        Other way to call the getCol method
+        '''
+        return self.getCol()
 
     # ******    PAIRS:    ******
     def addPair(self, other, value): # Add the new pair on a tuple with the value in common
