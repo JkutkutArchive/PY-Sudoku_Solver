@@ -12,7 +12,22 @@ class Cell():
     def __str__(self):
         return str(self.getValue()) # Just print the value of the cell calling the method "getValue()"
 
-    def toString(self, printValue=True, printPosVal=True, printPairs=True, printData=True):
+    def toString(self, printValue=True, printPosVal=True, printPairs=False, printData=False):
+        '''
+        A easy way to visualize a cell. All the optional parameters allows for easy and adjustable output.
+
+        printValue (boolean): (optional) If the value should be addresed. By default, this option is ON
+        
+        printPosVal (boolean): (optional) If the possible values should be addresed. By default, this option is ON
+        
+        printPairs (boolean): (optional) If the pairs of this cell should be addresed. By default, this option is OFF
+        
+        printData (boolean): (optional) If the data asociated should be addresed. By default, this option is OFF
+        
+
+        Returns:
+        str: the string with the data required.
+        '''
         s = "Cell " + str(self.getPos())
         if printValue:
             s = s + "\n - Value: " + str(self.getValue())
