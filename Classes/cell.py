@@ -9,7 +9,7 @@ class Cell():
         self.pairs = set() # Set with tuple with the linked cell and the value: "(<Cell>, <Value>)"
         self.data = [] # Here all the conclusions made by the algo will be stored here to dispay it later
     
-    def __str__(self) -> Str:
+    def __str__(self) -> str:
         '''
         Custom way to default-print this class. The output is a str with the current value of the cell (0 if not defined).
 
