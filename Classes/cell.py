@@ -12,7 +12,7 @@ class Cell():
     def __str__(self):
         return str(self.getValue()) # Just print the value of the cell calling the method "getValue()"
 
-    def cellToString(self, printValue=True, printPosVal=True, printPairs=True, printData=True):
+    def toString(self, printValue=True, printPosVal=True, printPairs=True, printData=True):
         s = "Cell " + str(self.getPos())
         if printValue:
             s = s + "\n - Value: " + str(self.getValue())
@@ -24,22 +24,33 @@ class Cell():
             s = s + "\n - Data: " + "".join(["\n    - " + str(d) for d in self.dataToText()])
         return s
             
-    def __eq__(self, other, exactComparation=False): # Enable us to compare it to other cells or to integers by the value
+    def __eq__(self, other) -> bool:
+        '''
+        Enable us to compare it to other cells or to integers by the value.
+
+        other (int|Cell): Element to compare to.
+
+        Returns:
+        boolean: Whenever the cells are equal or the value is the same as the int value entered.
+        '''
         if other == None:
             return False
-        if type(other) is int: # if comparing to an integer
+        elif type(other) is int: # if comparing to an integer
             return self.getValue() == other # Return if the values are the same
+        elif type(other) != Cell:
+            raise Exception("The object to compare to with this cell is not valid")
         
+        # If here, other is a valid cell (or it should be)
+
         if self.getPos() != other.getPos(): # If cells on different coordinates
-            return False # In theory, when well used this class, this should be the only condition used (position unique for each cell)
+            return False # In theory, when well used this class, this should be the only condition necesarry (position unique for each cell)
         
         if self.getValue() != other.getValue() or self.getPosVal() != other.getPosVal(): # If different values on those variables
             return False
 
-        if exactComparation: # If selected, the fucntion will make a full comparantion
-            # (If used this class correctly, this next ifs should never be necessary)
-            if self.data != other.data: # If the data stored is different
-                return False
+        if self.data != other.data: # If the data stored is different
+            return False
+
         return True # If here, they are exacly equal
     
     def __hash__(self): # Enables to generate a hash to use this class on sets
