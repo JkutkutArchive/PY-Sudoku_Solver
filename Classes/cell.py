@@ -223,9 +223,11 @@ class Cell():
 
         self.getPairs().add((other, value)) # If already in, nothing happends
 
-    def tellPairs(self): # when value is defined, this method is called to tell all pairs this event has occured
+    def tellPairs(self):
+        '''
+        When value is defined, this method is called to tell all pairs this event has occured
+        '''
         for p in self.getPairs(): # for each pair-mate tuple
-            # print(p)
             p[0].delPair(self, self.value) # Tell the mate pair there is no pair relation anymore
         self.pairs.clear() # Once done, do not store them anymore
     
