@@ -85,19 +85,15 @@ class Cell():
 
     # ******    GETTERS AND SETTERS:    ******
     def setValue(self, value, force=False):
-    # def setValue(self, value, printData=True, cleverCell=True):
         '''
         Defines the value of the cell. If already has a value (and force == False), pass.
 
         value (int|Cell): the value to set to. If Cell, the value is the value on the Cell object.
         force (boolean): (optional) if the value is forced to be "value".
         '''
-    
+
         if self.getValue() != 0 and not force: pass # if already called, do not continue
-        # if value != sol[self.x][self.y]: # If not correct value
-        #     print("\n\n\n ERROR: \n"+self.cellToString())
-        #     print(("ERROR, NOT CORRECT VALUE -> Cell" + str(self.getPos()) + " is not " + str(value) + ", is " + str(sol[self.x][self.y])).center(40))
-        #     raise Exception("Not correct value")
+        
         if type(value) is Cell:
             self.value = value.getValue() # Set the value of the cell to the one given 
         elif type(value) is int:
@@ -106,16 +102,7 @@ class Cell():
             raise Exception("Can not set the value of the cell. Value not valid.")
 
         self.posVal.clear() # Therefore, there are no possible values left => clear the set of possible values
-        # self.addData("therefore") # Add to the data array the data to say that the value is the given 
-        # if printData: # If selected to print the data
-        #     d = self.dataToText() # Data on text format
-        #     print(*[""] + d, sep = "\n") # Print all the data
-        #     print(sol[self.x][self.y])
-        #     pdf.printDataOnLaTeX(d) # Add this data to the pdf
-        # self.tellPairs() # Notify all linked cells that the value has been defined
-        # tellCells(self, cleverCell=cleverCell) # update the cells on the grid of this change in value
-        # global nNewValues
-        # nNewValues = nNewValues + 1
+        
 
     def getValue(self) -> int: 
         '''
