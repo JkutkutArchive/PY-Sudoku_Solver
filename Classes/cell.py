@@ -102,7 +102,6 @@ class Cell():
             raise Exception("Can not set the value of the cell. Value not valid.")
 
         self.posVal.clear() # Therefore, there are no possible values left => clear the set of possible values
-        
 
     def getValue(self) -> int: 
         '''
@@ -113,8 +112,15 @@ class Cell():
         '''
         return self.value if self.value != None else 0
 
-    def setPosVal(self, set): # Redefine the possible values of the cells
-        self.posVal = set # Save the given set as the possible values (Warning, set not copied)
+    def setPosVal(self, s): 
+        '''
+        Redefine the possible values of the cell.
+
+        s (set): Set of int values.
+
+        Please note that the set is not cloned, just asigned as the new set.
+        '''
+        self.posVal = s
 
     def getPosVal(self) -> set: # Returns the set with the possible values.
         return self.posVal
