@@ -4,7 +4,8 @@ from Classes import cell
 
 class DataSudoku():
     def __init__(self, typeData, cellGiven, extraInfo):
-        if TypeHandler().validType(typeData):
+        self.typeHandler = TypeHandler()
+        if self.typeHandler.validType(typeData):
             self.type = typeData
         else:
             raise Exception("DataType not valid")
@@ -22,20 +23,9 @@ class DataSudoku():
 class TypeHandler():
     def __init__(self):
         self.switcher = {}
-        # self.switcher = {
-        #     1: "therefore",
-        #     2: "basic",
-        #     3: "unique",
-        #     4: "pairs",
-        #     5: "delPairs",
-        #     6: "X-Wing",
-        #     7: "XY-Wing",
-        #     8: "uniqueRectangle",
-        #     9: "swordfish"
-        # }
         methods = [f for f in TypeHandler.__dict__ if not f.startswith("__")]
         i = 0
-        self.methodsToIgnore = ["vaidType", "typeConversor"]
+        self.methodsToIgnore = ["validType", "typeConversor"]
         for f in methods:
             if any([f == skipM for skipM in self.methodsToIgnore]):
                 continue
@@ -43,27 +33,33 @@ class TypeHandler():
             i = i + 1
 
     def validType(self, typeData) -> bool:
-        return typeData <= len(self.switcher)
+        if not type(typeData) is int:
+            return False
+        if typeData < 0:
+            return False
+        if typeData > len(self.switcher):
+            return False
+        return True
     
     def typeConversor(self, t) -> str:
         retu = self.switcher.get(t, "Data type not found")
         return retu
     
     def therefore(self):
-        return 1
+        return 0
     def basic(self):
-        return 2
+        return 1
     def unique(self):
-        return 3
+        return 2
     def pairs(self):
-        return 4
+        return 3
     def delPair(self):
-        return 5
+        return 4
     def xWing(self):
-        return 6
+        return 5
     def xyWing(self):
-        return 7
+        return 6
     def uniqueRectangle(self):
-        return 8
+        return 7
     def swordfish(self):
-        return 9
+        return 8
