@@ -74,7 +74,13 @@ class Cell():
 
         return True # If here, they are exacly equal
     
-    def __hash__(self): # Enables to generate a hash to use this class on sets
+    def __hash__(self):
+        '''
+        Enables to generate a hash to use this class on sets.
+
+        Returns:
+        int: hash of the current cell.
+        '''
         return hash(self.r) ^ hash(self.c) # This make the hash unique because there is not 2 cells on the same coordinates
 
     # ******    GETTERS AND SETTERS:    ******
