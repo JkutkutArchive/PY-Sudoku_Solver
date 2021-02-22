@@ -209,7 +209,18 @@ class Cell():
         return self.getCol()
 
     # ******    PAIRS:    ******
-    def addPair(self, other, value): # Add the new pair on a tuple with the value in common
+    def addPair(self, other, value):
+        '''
+        Add the new pair on a tuple with the value in common (if already in, no problem: it is stored on a set).
+        
+        other (Cell): Mate cell.
+        value (int): Value they share in common.
+        '''
+        if not type(other) is Cell:
+            raise Exception("The other mate should be a Cell.")
+        if not type(value) is int:
+            raise Exception("The value shold be an integer.")
+
         self.getPairs().add((other, value)) # If already in, nothing happends
 
     def tellPairs(self): # when value is defined, this method is called to tell all pairs this event has occured
