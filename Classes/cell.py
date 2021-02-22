@@ -131,15 +131,20 @@ class Cell():
         '''
         return self.posVal
 
-    def removePosVal(self, value, cleverCell=True):
+    def removePosVal(self, value):
+        '''
+        Removes the current value addresed.
+
+        value (int): Value that this cell can no loger be.
+        '''
         self.getPosVal().discard(value) # this cell can no longer be the value "value"
-        for p in self.pairs: # for each pair in this cell (format of p: tuple(cell, value))
-            if p[1] == value: # If there is a pair with this value => the mate should be this value
-                p[0].addData("delPair set value", self.getPos(), value) # Add the data
-                p[0].setValue(value) # Set the value
-                break
-        if cleverCell and len(self.getPosVal()) == 1: # If cleverCell on and only one possible value
-            self.setValue(next(iter(self.getPosVal())))
+        # for p in self.pairs: # for each pair in this cell (format of p: tuple(cell, value))
+        #     if p[1] == value: # If there is a pair with this value => the mate should be this value
+        #         p[0].addData("delPair set value", self.getPos(), value) # Add the data
+        #         p[0].setValue(value) # Set the value
+        #         break
+        # if len(self.getPosVal()) == 1: # If cleverCell on and only one possible value
+        #     self.setValue(next(iter(self.getPosVal())))
 
     def setPairs(self, ps):
         self.pairs = ps
