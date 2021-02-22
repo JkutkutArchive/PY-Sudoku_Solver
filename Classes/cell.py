@@ -147,9 +147,20 @@ class Cell():
         #     self.setValue(next(iter(self.getPosVal())))
 
     def setPairs(self, ps):
+        '''
+        Overwrites the current pair set with a new one.
+
+        ps (set): set with the new pairs for the cell.
+        '''
         self.pairs = ps
 
-    def getPairs(self):
+    def getPairs(self) -> set:
+        '''
+        Returns the current set of pairs on the cell.
+
+        Retunns:
+        set: The desired set
+        '''
         return self.pairs
 
     def getPos(self):
