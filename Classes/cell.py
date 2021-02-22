@@ -122,7 +122,13 @@ class Cell():
         '''
         self.posVal = s
 
-    def getPosVal(self) -> set: # Returns the set with the possible values.
+    def getPosVal(self) -> set:
+        '''
+        Returns the set with the possible values.
+
+        Returns:
+        set: Set with the possible values of the cell.
+        '''
         return self.posVal
 
     def removePosVal(self, value, cleverCell=True):
