@@ -37,7 +37,7 @@ class Sudoku():
         return self.board
 
     def getRemainingCells(self):
-        return self.remainingCells()
+        return self.remainingCells
 
     def print(self, arr=None, returnAsString=False):
         '''
@@ -215,30 +215,32 @@ class Sudoku():
         '''
 
         board = self.toList()
-
+        result = []
         for cell in self.getRemainingCells(): 
             if cell.getValue() != 0: continue # if during this loop, this cell got it's value defined, go to next one
 
             # ----------    BASIC   ----------
             values = [[], [], []] # Values in row, col, 3by3
 
-            for i in range(9):
-                if i != cell.gC(): # Rows (r=cte) -- If not the same cell
-                    otherValue = board[cell.gr()][i].getValue()
-                    if otherValue != 0 and (otherValue in cell.getPosVal()):
-                        # cell.removePosVal(otherValue)
+            for i in range(9): # For each row, col and 3by3
+                # Rows (r=cte) -- If not the same cell
+                if i != cell.gC():
+                    otherValue = board[cell.gR()][i].getValue()
+                    if otherValue != 0 and (otherValue in cell.getPosVal()):                        
                         values[0] = values[0] + [otherValue]
-                if i != cell.gR(): # Cols (c=cte) -- If not the same cell
+                
+                # Cols (c=cte) -- If not the same cell
+                if i != cell.gR(): 
                     otherValue = board[i][cell.gC()].getValue()
                     if otherValue != 0 and (otherValue in cell.getPosVal()):
-                        # cell.removePosVal(otherValue)
                         values[1] = values[1] + [otherValue]
+                
+                # 3 by 3 -- If not the same cell
                 r = (cell.gR() // 3) * 3 + (i // 3)
                 c = (cell.gC() // 3) * 3 + (i % 3)
-                if cell.gR() != r or cell.gC() != c: # 3 by 3 -- If not the same cell
+                if cell.gR() != r or cell.gC() != c: 
                     otherValue = board[r][c].getValue()
                     if otherValue != 0 and (otherValue in cell.getPosVal()):
-                        # cell.removePosVal(otherValue)
                         values[2] = values[2] + [otherValue]
 
             # If possible values of cell can be removed
@@ -248,11 +250,14 @@ class Sudoku():
             #     cell.addData("basic col", values[1])
             # if len(values[2]) > 0: # 3by3
             #     cell.addData("basic 3 by 3", values[2])
+            valuesToRemove = set(values[0] + values[1] + values[2])
+            # cell.removePosVal(valuesToRemove)
+            result.append([cell, valuesToRemove])
 
             # if len(cell.getPosVal()) == 1: # We got the value
             #     cell.setValue(list(cell.getPosVal())[0])
             #     continue
-
+        return result
             # ----------    UNIQUE   ----------
             # unique = [set([i for i in range(1, 10, 1)]) for i in range(3)] # unique row, col, 3by3
             # for i in range(9):

@@ -106,7 +106,7 @@ class Cell():
         if type(value) is Cell:
             self.value = value.getValue() # Set the value of the cell to the one given
         elif type(value) is int:
-            if value < 1 or value > 9:
+            if (value < 1 or value > 9) and not force:
                 raise Exception("The value must be between 1 and 9")
             self.value = value # Set the value of the cell to the one given 
         else:

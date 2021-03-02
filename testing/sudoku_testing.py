@@ -119,6 +119,13 @@ class TestStringMethods(unittest.TestCase):
             
             self.assertTrue(exceptions[t] in str(context.exception))
 
+        # Easy sudoku
+        easyS = sudoku.Sudoku(input.easy())
+
+        result = easyS.solver_basic()
+        
+        print(result)
+
 if __name__ == '__main__':
     print("Testing...")
 
