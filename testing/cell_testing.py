@@ -242,7 +242,10 @@ class TestStringMethods(unittest.TestCase):
                 self.assertTrue(currentException in str(context.exception))
             
     def test_setGetRemovePosVal(self):
+        # Get
+        self.assertEqual(self.cells[0][0].posVal, self.cells[0][0].getPosVal())
 
+        # Remove values
         self.assertEqual(len(self.cells[0][0].getPosVal()), 9)
         value = self.r.randint(1, 9)
         self.cells[0][0].removePosVal(value)
@@ -254,9 +257,20 @@ class TestStringMethods(unittest.TestCase):
         self.assertFalse(value in self.cells[0][0].getPosVal())
         self.assertEqual(len(self.cells[0][0].getPosVal()), 8)
 
-        s = [
-            set([1,2,3,4])
-        ]
+        # Remove a not valid value
+        self.cells[0][0].removePosVal(None)
+        self.cells[0][0].removePosVal("s")
+        self.cells[0][0].removePosVal(set())
+        self.cells[0][0].removePosVal(-1)
+        self.assertEqual(len(self.cells[0][0].getPosVal()), 8)
+
+        s = set([self.r.randint(1,9) for _ in range(self.r.randint(1,8))])
+
+        self.assertEqual(self.cells[1][0].getPosVal(), self.cells[1][1].getPosVal())
+        self.cells[1][0].setPosVal(s)
+        self.assertEqual(self.cells[1][0].getPosVal(), s)
+        self.assertNotEqual(self.cells[1][0].getPosVal(), self.cells[1][1].getPosVal())
+
 
 if __name__ == '__main__':
     unittest.main()
