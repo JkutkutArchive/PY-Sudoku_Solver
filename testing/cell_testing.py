@@ -323,6 +323,24 @@ class TestStringMethods(unittest.TestCase):
             self.cells[0][0].addPair(p[0], p[1])
         self.assertEqual(len(pairsTest), i)
         self.assertEqual(self.cells[0][0].getPairs(), pairsTest)
+
+        # Exceptions
+        tests = [
+            [None, 4],
+            [0, 0],
+            [self.cells[1][1], None],
+            [self.cells[1][1], self.cells[1][2]]
+        ]
+        exceptions = [
+            "The other mate should be a Cell.",
+            "The other mate should be a Cell.",
+            "The value shold be an integer.",
+            "The value shold be an integer."
+        ]
+        for t in range(len(tests)):
+            with self.assertRaises(Exception) as context:
+                self.cells[1][0].addPair(*tests[t])
+            self.assertTrue(exceptions[t] in str(context.exception))
         
 
 
