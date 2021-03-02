@@ -10,11 +10,6 @@ class TestStringMethods(unittest.TestCase):
     def setUp(self):
         self.sudokuBoard = sudoku.Sudoku()
         self.cells = self.sudokuBoard.toList()
-
-    def test_string_emptyCells(self):
-        for c in self.cells:
-            for cc in c:
-                self.assertEqual(cc.__str__(), '0')
     
     def test_parentSudoku(self):
         self.testCells = [[cell.Cell(x, y) for y in range(9)] for x in range(9)]
@@ -125,14 +120,20 @@ class TestStringMethods(unittest.TestCase):
                 self.assertFalse(value_Test(self.cells[c][cc], values[c][cc], argToString[-5])) # Check value does not appear
                 self.assertFalse(value_Test(self.cells[c][cc], values[c][cc], argToString[-1])) # Check value does not appear
 
-                
 
-    # def test_string_ValuedCells(self):
-    #     for c in self.cells:
-    #         for cc in c:
-    #             value = random.randint(1, 9)
-    #             cc.setValue(value, False, False)
-    #             self.assertEqual(cc.getValue, value)
+    def test_string_emptyCells(self):
+        r = random.Random()
+        for c in self.cells:
+            for cc in c:
+                # No value
+                self.assertEqual(cc.__str__(), '0')
+
+                # Value defined
+                value = r.randint(1, 9)
+                cc.setValue(value)
+                self.assertEqual(cc.getValue(), value)
+                self.assertEqual(cc.__str__(), str(value))
+                
     
             
 
