@@ -142,23 +142,12 @@ class TestStringMethods(unittest.TestCase):
                 [6, 3, 7, 5]
             ]
         ]
-        for i in range(2):
+        # easyS.print()
+        for i in range(len(tests)):
             for j in range(3):
                 result = easyS.solver_basic_rowCol3by3(tests[i], j)
                 self.assertEqual(espected[i][j], result)
-
-
-
-
-        # result = easyS.solver_basic_rowCol3by3()
         # easyS.print()
-        # i = 0
-        # for case in result:
-        #     print("- Cell " + str(case[0].getPos()))
-        #     print("\tValues to remove: ")
-        #     for j in range(3):
-        #         print("\t\t" + tipo[j] + ": " + str(case[1][j]))
-        #     i = i + 1
         
 
 if __name__ == '__main__':
