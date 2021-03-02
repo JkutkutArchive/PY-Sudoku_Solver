@@ -61,13 +61,13 @@ class TestStringMethods(unittest.TestCase):
                 self.assertEqual(cc.__str__(), '0')
 
                 # Value defined
-                value = self.randint(1, 9)
+                value = self.r.randint(1, 9)
                 cc.setValue(value)
                 self.assertEqual(cc.getValue(), value)
                 self.assertEqual(cc.__str__(), str(value))
     
     def test_toString(self):        
-        values = [[self.randint(1, 9) for _ in range(9)] for __ in range(9)]
+        values = [[self.r.randint(1, 9) for _ in range(9)] for __ in range(9)]
         argToString = [
             [ True,  True,  True,  True],
             [ True, False, False, False],
@@ -82,7 +82,7 @@ class TestStringMethods(unittest.TestCase):
         ]
 
         pairs = [
-            (cell.Cell(self.randint(0,8), self.randint(0,8)), self.randint(1,9)) for _ in range(9)
+            (cell.Cell(self.r.randint(0,8), self.r.randint(0,8)), self.r.randint(1,9)) for _ in range(9)
         ]
 
 
@@ -133,7 +133,7 @@ class TestStringMethods(unittest.TestCase):
                 self.assertFalse(pairs_test(self.cells[c][cc], [], argToString[-3]))
                 self.assertFalse(pairs_test(self.cells[c][cc], [], argToString[-1]))
 
-                pairIndices = [self.randint(0, 8) for _ in range(self.randint(0, 8))]
+                pairIndices = [self.r.randint(0, 8) for _ in range(self.r.randint(0, 8))]
                 for i in pairIndices:
                     self.cells[c][cc].addPair(pairs[i][0], pairs[i][1])
                 
@@ -144,7 +144,7 @@ class TestStringMethods(unittest.TestCase):
 
 
                 # PosVal
-                value2Remove = self.randint(1, 9)
+                value2Remove = self.r.randint(1, 9)
                 self.cells[c][cc].removePosVal(value2Remove)
 
                 self.assertTrue(posVal_Test1(self.cells[c][cc], value2Remove, argToString[0])) # Check posVal appears correct
@@ -182,7 +182,7 @@ class TestStringMethods(unittest.TestCase):
                 self.assertEqual(cc, cc)
 
                 # Incorrect
-                value = self.randint(1, 9)
+                value = self.r.randint(1, 9)
 
                 methods = [
                     ".setValue(value)",
@@ -209,12 +209,12 @@ class TestStringMethods(unittest.TestCase):
 
         # setting with int
         self.assertEqual(self.cells[0][0].getValue(), 0)
-        value = self.randint(1, 9)
+        value = self.r.randint(1, 9)
         self.cells[0][0].setValue(value)
         self.assertEqual(self.cells[0][0].getValue(), value)
 
         # Second time setting value
-        valueNotAplied = ((value + self.randint(1,5)) % 9) + 1
+        valueNotAplied = ((value + self.r.randint(1,5)) % 9) + 1
         
         self.cells[0][0].setValue(valueNotAplied) # This should do nothing
         self.assertNotEqual(self.cells[0][0].getValue(), valueNotAplied)
@@ -244,6 +244,15 @@ class TestStringMethods(unittest.TestCase):
     def test_setGetRemovePosVal(self):
 
         self.assertEqual(len(self.cells[0][0].getPosVal()), 9)
+        value = self.r.randint(1, 9)
+        self.cells[0][0].removePosVal(value)
+        self.assertFalse(value in self.cells[0][0].getPosVal())
+        self.assertEqual(len(self.cells[0][0].getPosVal()), 8)
+
+        # Remove it again (should ignore)
+        self.cells[0][0].removePosVal(value)
+        self.assertFalse(value in self.cells[0][0].getPosVal())
+        self.assertEqual(len(self.cells[0][0].getPosVal()), 8)
 
         s = [
             set([1,2,3,4])
