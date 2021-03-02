@@ -106,9 +106,10 @@ class TestStringMethods(unittest.TestCase):
 
     def test_findSolutionWithSteps(self):
         # Check invalid sudokus
-        test = []
-        test.append(sudoku.Sudoku(input.noSolution()))
-        test.append(sudoku.Sudoku(input.tripleSolutions()))
+        test = [
+            sudoku.Sudoku(input.noSolution()),
+            sudoku.Sudoku(input.tripleSolutions())
+        ]
 
         exceptions = ["No solutions founded for the current sudoku.",\
                       "There are more than one possible solution."]
