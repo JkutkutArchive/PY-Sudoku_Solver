@@ -4,6 +4,8 @@ class Cell():
     def __init__(self, r, c, parentSudoku=None):
         if not type(r) is int or not type(c) is int:
             raise Exception("r and c must be integers")
+        if r < 0 or c < 0 or r > 8 or c > 8:
+            raise Exception("r and c must be between 0 and 8")
         if not parentSudoku == None and not type(parentSudoku) is sudoku.Sudoku:
             raise Exception("parentSudoku must be a Sudoku object")
 

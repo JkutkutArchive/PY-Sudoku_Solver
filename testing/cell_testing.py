@@ -19,6 +19,40 @@ class TestStringMethods(unittest.TestCase):
                 self.assertIsNone(self.testCells[c][cc].sudoku)
                 self.assertEqual(self.cells[c][cc].sudoku, self.sudokuBoard)
     
+    def test_init(self):
+        coords = [
+            [-1,  0],
+            [0,  -1],
+            [-1, -1],
+            [0, 9],
+            [9, 0], # 4
+            ["a", 0],
+            [None, None],
+            [0, "a"],
+            [set(), "a"],
+            [0, set()], # 9
+            [0, 0, 2],
+            [0, 0, "a"],
+            [0, 0, cell.Cell(0, 0)] # 12
+        ]
+        exceptions = [
+            "r and c must be between 0 and 8",
+            "r and c must be integers",
+            "parentSudoku must be a Sudoku object"
+        ]
+        for t in range(len(coords)):
+            with self.assertRaises(Exception) as context:
+                cell.Cell(*coords[t])
+
+            if t <= 4:
+                exceptionToUse = exceptions[0]
+            elif t <= 9:
+                exceptionToUse = exceptions[1]
+            else:
+                exceptionToUse = exceptions[2]
+            
+            self.assertTrue(exceptionToUse in str(context.exception))
+    
     def test_string(self):
         r = random.Random()
         for c in self.cells:
