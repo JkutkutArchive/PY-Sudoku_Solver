@@ -157,23 +157,6 @@ class Cell():
         # if len(self.getPosVal()) == 1: # If cleverCell on and only one possible value
         #     self.setValue(next(iter(self.getPosVal())))
 
-    def setPairs(self, ps):
-        '''
-        Overwrites the current pair set with a new one.
-
-        ps (set): set with the new pairs for the cell.
-        '''
-        self.pairs = ps
-
-    def getPairs(self) -> set:
-        '''
-        Returns the current set of pairs on the cell.
-
-        Retunns:
-        set: The desired set
-        '''
-        return self.pairs
-
     def getPos(self):
         '''
         Returns a tuple with the coordinates (row, column)
@@ -218,6 +201,23 @@ class Cell():
         int: the value required
         '''
         return self.getCol()
+
+    def setPairs(self, ps):
+        '''
+        Overwrites the current pair set with a new one.
+
+        ps (set): set with the new pairs for the cell.
+        '''
+        self.pairs = ps
+
+    def getPairs(self) -> set:
+        '''
+        Returns the current set of pairs on the cell.
+
+        Retunns:
+        set: The desired set
+        '''
+        return self.pairs
 
     # ******    PAIRS:    ******
     def addPair(self, other, value):
