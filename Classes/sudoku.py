@@ -1,5 +1,7 @@
 # import sys
 # sys.path.append('.')
+from Classes import dataSudoku as dS
+from Classes import typeHandler as tH
 from Classes import cell # Custom Class
 
 class Sudoku():
@@ -8,6 +10,8 @@ class Sudoku():
         self.remainingCells = set()
         if not board == None:
             self.fillBoard(board)
+        
+        self.getRemainingCells()
     
     def fillBoard(self, data):
         '''
@@ -37,6 +41,13 @@ class Sudoku():
         return self.board
 
     def getRemainingCells(self):
+        oldCells = self.remainingCells
+        self.remainingCells = set()
+        for row in oldCells:
+            for c in row:
+                if c.getValue() == 0:
+                    self.remainingCells.add(c)
+
         return self.remainingCells
 
     def print(self, arr=None, returnAsString=False):
@@ -213,51 +224,27 @@ class Sudoku():
         '''
         This code tries to find values of the cells using basic scanning techniques.
         '''
-
-        board = self.toList()
-        result = []
+        cellWithValueDefined = False
         for cell in self.getRemainingCells(): 
             if cell.getValue() != 0: continue # if during this loop, this cell got it's value defined, go to next one
 
             # ----------    BASIC   ----------
-            values = [[], [], []] # Values in row, col, 3by3
-
-            for i in range(9): # For each row, col and 3by3
-                # Rows (r=cte) -- If not the same cell
-                if i != cell.gC():
-                    otherValue = board[cell.gR()][i].getValue()
-                    if otherValue != 0 and (otherValue in cell.getPosVal()):                        
-                        values[0] = values[0] + [otherValue]
+            values = [] # Values in row, col, 3by3
+            tipos = ["row", "col", "3by3"]
+            typeH = tH.TypeHandler()
+            for i in range(3):
+                values = self.solver_basic_rowCol3by3(cell, i)
+                if len(values) == 0: continue
+                data = dS.DataSudoku(typeH.basic() + 0.25 * i, values)
                 
-                # Cols (c=cte) -- If not the same cell
-                if i != cell.gR(): 
-                    otherValue = board[i][cell.gC()].getValue()
-                    if otherValue != 0 and (otherValue in cell.getPosVal()):
-                        values[1] = values[1] + [otherValue]
-                
-                # 3 by 3 -- If not the same cell
-                r = (cell.gR() // 3) * 3 + (i // 3)
-                c = (cell.gC() // 3) * 3 + (i % 3)
-                if cell.gR() != r or cell.gC() != c: 
-                    otherValue = board[r][c].getValue()
-                    if otherValue != 0 and (otherValue in cell.getPosVal()):
-                        values[2] = values[2] + [otherValue]
+                cell.removePosVal(values)
+                cell.addData(data)
+                if len(cell.getPosVal()) == 1: # We got the value
+                    cell.setValue(list(cell.getPosVal())[0])
+                    cellWithValueDefined = True
+                    break
+        return cellWithValueDefined
 
-            # If possible values of cell can be removed
-            # if len(values[0]) > 0: # Row
-            #     cell.addData("basic row", values[0])
-            # if len(values[1]) > 0: # Col 
-            #     cell.addData("basic col", values[1])
-            # if len(values[2]) > 0: # 3by3
-            #     cell.addData("basic 3 by 3", values[2])
-            valuesToRemove = set(values[0] + values[1] + values[2])
-            # cell.removePosVal(valuesToRemove)
-            result.append([cell, valuesToRemove])
-
-            # if len(cell.getPosVal()) == 1: # We got the value
-            #     cell.setValue(list(cell.getPosVal())[0])
-            #     continue
-        return result
             # ----------    UNIQUE   ----------
             # unique = [set([i for i in range(1, 10, 1)]) for i in range(3)] # unique row, col, 3by3
             # for i in range(9):
@@ -307,7 +294,37 @@ class Sudoku():
             #     else:
             #         print("ERROR at unique 3 by 3")
     
-
+    def solver_basic_rowCol3by3(self, cell, type):
+        board = self.toList()
+        valuesToRemove = []
+        if type == 0 or type == "row":
+            for i in range(9): # For each row, col and 3by3
+                # Rows (r=cte) -- If not the same cell
+                if i != cell.gC():
+                    otherValue = board[cell.gR()][i].getValue()
+                    # if otherCell has it's value defined and that value is possible value of Cell
+                    if otherValue != 0 and (otherValue in cell.getPosVal()):                        
+                        # Add the othervalue to the list of values to remove
+                        valuesToRemove.append(otherValue)
+        
+        elif type == 1 or type == "col":
+            for i in range(9): # For each col
+                # Cols (c=cte) -- If not the same cell
+                if i != cell.gR(): 
+                    otherValue = board[i][cell.gC()].getValue()
+                    if otherValue != 0 and (otherValue in cell.getPosVal()):
+                        valuesToRemove.append(otherValue)
+        
+        elif type == 2 or type == "3by3":    
+            for i in range(9): # For each 3by3    
+                # 3 by 3 -- If not the same cell
+                r = (cell.gR() // 3) * 3 + (i // 3)
+                c = (cell.gC() // 3) * 3 + (i % 3)
+                if cell.gR() != r or cell.gC() != c: # If not same cell
+                    otherValue = board[r][c].getValue()
+                    if otherValue != 0 and (otherValue in cell.getPosVal()):
+                        valuesToRemove.append(otherValue)
+        return valuesToRemove
 
 if __name__ == "__main__":
     a = Sudoku()
