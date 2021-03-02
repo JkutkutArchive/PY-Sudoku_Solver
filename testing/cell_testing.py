@@ -18,7 +18,20 @@ class TestStringMethods(unittest.TestCase):
             for cc in range(9):
                 self.assertIsNone(self.testCells[c][cc].sudoku)
                 self.assertEqual(self.cells[c][cc].sudoku, self.sudokuBoard)
+    
+    def test_string(self):
+        r = random.Random()
+        for c in self.cells:
+            for cc in c:
+                # No value
+                self.assertEqual(cc.__str__(), '0')
 
+                # Value defined
+                value = r.randint(1, 9)
+                cc.setValue(value)
+                self.assertEqual(cc.getValue(), value)
+                self.assertEqual(cc.__str__(), str(value))
+    
     def test_toString(self):
         r = random.Random()
         
@@ -120,19 +133,44 @@ class TestStringMethods(unittest.TestCase):
                 self.assertFalse(value_Test(self.cells[c][cc], values[c][cc], argToString[-5])) # Check value does not appear
                 self.assertFalse(value_Test(self.cells[c][cc], values[c][cc], argToString[-1])) # Check value does not appear
 
-
-    def test_string_emptyCells(self):
+    def test_eq(self):
         r = random.Random()
         for c in self.cells:
             for cc in c:
-                # No value
-                self.assertEqual(cc.__str__(), '0')
+                # Fails:
+                self.assertNotEqual(cc, None)
+                
+                exception = "The object to compare to with this cell is not valid"
+                for test in ["a", set(), []]:
+                    with self.assertRaises(Exception) as context:
+                        cc == test
+                    self.assertEqual(exception, str(context.exception))
+                
+                # Correct
+                self.assertEqual(cc, cc.getValue())
+                self.assertEqual(cc, cc)
 
-                # Value defined
+                # Incorrect
                 value = r.randint(1, 9)
-                cc.setValue(value)
-                self.assertEqual(cc.getValue(), value)
-                self.assertEqual(cc.__str__(), str(value))
+
+                methods = [
+                    ".setValue(value)",
+                    ".removePosVal(value)"
+                    # "" // DATA
+                ]
+                # ++++++++++++++++++++++ MISSING ++++++++++++++++++++++ 
+                for i in range(len(methods)):
+                    testCell = cell.Cell(cc.gR(), cc.gC())
+                    
+                    self.assertEqual(cc, testCell)
+
+                    eval("testCell" + methods[i])
+                    self.assertNotEqual(cc, testCell)
+                
+                testCell = cell.Cell(0, 0)
+                testCell.r = -1
+                testCell.c = -1
+                self.assertNotEqual(cc, testCell)
                 
     
             
