@@ -69,7 +69,7 @@ class TestStringMethods(unittest.TestCase):
     def test_toString(self):
         r = random.Random()
         
-        values = [[r.randint(0, 9) for _ in range(9)] for __ in range(9)]
+        values = [[r.randint(1, 9) for _ in range(9)] for __ in range(9)]
         argToString = [
             [ True,  True,  True,  True],
             [ True, False, False, False],
@@ -84,7 +84,7 @@ class TestStringMethods(unittest.TestCase):
         ]
 
         pairs = [
-            (cell.Cell(r.randint(0,9), r.randint(0,9)), r.randint(1,9)) for _ in range(9)
+            (cell.Cell(r.randint(0,8), r.randint(0,8)), r.randint(1,9)) for _ in range(9)
         ]
 
 
@@ -207,6 +207,43 @@ class TestStringMethods(unittest.TestCase):
                 self.assertNotEqual(cc, testCell)
                 
     
+    # ******    GETTERS AND SETTERS:    ******
+    def test_setGetValue(self):
+        r = random.Random()
+
+        # setting with int
+        self.assertEqual(self.cells[0][0].getValue(), 0)
+        value = r.randint(1, 9)
+        self.cells[0][0].setValue(value)
+        self.assertEqual(self.cells[0][0].getValue(), value)
+
+        # Second time setting value
+        valueNotAplied = ((value + r.randint(1,5)) % 9) + 1
+        
+        self.cells[0][0].setValue(valueNotAplied) # This should do nothing
+        self.assertNotEqual(self.cells[0][0].getValue(), valueNotAplied)
+        self.assertEqual(self.cells[0][0].getValue(), value)
+
+        self.cells[0][0].setValue(valueNotAplied, force=True) # forced => should work
+        self.assertEqual(self.cells[0][0].getValue(), valueNotAplied)
+
+        # setting with Cell
+        self.cells[0][1].setValue(value)
+        self.cells[0][2].setValue(self.cells[0][1])
+        self.assertEqual(self.cells[0][2].getValue(), value)
+
+        # Exceptions
+        test = [None, 10, 0]
+        exception = [
+            "Can not set the value of the cell. Value not valid.",
+            "The value must be between 1 and 9"
+        ]
+        for t in range(len(test)):
+            with self.assertRaises(Exception) as context:
+                self.cells[1][t].setValue(test[t])
+                
+                currentException = exception[0] if t == 0 else exception[1]
+                self.assertTrue(currentException in str(context.exception))
             
 
 if __name__ == '__main__':

@@ -100,11 +100,14 @@ class Cell():
         force (boolean): (optional) if the value is forced to be "value".
         '''
 
-        if self.getValue() != 0 and not force: pass # if already called, do not continue
+        if self.getValue() != 0 and not force:
+            return # if already called, do not continue
         
         if type(value) is Cell:
             self.value = value.getValue() # Set the value of the cell to the one given
         elif type(value) is int:
+            if value < 1 or value > 9:
+                raise Exception("The value must be between 1 and 9")
             self.value = value # Set the value of the cell to the one given 
         else:
             raise Exception("Can not set the value of the cell. Value not valid.")
