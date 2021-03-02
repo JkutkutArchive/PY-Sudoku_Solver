@@ -258,8 +258,14 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(len(self.cells[0][0].getPosVal()), 8)
 
         # Remove a not valid value
-        self.cells[0][0].removePosVal(None)
-        self.cells[0][0].removePosVal("s")
+        test = [None, "s"]
+        exception = "The input must be a integer or a set of integers"
+        for t in test:
+            with self.assertRaises(Exception) as context:
+                self.cells[0][0].removePosVal(t)
+            self.assertTrue(exception in str(context.exception))
+
+
         self.cells[0][0].removePosVal(set())
         self.cells[0][0].removePosVal(-1)
         self.assertEqual(len(self.cells[0][0].getPosVal()), 8)

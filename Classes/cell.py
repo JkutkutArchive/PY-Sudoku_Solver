@@ -155,8 +155,8 @@ class Cell():
             # Therefore, there's no real need to check if the content
             #  of the set is correct or not.
             raise Exception("The input must be a integer or a set of integers")
-
-        self.getPosVal().discard(value) # this cell can no longer be the value "value"
+        for val in value:
+            self.getPosVal().discard(val) # this cell can no longer be the value "value"
         # for p in self.pairs: # for each pair in this cell (format of p: tuple(cell, value))
         #     if p[1] == value: # If there is a pair with this value => the mate should be this value
         #         p[0].addData("delPair set value", self.getPos(), value) # Add the data
@@ -377,4 +377,4 @@ class Cell():
         #         print(dataToAdd)
         #     s.append(dataToAdd) # Add it to the array with the rest
         # return s # Return all the data on text format
-        return
+        return ""
