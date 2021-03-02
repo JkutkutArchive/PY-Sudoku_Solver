@@ -217,7 +217,17 @@ class Sudoku():
             raise Exception("There are more than one possible solution.")
 
         # If here, there is only one possible solution. Let's find it
+        
+        while True:
+            if self.solver_basic():
+                continue
+            # if self.unique():
+            #     continue
 
+            # If here, either we have solve it or we can not solve it
+            break
+        
+        return self.validSolution()
 
 
     def solver_basic(self):
@@ -230,15 +240,16 @@ class Sudoku():
 
             # ----------    BASIC   ----------
             values = [] # Values in row, col, 3by3
-            tipos = ["row", "col", "3by3"]
             typeH = tH.TypeHandler()
+            tipos = ["row", "col", "3by3"]
+
             for i in range(3):
                 values = self.solver_basic_rowCol3by3(cell, i)
                 if len(values) == 0: continue
-                data = dS.DataSudoku(typeH.basic() + 0.25 * i, values)
+                # data = dS.DataSudoku(typeH.basic() + 0.25 * i, values)
                 
                 cell.removePosVal(values)
-                cell.addData(data)
+                # cell.addData(data)
                 if len(cell.getPosVal()) == 1: # We got the value
                     cell.setValue(list(cell.getPosVal())[0])
                     cellWithValueDefined = True
