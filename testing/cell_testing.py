@@ -271,6 +271,11 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(self.cells[1][0].getPosVal(), s)
         self.assertNotEqual(self.cells[1][0].getPosVal(), self.cells[1][1].getPosVal())
 
+    def test_getPos(self):
+        for i in range(9):
+            for j in range(9):
+                self.assertEqual(self.cells[i][j].getPos(), (i, j))
+
 
 if __name__ == '__main__':
     unittest.main()
