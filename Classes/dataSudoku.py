@@ -1,5 +1,3 @@
-from logging import raiseExceptions
-from unittest.case import skipIf
 from Classes import cell
 
 class DataSudoku():
