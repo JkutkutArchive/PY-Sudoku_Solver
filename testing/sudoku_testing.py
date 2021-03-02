@@ -106,8 +106,19 @@ class TestStringMethods(unittest.TestCase):
                 for j in range(i + 1, len(solutionSudoku2Objects)):
                     self.assertNotEqual(solutionSudoku2Objects[i], solutionSudoku2Objects[j])
 
+    def test_getRemainingCells(self):
+        test = [
+            sudoku.Sudoku(input.empty()),
+            sudoku.Sudoku(input.easy()),
+            sudoku.Sudoku(input.full())
+        ]
+        spected = [81, 43, 0]
+        for i in range(len(test)):
+            self.assertEqual(len(test[i].remainingCells), spected[i]) # Before update
+            self.assertEqual(len(test[i].getRemainingCells()), spected[i]) # With update
 
-    def test_findSolutionWithSteps(self):
+
+    def test_findSolutionWithSteps_1(self):
         # Check invalid sudokus
         test = [
             sudoku.Sudoku(input.noSolution()),
@@ -121,6 +132,15 @@ class TestStringMethods(unittest.TestCase):
                 test[t].findSolutionWithSteps()
             
             self.assertTrue(exceptions[t] in str(context.exception))
+
+    def test_findSolutionWithSteps_easy(self):
+        self.sudoku.fillBoard(input.easy())
+        resolved = self.sudoku.findSolutionWithSteps()
+        print(len(self.sudoku.getRemainingCells()))
+        print("----")
+        self.sudoku.print()
+        print("----")
+        # self.assertTrue(resolved)
 
     def test_solver_basic_rowCol3by3(self):
         # Easy sudoku
