@@ -3,7 +3,7 @@ from unittest.case import skipIf
 from Classes import cell
 
 class DataSudoku():
-    def __init__(self, typeData, cellGiven, extraInfo):
+    def __init__(self, typeData, cellGiven, details):
         self.typeHandler = TypeHandler()
         if self.typeHandler.validType(typeData):
             self.type = typeData
@@ -15,22 +15,28 @@ class DataSudoku():
         else:
             raise Exception("The cell adressed is not a Cell")
 
-        self.extraInfo = extraInfo
+        self.details = details
     
 
     # ******    type Handle:    ******
 
 class TypeHandler():
     def __init__(self):
-        self.switcher = {}
-        methods = [f for f in TypeHandler.__dict__ if not f.startswith("__")]
-        i = 0
-        self.methodsToIgnore = ["validType", "typeConversor"]
-        for f in methods:
-            if any([f == skipM for skipM in self.methodsToIgnore]):
-                continue
-            self.switcher[i] = f
-            i = i + 1
+        self.switcher = [
+            "therefore",
+            "basic",
+            "unique",
+            "pairs",
+            "delPairs",
+            "delPair",
+            "xWing",
+            "xyWing",
+            "uniqueRectangle",
+            "swordfish"
+        ]
+        for i in range(len(self.switcher)):
+            exec("self." + self.switcher[i] + " = lambda: " + str(i))
+
 
     def validType(self, typeData) -> bool:
         if not type(typeData) is int:
@@ -42,24 +48,12 @@ class TypeHandler():
         return True
     
     def typeConversor(self, t) -> str:
-        retu = self.switcher.get(t, "Data type not found")
-        return retu
-    
-    def therefore(self):
-        return 0
-    def basic(self):
-        return 1
-    def unique(self):
-        return 2
-    def pairs(self):
-        return 3
-    def delPair(self):
-        return 4
-    def xWing(self):
-        return 5
-    def xyWing(self):
-        return 6
-    def uniqueRectangle(self):
-        return 7
-    def swordfish(self):
-        return 8
+        if type(t) is str:
+            for i in range(len(self.switcher)):
+                if self.switcher[i] == t:
+                    return i
+            return "Data type not found"
+        elif self.validType(t):
+            return self.switcher[t]
+        else:    
+            return "Data type not found"

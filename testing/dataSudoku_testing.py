@@ -20,9 +20,6 @@ class TestStringMethods(unittest.TestCase):
     
     def test_typeHandler(self):
         sw = self.typeHandler.switcher
-        ignore = self.typeHandler.methodsToIgnore
-        for i in range(len(sw)):
-            self.assertFalse(all([sw[i] == skipM for skipM in ignore]))
         
         errorNotFound = "Data type not found"
         for i in range(len(sw)):
