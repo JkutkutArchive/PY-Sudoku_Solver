@@ -101,7 +101,7 @@ class Cell():
         if self.getValue() != 0 and not force: pass # if already called, do not continue
         
         if type(value) is Cell:
-            self.value = value.getValue() # Set the value of the cell to the one given 
+            self.value = value.getValue() # Set the value of the cell to the one given
         elif type(value) is int:
             self.value = value # Set the value of the cell to the one given 
         else:
