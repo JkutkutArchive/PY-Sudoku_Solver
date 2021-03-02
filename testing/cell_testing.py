@@ -3,16 +3,21 @@ sys.path.append('.')
 
 import unittest
 from Classes import cell
+from Classes import sudoku
 import random
 
 class TestStringMethods(unittest.TestCase):
     def setUp(self):
-        self.cells = [[cell.Cell(x, y) for y in range(9)] for x in range(9)]
+        self.sudokuBoard = sudoku.Sudoku()
+        # self.cells = [[cell.Cell(x, y) for y in range(9)] for x in range(9)]
+        self.cells = self.sudokuBoard.toList()
 
     def test_string_emptyCells(self):
         for c in self.cells:
             for cc in c:
                 self.assertEqual(cc.__str__(), '0')
+
+
         
     # def test_string_ValuedCells(self):
     #     for c in self.cells:

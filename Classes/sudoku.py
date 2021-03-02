@@ -4,7 +4,7 @@ from Classes import cell # Custom Class
 
 class Sudoku():
     def __init__(self, board=None):
-        self.board = [[cell.Cell(x, y) for y in range(9)] for x in range(9)] # Create the board
+        self.board = [[cell.Cell(x, y, self) for y in range(9)] for x in range(9)] # Create the board
         self.remainingCells = set()
         if not board == None:
             self.fillBoard(board)

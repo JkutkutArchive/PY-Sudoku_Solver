@@ -1,14 +1,20 @@
+from Classes import sudoku
+
 class Cell():
-    def __init__(self, r, c):
+    def __init__(self, r, c, parentSudoku=None):
         if not type(r) is int or not type(c) is int:
             raise Exception("r and c must be integers")
+        if not parentSudoku == None and not type(parentSudoku) is sudoku.Sudoku:
+            raise Exception("parentSudoku must be a Sudoku object")
+
         self.r = r # Position on the grid (row)
         self.c = c # Position on the grid (element in row/column)
         self.value = None # Value of the cell (Now, undefined)
         self.posVal = set([i for i in range(1, 10, 1)]) # Possible values of the cell
         self.pairs = set() # Set with tuple with the linked cell and the value: "(<Cell>, <Value>)"
         self.data = [] # Here all the conclusions made by the algo will be stored here to dispay it later
-    
+        self.sudoku = parentSudoku # sudoku storing this cell
+
     def __str__(self) -> str:
         '''
         Custom way to default-print this class. The output is a str with the current value of the cell (0 if not defined).
