@@ -231,11 +231,23 @@ class Cell():
             p[0].delPair(self, self.value) # Tell the mate pair there is no pair relation anymore
         self.pairs.clear() # Once done, do not store them anymore
     
-    def delPair(self, matePair, mateValue): # Executed when matePair gets its value defined
+    def delPair(self, matePair, mateValue): 
+        '''
+        Executed when matePair gets its value defined, this method is called to change this cell possible value.
+
+        matePair (Cell): Cell with the special relation (both form a pair).
+        mateValue (int): Value of the mate Cell (For this reason, the value or the non value of this cell).
+        '''
         if self.getValue() != 0: return # If already with value, do nothing
 
-        if mateValue in self.getPosVal():
-            self.addData("delPair remove value", matePair.getPos(), mateValue) # The cell (matePair.pos) has now the value v1 and these cells are linked, so this cell can not be v1
+        if not type(matePair) is Cell:
+            raise Exception("MatePair should be a Cell.")
+        if not type(mateValue) is int:
+            raise Exception("MateValue should be a integer.")
+
+        if mateValue in self.getPosVal(): # If this cell stills can be this value.
+            
+            # self.addData("delPair remove value", matePair.getPos(), mateValue) # The cell (matePair.pos) has now the value v1 and these cells are linked, so this cell can not be v1
             self.getPosVal().discard(mateValue) # If linked and mateValue now defined => this cell can not be mateValue
             for p in self.getPairs(): # for each mate linked with this cell
                 cell = p[0] # mate cell linked
