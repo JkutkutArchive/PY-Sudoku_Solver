@@ -288,6 +288,23 @@ class TestStringMethods(unittest.TestCase):
         self.cells[0][0].setPairs(pairsTest)
         self.assertEqual(len(self.cells[0][0].getPairs()), len(pairsTest))
         self.assertEqual(self.cells[0][0].getPairs(), pairsTest)
+    
+    def test_addPair(self):
+        pairsTest = set([
+            (self.cells[1][self.r.randint(0, 8)], self.r.randint(1, 9)) for _ in range(self.r.randint(1,6))
+        ])
+        i = 0
+        self.assertEqual(len(self.cells[0][0].getPairs()), 0)
+
+        for p in pairsTest:
+            i = i + 1
+            self.cells[0][0].addPair(p[0], p[1])
+        self.assertEqual(len(pairsTest), i)
+        self.assertEqual(self.cells[0][0].getPairs(), pairsTest)
+        
+
+
+
 
 if __name__ == '__main__':
     unittest.main()

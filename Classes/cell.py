@@ -265,7 +265,7 @@ class Cell():
                 v = p[1] # value that make the link
                 if cell == matePair: continue # Skip the pair
                 if v == mateValue: # if "cell" has same value-relation as mate (the one who called this) => "cell" has that value
-                    cell.addData("delPair set value", self.getPos(), mateValue) # The cell (self.pos) is no longer matevalue and these cells were linked, so the value of this cell is matevalue
+                    # cell.addData("delPair set value", self.getPos(), mateValue) # The cell (self.pos) is no longer matevalue and these cells were linked, so the value of this cell is matevalue
                     cell.setValue(v) # Set the value
                 if len(self.pairs) == 0: return # If setting the value of cell makes me change my value. Stop
 
