@@ -122,6 +122,7 @@ class TestStringMethods(unittest.TestCase):
             
             self.assertTrue(exceptions[t] in str(context.exception))
 
+    def test_solver_basic_rowCol3by3(self):
         # Easy sudoku
         easyS = sudoku.Sudoku(input.easy())
 
