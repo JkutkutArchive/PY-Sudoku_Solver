@@ -6,6 +6,8 @@ import unittest
 import logging
 import pytest
 # from Classes import cell
+# from Classes import dataSudoku
+# from Classes import typeHandler
 from Classes import sudoku
 # import random
 
@@ -121,10 +123,33 @@ class TestStringMethods(unittest.TestCase):
             self.assertTrue(exceptions[t] in str(context.exception))
 
         # Easy sudoku
-        tipo = ["row", "col", "3by3"]
         easyS = sudoku.Sudoku(input.easy())
 
-        result = easyS.solver_basic()
+        tests = [
+            easyS.toList()[1][2],
+            easyS.toList()[3][3],
+        ]
+        espected = [
+            [
+                [6, 1, 7],
+                [4, 7, 9, 5, 6],
+                [9, 8, 4, 6, 1, 2, 5, 7]
+            ],
+            [
+                [3, 6, 1],
+                [3, 7],
+                [6, 3, 7, 5]
+            ]
+        ]
+        for i in range(2):
+            for j in range(3):
+                result = easyS.solver_basic_rowCol3by3(tests[i], j)
+                self.assertEqual(espected[i][j], result)
+
+
+
+
+        # result = easyS.solver_basic_rowCol3by3()
         # easyS.print()
         # i = 0
         # for case in result:
@@ -133,27 +158,7 @@ class TestStringMethods(unittest.TestCase):
         #     for j in range(3):
         #         print("\t\t" + tipo[j] + ": " + str(case[1][j]))
         #     i = i + 1
-        casesDone = [False, False]
-        for case in result:
-            if case[0].getPos() == (1, 2):
-                spected = [
-                    [6, 1, 7],
-                    [4, 7, 9, 5, 6],
-                    [9, 8, 4, 6, 1, 2, 5, 7]
-                ]
-                casesDone[0] = True
-                self.assertEqual(case[1], spected)
-            elif case[0].getPos() == (2, 4):
-                spected = [
-                    [2, 5, 7, 9, 8],
-                    [3, 6, 7, 1],
-                    [3, 1, 7, 9]
-                ]
-                casesDone[1] = True
-                self.assertEqual(case[1], spected)
-            
-            if all(casesDone):
-                break
+        
 
 if __name__ == '__main__':
     print("Testing...")

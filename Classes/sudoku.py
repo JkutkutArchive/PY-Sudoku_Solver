@@ -1,7 +1,7 @@
 # import sys
 # sys.path.append('.')
 from Classes import dataSudoku as dS
-from Classes import typeHandler as tH
+from Classes.dataSudoku import TypeHandler as tH
 from Classes import cell # Custom Class
 
 class Sudoku():
@@ -10,8 +10,8 @@ class Sudoku():
         self.remainingCells = set()
         if not board == None:
             self.fillBoard(board)
-        
-        self.getRemainingCells()
+
+        self.getRemainingCells(forced=True)
     
     def fillBoard(self, data):
         '''
@@ -40,13 +40,15 @@ class Sudoku():
         # return [[self.board[i][j] for j in range(9)] for i in range(9)]
         return self.board
 
-    def getRemainingCells(self):
-        oldCells = self.remainingCells
+    def getRemainingCells(self, forced=True):
+        if forced:
+            oldCells = ([c for r in self.toList() for c in r])
+        else:
+            oldCells = self.remainingCells
         self.remainingCells = set()
-        for row in oldCells:
-            for c in row:
-                if c.getValue() == 0:
-                    self.remainingCells.add(c)
+        for c in oldCells:
+            if c.getValue() == 0:
+                self.remainingCells.add(c)
 
         return self.remainingCells
 
