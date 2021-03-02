@@ -208,6 +208,13 @@ class Cell():
 
         ps (set): set with the new pairs for the cell.
         '''
+        if not type(ps) is set:
+            raise Exception("The input must be a set")
+        for t in ps:
+            if not type(t) is tuple:
+                raise Exception("The content of the set must be tuples")
+            if not type(t[0]) is Cell or not type(t[1]) is int:
+                raise Exception("The tuples must follow this syntax: (Cell, int)")
         self.pairs = ps
 
     def getPairs(self) -> set:

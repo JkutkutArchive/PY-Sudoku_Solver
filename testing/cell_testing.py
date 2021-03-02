@@ -283,11 +283,33 @@ class TestStringMethods(unittest.TestCase):
     def test_getSetPairs(self):
         self.assertEqual(len(self.cells[0][0].getPairs()), 0)
         pairsTest = set([
-            (self.cells[1][self.r.randint(1, 9)], self.r.randint(1, 9)) for _ in range(self.r.randint(1,4))
+            (self.cells[1][self.r.randint(0, 8)], self.r.randint(1, 9)) for _ in range(self.r.randint(1,4))
         ])
         self.cells[0][0].setPairs(pairsTest)
         self.assertEqual(len(self.cells[0][0].getPairs()), len(pairsTest))
         self.assertEqual(self.cells[0][0].getPairs(), pairsTest)
+
+        # Exceptions
+        tests = [
+            [],
+            1,
+            set([x for x in range(2)]),
+            set([(self.cells[2][i], i + 1) for i in range(3)] + ["a"]),
+            set([(x, x) for x in range(2)]),
+            set([(self.cells[2][i], self.cells[3][i]) for i in range(3)] + ["a"]),
+        ]
+        exceptions = [
+            "The input must be a set",
+            "The input must be a set",
+            "The content of the set must be tuples",
+            "The content of the set must be tuples",
+            "The tuples must follow this syntax: (Cell, int)",
+            "The tuples must follow this syntax: (Cell, int)"
+        ]
+        for t in range(len(tests)):
+            with self.assertRaises(Exception) as context:
+                self.cells[3][0].setPairs(tests[t])
+            self.assertTrue(exceptions[t] in str(context.exception))
     
     def test_addPair(self):
         pairsTest = set([
