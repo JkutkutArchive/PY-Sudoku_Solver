@@ -30,7 +30,6 @@ class Sudoku():
                         self.board[i][j].setValue(data[i][j])
                     elif type(data[i][j]) is cell.Cell:
                         self.board[i][j].setValue(data[i][j].getValue())
-                    # self.board[i][j].setValue(data[i][j], False, cleverCell=False)
                 else:
                     self.remainingCells.add(self.board[i][j])
     
@@ -212,7 +211,8 @@ class Sudoku():
 
     def findSolutionWithSteps(self):
         correctSolution = []
-        self.findSolutions(solutions=correctSolution) # Search possible solutions for the current sudoku
+        solutionSudoku = Sudoku(self.toList())
+        solutionSudoku.findSolutions(solutions=correctSolution) # Search possible solutions for the current sudoku
         if len(correctSolution) == 0:
             raise Exception("No solutions founded for the current sudoku.")
         if len(correctSolution) > 1: # If more than one possible solutions
@@ -231,9 +231,9 @@ class Sudoku():
             #     continue
 
             # If here, either we have solve it or we can not solve it
-            print("exit at iteration nº" + str(iteration - 1))
             break
         
+        print("exit at iteration nº" + str(iteration - 1))
         return self.validSolution()
 
 

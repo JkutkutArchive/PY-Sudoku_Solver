@@ -133,8 +133,10 @@ class TestStringMethods(unittest.TestCase):
             
             self.assertTrue(exceptions[t] in str(context.exception))
 
-    # def test_findSolutionWithSteps_easy(self):
-    
+    def test_findSolutionWithSteps_easy(self):
+        self.sudoku.fillBoard(input.easy())
+        self.assertTrue(self.sudoku.findSolutionWithSteps)
+
     def test_solver_basic_easy(self):
         self.sudoku.fillBoard(input.easy())
         preSolver = len(self.sudoku.getRemainingCells())
