@@ -40,9 +40,9 @@ class Sudoku():
         # return [[self.board[i][j] for j in range(9)] for i in range(9)]
         return self.board
 
-    def getRemainingCells(self, forced=True):
+    def getRemainingCells(self, forced=False):
         if forced:
-            oldCells = ([c for r in self.toList() for c in r])
+            oldCells = set([c for r in self.toList() for c in r])
         else:
             oldCells = self.remainingCells
         self.remainingCells = set()
@@ -220,13 +220,18 @@ class Sudoku():
 
         # If here, there is only one possible solution. Let's find it
         
+        iteration = 0
         while True:
+            print("Iteration nº" + str(iteration))
+            iteration = iteration + 1
+
             if self.solver_basic():
                 continue
-            # if self.unique():
+            # if self.solver_unique():
             #     continue
 
             # If here, either we have solve it or we can not solve it
+            print("exit at iteration nº" + str(iteration - 1))
             break
         
         return self.validSolution()
@@ -242,12 +247,15 @@ class Sudoku():
 
             # ----------    BASIC   ----------
             values = [] # Values in row, col, 3by3
-            typeH = tH.TypeHandler()
+            typeH = tH()
             tipos = ["row", "col", "3by3"]
 
             for i in range(3):
                 values = self.solver_basic_rowCol3by3(cell, i)
-                if len(values) == 0: continue
+                if len(values) == 0:
+                    continue
+                else:
+                    values = set(values)
                 # data = dS.DataSudoku(typeH.basic() + 0.25 * i, values)
                 
                 cell.removePosVal(values)

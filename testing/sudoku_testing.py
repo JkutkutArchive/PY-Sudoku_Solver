@@ -133,14 +133,17 @@ class TestStringMethods(unittest.TestCase):
             
             self.assertTrue(exceptions[t] in str(context.exception))
 
-    def test_findSolutionWithSteps_easy(self):
+    # def test_findSolutionWithSteps_easy(self):
+    
+    def test_solver_basic_easy(self):
         self.sudoku.fillBoard(input.easy())
-        resolved = self.sudoku.findSolutionWithSteps()
-        print(len(self.sudoku.getRemainingCells()))
-        print("----")
-        self.sudoku.print()
-        print("----")
-        # self.assertTrue(resolved)
+        preSolver = len(self.sudoku.getRemainingCells())
+        somethingDone = self.sudoku.solver_basic()
+        self.assertEqual(preSolver - len(self.sudoku.getRemainingCells()), 43 -31)
+        self.assertTrue(somethingDone)
+        solutions = []
+        self.sudoku.findSolutions(solutions)
+        self.assertEqual(len(solutions), 1)
 
     def test_solver_basic_rowCol3by3(self):
         # Easy sudoku
