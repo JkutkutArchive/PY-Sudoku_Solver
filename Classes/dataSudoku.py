@@ -1,6 +1,20 @@
 import Classes.typeHandler
 import Classes.cell
 
+# Format:
+# [ID, VALUEs, CELLs]
+
+
+# ["therefore"]
+# ["basic <TYPE>", <VALUE>]
+# ["unique <TYPE>", <VALUE>]
+# ["pairs (two) <TYPE>", MATECELL, <VALUE>]
+# ["delPair <TYPE> value", <MATECELL.pos()>, <VALUE>]
+# ["X-Wing <TYPE>", p1, p2, value]; <TYPE>=[row, col]
+# ["XY-Wing <TYPE>", [c1, c2, c3], [v1, v2, v3]]
+# ["uniqueRectangle", [c1, c2, c3], <VALUE>]
+# ["Swordfish <TYPE>", result, coordinates, v]
+
 
 class DataSudoku():
     def __init__(self, typeData, cellGiven, details):

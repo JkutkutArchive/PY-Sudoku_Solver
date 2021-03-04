@@ -18,7 +18,7 @@ class TestStringMethods(unittest.TestCase):
         self.cell = Cell(0, 0)
         self.data = DataSudoku(self.typeHandler.therefore(), self.cell, None)
     
-    def test_typeHandlerT1(self):
+    def test_typesExist(self):
         sw = self.typeHandler.switcher
         
         errorNotFound = "Data type not found"
@@ -27,6 +27,12 @@ class TestStringMethods(unittest.TestCase):
             self.assertTrue(self.typeHandler.typeConversor(i) != errorNotFound)
         self.assertEqual(self.typeHandler.typeConversor(1 + len(sw)), errorNotFound)
         self.assertEqual(self.typeHandler.typeConversor(-1), errorNotFound)
+    
+    # def test_subTypeExist(self):
+    #     subSw = self.typeHandler.subSwitcher
+
+    #     for i in range(len(subSw)):
+
 
 
 
