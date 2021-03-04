@@ -5,22 +5,25 @@ sys.path.append('.')
 import unittest
 import logging
 import pytest
-# from Classes import cell
-# from Classes import dataSudoku
-# from Classes import typeHandler
-from Classes import sudoku
-# import random
+import random
+
+from Classes.sudoku import Sudoku
+from Classes.cell import Cell
+from Classes.dataSudoku import DataSudoku
+from Classes.typeHandler import TypeHandler
+
+
 
 import input
 
 class TestStringMethods(unittest.TestCase):
     def setUp(self):
-        self.sudoku = sudoku.Sudoku()
+        self.sudoku = Sudoku()
 
     def test_initClass(self):
-        sud1 = sudoku.Sudoku()
+        sud1 = Sudoku()
         board = input.swordfish()
-        sud2 = sudoku.Sudoku(board)
+        sud2 = Sudoku(board)
 
         sud1Board = sud1.toList()
         sud2Board = sud2.toList()
@@ -31,7 +34,7 @@ class TestStringMethods(unittest.TestCase):
                 self.assertEqual(sud2Board[r][c].getValue(), board[r][c])
 
     def test_fillBoard(self):
-        testSudoku = sudoku.Sudoku()
+        testSudoku = Sudoku()
         boardTest = testSudoku.toList()
 
         spected = input.full()
@@ -71,7 +74,7 @@ class TestStringMethods(unittest.TestCase):
         
     def test_findSolutions(self):
         # None solution
-        noSolutionSudoku = sudoku.Sudoku(input.noSolution())
+        noSolutionSudoku = Sudoku(input.noSolution())
         noSolutionsFound = []
         noSolutionSudoku.findSolutions(noSolutionsFound)
         self.assertEqual(len(noSolutionsFound), 0)
@@ -82,7 +85,7 @@ class TestStringMethods(unittest.TestCase):
         self.sudoku.findSolutions(solutions=solutions)
         self.assertEqual(len(solutions), 1)
         
-        solutionSudoku = sudoku.Sudoku(solutions[0])
+        solutionSudoku = Sudoku(solutions[0])
         self.assertTrue(solutionSudoku.validSolution())
 
         miniTests = [input.tripleSolutions(), input.hexSolutions()]
@@ -91,12 +94,12 @@ class TestStringMethods(unittest.TestCase):
         # Multiple solutions
         for miniTest in range(len(miniTests)):
 
-            sudoku2 = sudoku.Sudoku(miniTests[miniTest])
+            sudoku2 = Sudoku(miniTests[miniTest])
             solutionSudoku2 = []
             sudoku2.findSolutions(solutionSudoku2)
             
             self.assertEqual(len(solutionSudoku2), spectedSolutions[miniTest])
-            solutionSudoku2Objects = [sudoku.Sudoku(i) for i in solutionSudoku2]
+            solutionSudoku2Objects = [Sudoku(i) for i in solutionSudoku2]
             
             for solutionObject in solutionSudoku2Objects:
                 self.assertTrue(solutionObject.validSolution())
@@ -108,9 +111,9 @@ class TestStringMethods(unittest.TestCase):
 
     def test_getRemainingCells(self):
         test = [
-            sudoku.Sudoku(input.empty()),
-            sudoku.Sudoku(input.easy()),
-            sudoku.Sudoku(input.full())
+            Sudoku(input.empty()),
+            Sudoku(input.easy()),
+            Sudoku(input.full())
         ]
         spected = [81, 43, 0]
         for i in range(len(test)):
@@ -121,8 +124,8 @@ class TestStringMethods(unittest.TestCase):
     def test_findSolutionWithSteps_1(self):
         # Check invalid sudokus
         test = [
-            sudoku.Sudoku(input.noSolution()),
-            sudoku.Sudoku(input.tripleSolutions())
+            Sudoku(input.noSolution()),
+            Sudoku(input.tripleSolutions())
         ]
 
         exceptions = ["No solutions founded for the current sudoku.",\
@@ -149,7 +152,7 @@ class TestStringMethods(unittest.TestCase):
 
     def test_solver_basic_rowCol3by3(self):
         # Easy sudoku
-        easyS = sudoku.Sudoku(input.easy())
+        easyS = Sudoku(input.easy())
 
         tests = [
             easyS.toList()[1][2],

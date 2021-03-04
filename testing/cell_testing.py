@@ -2,18 +2,21 @@ import sys
 sys.path.append('.')
 
 import unittest
-from Classes import cell
-from Classes import sudoku
 import random
+
+from Classes.sudoku import Sudoku
+from Classes.cell import Cell
+from Classes.dataSudoku import DataSudoku
+from Classes.typeHandler import TypeHandler
 
 class TestStringMethods(unittest.TestCase):
     def setUp(self):
-        self.sudokuBoard = sudoku.Sudoku()
+        self.sudokuBoard = Sudoku()
         self.cells = self.sudokuBoard.toList()
         self.r = random.Random()
     
     def test_parentSudoku(self):
-        self.testCells = [[cell.Cell(x, y) for y in range(9)] for x in range(9)]
+        self.testCells = [[Cell(x, y) for y in range(9)] for x in range(9)]
 
         for c in range(9):
             for cc in range(9):
@@ -34,7 +37,7 @@ class TestStringMethods(unittest.TestCase):
             [0, set()], # 9
             [0, 0, 2],
             [0, 0, "a"],
-            [0, 0, cell.Cell(0, 0)] # 12
+            [0, 0, Cell(0, 0)] # 12
         ]
         exceptions = [
             "r and c must be between 0 and 8",
@@ -43,7 +46,7 @@ class TestStringMethods(unittest.TestCase):
         ]
         for t in range(len(coords)):
             with self.assertRaises(Exception) as context:
-                cell.Cell(*coords[t])
+                Cell(*coords[t])
 
             if t <= 4:
                 exceptionToUse = exceptions[0]
@@ -82,7 +85,7 @@ class TestStringMethods(unittest.TestCase):
         ]
 
         pairs = [
-            (cell.Cell(self.r.randint(0,8), self.r.randint(0,8)), self.r.randint(1,9)) for _ in range(9)
+            (Cell(self.r.randint(0,8), self.r.randint(0,8)), self.r.randint(1,9)) for _ in range(9)
         ]
 
 
@@ -191,14 +194,14 @@ class TestStringMethods(unittest.TestCase):
                 ]
                 # ++++++++++++++++++++++ MISSING ++++++++++++++++++++++ 
                 for i in range(len(methods)):
-                    testCell = cell.Cell(cc.gR(), cc.gC())
+                    testCell = Cell(cc.gR(), cc.gC())
                     
                     self.assertEqual(cc, testCell)
 
                     eval("testCell" + methods[i])
                     self.assertNotEqual(cc, testCell)
                 
-                testCell = cell.Cell(0, 0)
+                testCell = Cell(0, 0)
                 testCell.r = -1
                 testCell.c = -1
                 self.assertNotEqual(cc, testCell)

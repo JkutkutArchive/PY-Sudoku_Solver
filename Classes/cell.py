@@ -1,7 +1,6 @@
-# from .sudoku import Sudoku
-import Classes.dataSudoku as dS
-DataSudoku = dS.DataSudoku
-
+import Classes.sudoku
+import Classes.dataSudoku
+import Classes.typeHandler
 
 class Cell():
     def __init__(self, r, c, parentSudoku=None):
@@ -9,7 +8,7 @@ class Cell():
             raise Exception("r and c must be integers")
         if r < 0 or c < 0 or r > 8 or c > 8:
             raise Exception("r and c must be between 0 and 8")
-        if not parentSudoku == None and not type(parentSudoku) is sudoku.Sudoku:
+        if not parentSudoku == None and not type(parentSudoku) is Classes.sudoku.Sudoku:
             raise Exception("parentSudoku must be a Sudoku object")
 
         self.r = r # Position on the grid (row)

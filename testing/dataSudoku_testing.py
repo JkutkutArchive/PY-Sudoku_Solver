@@ -5,11 +5,9 @@ import unittest
 import logging
 import pytest
 
-from Classes.dataSudoku import DataSudoku
-from Classes.dataSudoku import TypeHandler
 from Classes.cell import Cell
-# from Classes import sudoku
-# from Classes import *
+from Classes.dataSudoku import DataSudoku
+from Classes.typeHandler import TypeHandler
 # import random
 
 import input
@@ -56,12 +54,12 @@ class TestStringMethods(unittest.TestCase):
 
         for t in range(len(testInvalid)):
             with self.assertRaises(Exception) as context:
-                dataSudoku.DataSudoku(*testInvalid[t])
+                DataSudoku(*testInvalid[t])
             self.assertTrue(exceptions[t] in str(context.exception))
         
         for t in range(len(testValid)):
             try:
-                dataSudoku.DataSudoku(*testValid[t])
+                DataSudoku(*testValid[t])
             except:
                 self.assertFalse(True)
             self.assertTrue(True)

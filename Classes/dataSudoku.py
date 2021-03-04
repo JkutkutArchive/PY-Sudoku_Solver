@@ -1,19 +1,17 @@
-import Classes.typeHandler as tH
-import Classes.cell as c
+import Classes.typeHandler
+import Classes.cell
 
-TypeHandler = tH.TypeHandler
-Cell = c.Cell
 
 class DataSudoku():
     def __init__(self, typeData, cellGiven, details):
-        self.typeHandler = TypeHandler()
+        self.typeHandler = Classes.typeHandler.TypeHandler()
         
         if self.typeHandler.validType(typeData):
             self.type = typeData
         else:
             raise Exception("DataType not valid")
 
-        if type(cellGiven) is Cell:
+        if type(cellGiven) is Classes.cell.Cell:
             self.cell = cellGiven
         else:
             raise Exception("The cell adressed is not a Cell")

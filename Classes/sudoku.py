@@ -1,12 +1,11 @@
-# import sys
-# sys.path.append('.')
-from Classes import dataSudoku as dS
-from Classes.dataSudoku import TypeHandler as tH
-from Classes import cell # Custom Class
+import Classes.cell
+import Classes.dataSudoku
+import Classes.typeHandler
+
 
 class Sudoku():
     def __init__(self, board=None):
-        self.board = [[cell.Cell(x, y, self) for y in range(9)] for x in range(9)] # Create the board
+        self.board = [[Classes.cell.Cell(x, y, self) for y in range(9)] for x in range(9)] # Create the board
         self.remainingCells = set()
         if not board == None:
             self.fillBoard(board)
@@ -28,7 +27,7 @@ class Sudoku():
                 if data[i][j] != 0:
                     if type(data[i][j]) is int:
                         self.board[i][j].setValue(data[i][j])
-                    elif type(data[i][j]) is cell.Cell:
+                    elif type(data[i][j]) is Classes.cell.Cell:
                         self.board[i][j].setValue(data[i][j].getValue())
                 else:
                     self.remainingCells.add(self.board[i][j])
@@ -188,7 +187,7 @@ class Sudoku():
         elif type(arr[0][0]) is int:
             a = Sudoku(arr)
             arr = a.toList()
-        elif any([not type(arr[i][j]) is cell.Cell for i in range(9) for j in range(9)]):
+        elif any([not type(arr[i][j]) is Classes.cell.Cell for i in range(9) for j in range(9)]):
             raise Exception("The list given must be a list of Cells")
 
         for i in range(0, 9, 3):#3 by 3:
@@ -247,7 +246,7 @@ class Sudoku():
 
             # ----------    BASIC   ----------
             values = [] # Values in row, col, 3by3
-            typeH = tH()
+            typeH = Classes.typeHandler.TypeHandler()
             tipos = ["row", "col", "3by3"]
 
             for i in range(3):
