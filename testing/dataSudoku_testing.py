@@ -5,18 +5,20 @@ import unittest
 import logging
 import pytest
 
-from Classes import dataSudoku
-from Classes import cell
-from Classes import sudoku
+from Classes.dataSudoku import DataSudoku
+from Classes.dataSudoku import TypeHandler
+from Classes.cell import Cell
+# from Classes import sudoku
+# from Classes import *
 # import random
 
 import input
 
 class TestStringMethods(unittest.TestCase):
     def setUp(self):
-        self.typeHandler = dataSudoku.TypeHandler()
-        self.cell = cell.Cell(0, 0)
-        self.data = dataSudoku.DataSudoku(self.typeHandler.therefore(), self.cell, None)
+        self.typeHandler = TypeHandler()
+        self.cell = Cell(0, 0)
+        self.data = DataSudoku(self.typeHandler.therefore(), self.cell, None)
     
     def test_typeHandler(self):
         sw = self.typeHandler.switcher

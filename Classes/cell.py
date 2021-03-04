@@ -1,4 +1,7 @@
-from Classes import sudoku
+# from .sudoku import Sudoku
+import Classes.dataSudoku as dS
+DataSudoku = dS.DataSudoku
+
 
 class Cell():
     def __init__(self, r, c, parentSudoku=None):
