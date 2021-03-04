@@ -17,18 +17,7 @@ class TestStringMethods(unittest.TestCase):
         self.typeHandler = TypeHandler()
         self.cell = Cell(0, 0)
         self.data = DataSudoku(self.typeHandler.therefore(), self.cell, None)
-    
-    def test_typeHandler(self):
-        sw = self.typeHandler.switcher
         
-        errorNotFound = "Data type not found"
-        for i in range(len(sw)):
-            self.assertTrue(self.typeHandler.validType(i))
-            self.assertTrue(self.typeHandler.typeConversor(i) != errorNotFound)
-        self.assertEqual(self.typeHandler.typeConversor(1 + len(sw)), errorNotFound)
-        self.assertEqual(self.typeHandler.typeConversor(-1), errorNotFound)
-
-    
     def test_initdata(self):        
         testInvalid = [
             ["", self.cell, []],
