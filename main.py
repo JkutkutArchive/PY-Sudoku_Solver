@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter.constants import BOTTOM
 
 # Variables:
 mainWidth, mainHeight = 500, 500
@@ -21,25 +22,34 @@ def resize(event):
     mainWidth, mainHeight = event.width, event.height # Store the current window size on global variables
     squareSizeW, squareSizeH = mainWidth // 9, mainHeight // 9
 
+    # print("resize")
+
 def leftMousePressed(event):
     print("{} {}".format(mouseX, mouseY))
 
 
 # Setup
 root = tk.Tk(className='Sudoku solver')
-root.geometry("500x500")
-grid = tk.Grid()
+root.geometry(f"{mainWidth}x{mainHeight}")
+root.minsize(mainWidth, mainHeight)
+
 
 # Map functions to the events
 root.bind('<Motion>', motion)
 root.bind("<Configure>", resize)
 root.bind("<Button-1>", leftMousePressed)
 
-for i in range(9):
-    tk.Grid.rowconfigure(root, index=i, weight=1)
-    tk.Grid.columnconfigure(root, index=i, weight=1)
 
-buttons = [[tk.Button(root, text="btn ({}, {})".format(r, c)) for c in range(9)] for r in range(9)]
+# grid = tk.Frame(root, width=mainWidth-100, height=mainHeight-100)
+gridSize = mainHeight
+grid = tk.Frame(root, width=gridSize, height=gridSize)
+grid.pack(side=BOTTOM)
+
+for i in range(9):
+    tk.Grid.rowconfigure(grid, index=i, weight=1)
+    tk.Grid.columnconfigure(grid, index=i, weight=1)
+
+buttons = [[tk.Button(grid, text="({}, {})".format(r, c)) for c in range(9)] for r in range(9)]
 
 for i in range(9):
     for j in range(9):
