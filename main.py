@@ -21,7 +21,7 @@ class SudokuSolver():
             ),
             "DATA": TkFont.Font(
                 weight = "bold",
-                size = 16
+                size = 20
             ),
             "CORRECT": 0
         }
@@ -34,8 +34,11 @@ class SudokuSolver():
         self.sudokuObject = sudokuObject
 
         # Icon
-        photo = tk.PhotoImage(file = "Res/Icon.png")
-        root.iconphoto(False, photo)
+        self.root.iconphoto(False, tk.PhotoImage(file = "Res/Icon.png"))
+
+        # Menu
+        self.menu = tk.Menu(self.root)
+        self.initMenu()
 
         # Setup:
         self.root.geometry(f"{self.mainWidth}x{self.mainHeight}")
@@ -68,12 +71,31 @@ class SudokuSolver():
         # Fill the board
         self.fillBoard()
 
+    def initMenu(self):
+        self.root.config(menu = self.menu)
+        
+        # Create menus
+        file_menu= tk.Menu(self.menu)
+        loadSudokuMenu= tk.Menu(file_menu)
+        
+        # Configure menus
+        # fileMenu
+        self.menu.add_cascade(label="File", menu=file_menu) # Name of the menu
+
+        file_menu.add_cascade(label="Load...", menu = loadSudokuMenu)
+        file_menu.add_separator()
+        file_menu.add_command(label="Exit",command=self.root.quit)
+
+        # loadSudokuMenu
+        loadSudokuMenu.add_command(label="Easy", command=self.loadEasy)
+        loadSudokuMenu.add_command(label="Medium", command=self.loadMedium)
+        loadSudokuMenu.add_command(label="Hard", command=self.loadHard)
+
     def resize(self, event):
         '''
         When the screen is resized, this function is executed.
         '''
         self.mainWidth, self.mainHeight = event.width, event.height # Store the current window size on global variables
-        # print("resize")
 
     # User input
     def leftMousePressed(self, event):
@@ -105,6 +127,20 @@ class SudokuSolver():
     
 
     # Sudoku logic:
+    def loadEasy(self):
+        self.loadSudoku(input.easy())
+    
+    def loadMedium(self):
+        self.loadSudoku(input.medium())
+    
+    def loadHard(self):
+        self.loadSudoku(input.hard())
+
+    def loadSudoku(self, sudoku):
+        self.sudokuObject = Sudoku(sudoku)
+        self.fillBoard()
+
+
     def fillBoard(self):
         board = self.sudokuObject.getBoard()
 
