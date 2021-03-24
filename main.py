@@ -1,5 +1,6 @@
 import tkinter as tk
-from tkinter.constants import DISABLED
+import tkinter.font as TkFont
+
 from Classes.sudoku import Sudoku
 import input
 
@@ -12,6 +13,16 @@ class SudokuSolver():
             "BtnFocus": "#e0e0e0",
             "BtnSelected": "#b8b8b8",
             "BtnText": "black"
+        }
+        self.FONTS = {
+            "NORMAL": TkFont.Font(
+                size=12
+            ),
+            "DATA": TkFont.Font(
+                weight = "bold",
+                size = 14
+            ),
+            "CORRECT": 0
         }
 
         self.mainWidth, self.mainHeight = 500, 500
@@ -67,6 +78,13 @@ class SudokuSolver():
         event.widget.config(background = self.COLORS.get("BtnSelected"))
         print("{} {}".format(self.mouseX, self.mouseY))
 
+
+    def setBtnState(self, btn, state):
+        if (state == "DATA"):
+            btn["state"] = tk.DISABLED
+            btn["font"] = self.FONTS["DATA"]
+        elif (state == "NORMAL"):
+            btn["font"] = self.FONTS["NORMAL"]
     
 
     # Sudoku logic:
@@ -75,10 +93,12 @@ class SudokuSolver():
 
         for r in range(9):
             for c in range(9):
-                if board[r][c].getValue() == 0:
-                    continue
-                self.buttons[r][c]["text"] = str(board[r][c].getValue())
-                self.buttons[r][c]["state"] = tk.DISABLED
+                if board[r][c].getValue() == 0: # If value not given
+                    self.setBtnState(self.buttons[r][c], "NORMAL")
+                else:
+                    self.buttons[r][c]["text"] = str(board[r][c].getValue())
+                    self.setBtnState(self.buttons[r][c], "DATA")
+                
 
 
 if __name__ == '__main__':
