@@ -1,13 +1,12 @@
-from abc import abstractproperty
 import tkinter as tk
 import tkinter.font as TkFont
 
 from Classes.sudoku import Sudoku
 import input
 
-class SudokuSolver():
+class SudokuSolverGUI():
     # Variables:
-    def __init__(self, root, sudokuObject) -> None:
+    def __init__(self) -> None:
         # Variables:
         self.COLORS = {
             "BtnNormal": "#ffffff",
@@ -17,24 +16,26 @@ class SudokuSolver():
         }
         self.FONTS = {
             "NORMAL": TkFont.Font(
+            # "NORMAL": tk.font.Font(
                 size=10
             ),
+            # "DATA": tk.font.Font(
             "DATA": TkFont.Font(
-                weight = "bold",
-                size = 20
-            ),
-            "CORRECT": 0
+                # size = 20,
+                weight = "bold"
+            )
         }
 
         self.mainWidth, self.mainHeight = 500, 500
         self.mouseX, self.mouseY = 0, 0
 
 
-        self.root = root
-        self.sudokuObject = sudokuObject
+        self.root = tk.Tk(className='Sudoku solver')
+        self.sudokuObject = None
+        
 
         # Icon
-        self.root.iconphoto(False, tk.PhotoImage(file = "Res/Icon.png"))
+        self.root.iconphoto(False, tk.PhotoImage(file = "Res/icon.png"))
 
         # Menu
         self.menu = tk.Menu(self.root)
@@ -67,9 +68,12 @@ class SudokuSolver():
                     )
                 )
                 self.buttons[r][c].grid(row=r, column=c, sticky='nsew')
+        
 
         # Fill the board
-        self.fillBoard()
+        self.loadEasy()
+
+        self.root.mainloop()
 
     def initMenu(self):
         self.root.config(menu = self.menu)
@@ -120,10 +124,9 @@ class SudokuSolver():
     def setBtnState(self, btn, state):
         if (state == "DATA"):
             btn["state"] = tk.DISABLED
-            btn["font"] = self.FONTS["DATA"]
-        elif (state == "NORMAL"):
-            btn["font"] = self.FONTS["NORMAL"]
-            # btn["anchor"] = tk.NW
+            # btn["font"] = self.FONTS["DATA"]
+        # elif (state == "NORMAL"):
+        #     btn["font"] = self.FONTS["NORMAL"]
     
 
     # Sudoku logic:
@@ -155,7 +158,4 @@ class SudokuSolver():
 
 
 if __name__ == '__main__':
-    window = tk.Tk(className='Sudoku solver')
-    sudokuObject = Sudoku(input.easy())
-    SudokuSolver(window, sudokuObject)
-    window.mainloop()
+    SudokuSolverGUI()
