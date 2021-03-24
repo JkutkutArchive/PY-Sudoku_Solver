@@ -1,3 +1,4 @@
+from abc import abstractproperty
 import tkinter as tk
 import tkinter.font as TkFont
 
@@ -16,11 +17,11 @@ class SudokuSolver():
         }
         self.FONTS = {
             "NORMAL": TkFont.Font(
-                size=12
+                size=10
             ),
             "DATA": TkFont.Font(
                 weight = "bold",
-                size = 14
+                size = 16
             ),
             "CORRECT": 0
         }
@@ -32,6 +33,10 @@ class SudokuSolver():
         self.root = root
         self.sudokuObject = sudokuObject
 
+        # Icon
+        photo = tk.PhotoImage(file = "Res/Icon.png")
+        root.iconphoto(False, photo)
+
         # Setup:
         self.root.geometry(f"{self.mainWidth}x{self.mainHeight}")
         self.root.minsize(self.mainWidth, self.mainHeight)
@@ -39,6 +44,7 @@ class SudokuSolver():
         # link special events to methods
         self.root.bind("<Configure>", self.resize)
         self.root.bind("<Button-1>", self.leftMousePressed)
+        self.root.bind("<KeyPress>", self.keydown)
 
         # Create the buttons
         self.buttons = []
@@ -50,10 +56,11 @@ class SudokuSolver():
                 self.buttons[r].append(
                     tk.Button(
                         self.root,
-                        text="({}, {})".format(r, c),
+                        text="{}, {}".format(r, c),
                         background = self.COLORS.get("BtnNormal"),
                         activebackground = self.COLORS.get("BtnFocus"),
-                        disabledforeground = self.COLORS.get("BtnText")
+                        disabledforeground = self.COLORS.get("BtnText"),
+                        bd=3
                     )
                 )
                 self.buttons[r][c].grid(row=r, column=c, sticky='nsew')
@@ -68,15 +75,22 @@ class SudokuSolver():
         self.mainWidth, self.mainHeight = event.width, event.height # Store the current window size on global variables
         # print("resize")
 
-
+    # User input
     def leftMousePressed(self, event):
         '''
         If this method is selected, a cell has been selected by the user
         '''
-        if event.widget["state"] == tk.DISABLED:
-            return
-        event.widget.config(background = self.COLORS.get("BtnSelected"))
-        print("{} {}".format(self.mouseX, self.mouseY))
+        if event.widget["state"] == tk.DISABLED: # If cell has the value already selected
+            return # do not select it
+        
+        event.widget["background"] = self.COLORS["BtnSelected"]
+    
+    def keydown(self, e):
+        arrows = {'w', 'a', 's', 'd'}
+        if (e.char.isnumeric()):
+            print("Number")
+        elif (e.char in arrows):
+            print("Arrow: " + e.char)
 
 
     def setBtnState(self, btn, state):
@@ -85,6 +99,7 @@ class SudokuSolver():
             btn["font"] = self.FONTS["DATA"]
         elif (state == "NORMAL"):
             btn["font"] = self.FONTS["NORMAL"]
+            # btn["anchor"] = tk.NW
     
 
     # Sudoku logic:
