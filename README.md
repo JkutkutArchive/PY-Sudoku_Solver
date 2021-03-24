@@ -2,6 +2,14 @@
 
 This proyect makes easy to find the solution of a sudoku, show the steps to follow in order to solve it and even show all possible solutions of a multiple solution sudoku.
 
+
+
+# Instalation:
+sudo apt install python3-tk
+
+
+
+
 ## How it works:
 In order for this code to work, fill the **input.py file** with the desired sudoku. Keep in mind that it must follow the Python3 syntax as the examples given.
 At the begining, the code checks all the possible solutions of the sudoku. Acording to the number of solutions:
