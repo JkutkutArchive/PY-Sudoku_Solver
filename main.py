@@ -91,6 +91,8 @@ class SudokuSolver():
             print("Number")
         elif (e.char in arrows):
             print("Arrow: " + e.char)
+        else:
+            print(e.char)
 
 
     def setBtnState(self, btn, state):
