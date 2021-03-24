@@ -14,20 +14,22 @@ class SudokuSolverGUI():
             "BtnSelected": "#b8b8b8",
             "BtnText": "black"
         }
-        self.FONTS = {
-            "NORMAL": TkFont.Font(
-            # "NORMAL": tk.font.Font(
-                size=10
-            ),
-            # "DATA": tk.font.Font(
-            "DATA": TkFont.Font(
-                # size = 20,
-                weight = "bold"
-            )
-        }
+        # self.FONTS = {
+        #     "NORMAL": TkFont.Font(
+        #     # "NORMAL": tk.font.Font(
+        #         size=10
+        #     ),
+        #     # "DATA": tk.font.Font(
+        #     "DATA": TkFont.Font(
+        #         # size = 20,
+        #         weight = "bold"
+        #     )
+        # }
 
         self.mainWidth, self.mainHeight = 500, 500
         self.mouseX, self.mouseY = 0, 0
+
+        self.currentBtn = None
 
 
         self.root = tk.Tk(className='Sudoku solver')
@@ -108,8 +110,11 @@ class SudokuSolverGUI():
         '''
         if event.widget["state"] == tk.DISABLED: # If cell has the value already selected
             return # do not select it
-        
-        event.widget["background"] = self.COLORS["BtnSelected"]
+
+        if self.currentBtn != event.widget:
+            self.setBtnState(self.currentBtn, "NORMAL")
+            self.setBtnState(event.widget, "SELECTED")
+            self.currentBtn = event.widget
     
     def keydown(self, e):
         arrows = {'w', 'a', 's', 'd'}
@@ -122,11 +127,17 @@ class SudokuSolverGUI():
 
 
     def setBtnState(self, btn, state):
+        if btn == None:
+            return
+        
         if (state == "DATA"):
             btn["state"] = tk.DISABLED
             # btn["font"] = self.FONTS["DATA"]
-        # elif (state == "NORMAL"):
-        #     btn["font"] = self.FONTS["NORMAL"]
+        elif (state == "NORMAL"):
+            # btn["font"] = self.FONTS["NORMAL"]
+            btn["background"] = self.COLORS["BtnNormal"]
+        if (state == "SELECTED"):
+            btn["background"] = self.COLORS["BtnSelected"]
     
 
     # Sudoku logic:
