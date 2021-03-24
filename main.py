@@ -1,59 +1,63 @@
 import tkinter as tk
-from tkinter.constants import BOTTOM
 
-# Variables:
-mainWidth, mainHeight = 500, 500
-squareSizeW, squareSizeH = mainWidth // 9, mainHeight // 9
-mouseX, mouseY = 0, 0
-
-# Functions:
-def motion(event):
-    '''
-    When the mouse is moved over the screen, this function is executed.
-    '''
-    global mouseX, mouseY
-    mouseX, mouseY = event.x, event.y # Store new values in a global variable
-
-def resize(event):
-    '''
-    When the screen is resized, this function is executed.
-    '''
-    global mainWidth, mainHeight, squareSizeW, squareSizeH
-    mainWidth, mainHeight = event.width, event.height # Store the current window size on global variables
-    squareSizeW, squareSizeH = mainWidth // 9, mainHeight // 9
-
-    # print("resize")
-
-def leftMousePressed(event):
-    print("{} {}".format(mouseX, mouseY))
+class SudokuSolver():
+    # Variables:
+    def __init__(self, root) -> None:
+        # Variables:
+        self.mainWidth, self.mainHeight = 500, 500
+        self.mouseX, self.mouseY = 0, 0
 
 
-# Setup
-root = tk.Tk(className='Sudoku solver')
-root.geometry(f"{mainWidth}x{mainHeight}")
-root.minsize(mainWidth, mainHeight)
+        self.root = root
+
+        # Setup:
+        # self.root.geometry(f"{self.mainWidth}x{self.mainHeight}")
+        self.root.minsize(self.mainWidth, self.mainHeight)
+
+        # link special events to methods
+        self.root.bind('<Motion>', self.mouseMove)
+        self.root.bind("<Configure>", self.resize)
+        self.root.bind("<Button-1>", self.leftMousePressed)
+
+        # self.grid = tk.Frame(root)
+        # self.grid = tk.Frame(root, width=self.mainWidth, height=self.mainHeight)
+        # self.grid.pack(side=tk.BOTTOM)
 
 
-# Map functions to the events
-root.bind('<Motion>', motion)
-root.bind("<Configure>", resize)
-root.bind("<Button-1>", leftMousePressed)
+        self.buttons = [[tk.Button(self.root, text="({}, {})".format(r, c)) for c in range(9)] for r in range(9)]
+
+        for i in range(9):
+            tk.Grid.rowconfigure(self.root, index=i, weight=1)
+            tk.Grid.columnconfigure(self.root, index=i, weight=1)
+            for j in range(9):
+                btn = self.buttons[i][j]
+                btn.grid(row=i, column=j, sticky='nsew')
+    
 
 
-# grid = tk.Frame(root, width=mainWidth-100, height=mainHeight-100)
-gridSize = mainHeight
-grid = tk.Frame(root, width=gridSize, height=gridSize)
-grid.pack(side=BOTTOM)
+    def mouseMove(self, event):
+        '''
+        When the mouse is moved over the screen, this function is executed.
+        '''
+        self.mouseX, self.mouseY = event.x, event.y # Store new values in a global variable
 
-for i in range(9):
-    tk.Grid.rowconfigure(grid, index=i, weight=1)
-    tk.Grid.columnconfigure(grid, index=i, weight=1)
+        indexX = self.mouseX // (self.mainWidth // 9)
+        indexY = self.mouseY // (self.mainHeight // 9)
+        print("{}, {}".format(indexX, indexY))
 
-buttons = [[tk.Button(grid, text="({}, {})".format(r, c)) for c in range(9)] for r in range(9)]
+    def resize(self, event):
+        '''
+        When the screen is resized, this function is executed.
+        '''
+        self.mainWidth, self.mainHeight = event.width, event.height # Store the current window size on global variables
 
-for i in range(9):
-    for j in range(9):
-        btn = buttons[i][j]
-        btn.grid(row=i, column=j, sticky='nsew')
+        # print("resize")
 
-root.mainloop() 
+    def leftMousePressed(self, event):
+        print("{} {}".format(self.mouseX, self.mouseY))
+
+
+if __name__ == '__main__':
+    window = tk.Tk(className='Sudoku solver')
+    SudokuSolver(window)
+    window.mainloop()
