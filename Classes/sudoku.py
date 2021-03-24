@@ -34,6 +34,9 @@ class Sudoku():
     
 
     # ******    Visualization / getters:    ******
+    def getBoard(self):
+        return self.board
+
     def toList(self):
         # return [[self.board[i][j] for j in range(9)] for i in range(9)]
         return self.board
