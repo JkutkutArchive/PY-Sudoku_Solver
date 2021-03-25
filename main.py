@@ -50,7 +50,7 @@ class SudokuSolverGUI():
         self.root.minsize(self.mainWidth, self.mainHeight)
 
         # link special events to methods
-        self.root.bind("<Configure>", self.resize)
+        # self.root.bind("<Configure>", self.resize)
         self.root.bind("<Button-1>", self.leftMousePressed)
         # userControl
         self.root.bind("<KeyPress>", self.keydown)
@@ -90,6 +90,9 @@ class SudokuSolverGUI():
         # Create menus
         file_menu= tk.Menu(self.menu)
         loadSudokuMenu= tk.Menu(file_menu)
+
+        window_menu = tk.Menu(self.menu)
+        windowSize_menu = tk.Menu(window_menu)
         
         # Configure menus
         # fileMenu
@@ -101,17 +104,35 @@ class SudokuSolverGUI():
 
         # loadSudokuMenu
         loadSudokuMenu.add_command(label="Easy", command=lambda: self.loadSudoku(input.easy()))
-        # loadSudokuMenu.add_command(label="Easy", command=self.loadEasy)
-        loadSudokuMenu.add_command(label="Medium", command=self.loadMedium)
-        loadSudokuMenu.add_command(label="Hard", command=self.loadHard)
+        loadSudokuMenu.add_command(label="Medium", command=lambda: self.loadSudoku(input.medium()))
+        loadSudokuMenu.add_command(label="Hard", command=lambda: self.loadSudoku(input.hard()))
+
+        # windowMenu
+        self.menu.add_cascade(label="Window", menu=window_menu)
+
+        window_menu.add_cascade(label="Size", menu=windowSize_menu)
+
+        # windowSizeMenu
+        sizes = range(500, 1200, 100)
+        format = [f"{n}x{n}" for n in sizes]
+        print(format)
+        for f in format:
+            windowSize_menu.add_command(label=f, command=eval(
+                    f"lambda: r(\"{f}\")",
+                    # {"r": self.root.geometry, "fo": f}
+                    {"r": self.root.geometry}
+                    # {"r": print}
+                )
+            )
+        
 
     # ******* GUI manipulation *******
     
-    def resize(self, event):
-        '''
-        When the screen is resized, this function is executed.
-        '''
-        self.mainWidth, self.mainHeight = event.width, event.height # Store the current window size on global variables
+    # def resize(self, event):
+    #     '''
+    #     When the screen is resized, this function is executed.
+    #     '''
+        # self.mainWidth, self.mainHeight = event.width, event.height # Store the current window size on global variables
 
     
     # ******* User input ******* 
@@ -150,9 +171,6 @@ class SudokuSolverGUI():
                     self.draft(self.currentBtn, num)
                 else:
                     self.setValue(self.currentBtn, num)
-                # print("ready to change value (draf: {}) to {}".format(draft, num))
-            # else:
-            #     print("data cell, value can not change")
         elif (e.char in arrows or e.keysym in keys):
             extraIndex = [
                 (-1,  0),
