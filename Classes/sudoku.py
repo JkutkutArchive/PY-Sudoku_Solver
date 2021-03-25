@@ -34,8 +34,6 @@ class Sudoku():
     
 
     # ******    Visualization / getters:    ******
-    def getBoard(self):
-        return self.board
 
     def toList(self):
         # return [[self.board[i][j] for j in range(9)] for i in range(9)]
@@ -130,6 +128,15 @@ class Sudoku():
 
     # - Triplets and Quads (onProgress)
 
+    def getSolutions(self):
+        correctSolution = []
+        solutionSudoku = Sudoku(self.toList())
+        solutionSudoku.findSolutions(solutions=correctSolution) # Search possible solutions for the current sudoku
+        if len(correctSolution) == 0:
+            raise Exception("No solutions founded for the current sudoku.")
+
+        return correctSolution
+
     def findSolutions(self, solutions, arr=None):
         '''
         Gets the possible solution(s) of the given sudoku.
@@ -212,11 +219,7 @@ class Sudoku():
         return True
 
     def findSolutionWithSteps(self):
-        correctSolution = []
-        solutionSudoku = Sudoku(self.toList())
-        solutionSudoku.findSolutions(solutions=correctSolution) # Search possible solutions for the current sudoku
-        if len(correctSolution) == 0:
-            raise Exception("No solutions founded for the current sudoku.")
+        correctSolution = self.getSolutions()
         if len(correctSolution) > 1: # If more than one possible solutions
             raise Exception("There are more than one possible solution.")
 

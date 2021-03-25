@@ -54,6 +54,7 @@ class SudokuSolverGUI():
         self.root.bind("<Button-1>", self.leftMousePressed)
         # userControl
         self.root.bind("<KeyPress>", self.keydown)
+        self.root.bind("<Shift-KeyPress>", self.keydown)
         self.root.bind('<Up>', self.keydown)
         self.root.bind('<Down>', self.keydown)
         self.root.bind('<Left>', self.keydown)
@@ -128,8 +129,30 @@ class SudokuSolverGUI():
     def keydown(self, e):
         arrows = ['w', 's', 'a', 'd']
         keys = ["Up", "Down", "Left", "Right"]
-        if (e.char.isnumeric()):
-            print("Number")
+        SHIFT = 1
+
+        # print(e)
+
+
+        if ((e.char.isnumeric() and int(e.char) > 0) or (e.state == SHIFT and e.keycode >= 10 and e.keycode < 19)):
+            if self.currentBtn == None:
+                return
+            
+            if (e.char.isnumeric()):
+                num = int(e.char)
+                draft = False
+            else:
+                num = e.keycode - 9
+                draft = True
+
+            if (self.currentBtn["state"] == tk.NORMAL):
+                if draft:
+                    self.draft(self.currentBtn, num)
+                else:
+                    self.setValue(self.currentBtn, num)
+                print("ready to change value (draf: {}) to {}".format(draft, num))
+            else:
+                print("data cell, value can not change")
         elif (e.char in arrows or e.keysym in keys):
             extraIndex = [
                 (-1,  0),
@@ -143,25 +166,11 @@ class SudokuSolverGUI():
             else:
                 indi = keys.index(e.keysym)
             
-            
-            # print("Arrow: " + e.char)
-            # if e.char == "w":
-            #     extraIndex = (-1,  0)
-            # elif e.char == "s":
-            #     extraIndex = ( 1,  0)
-            # elif e.char == "a":
-            #     extraIndex = ( 0, -1)
-            # else:
-            #     extraIndex = ( 0,  1)
-
-            # print(str(self.currentBtn))
             currentIndex = self.getBtnIndex(self.currentBtn)
             index = (currentIndex[0] + extraIndex[indi][0], currentIndex[1] + extraIndex[indi][1])
             
             if (index[0] >= 0 and index[0] < 9 and index[1] >= 0 and index[1] < 9):
                 self.changeFocus(self.buttons[index[0]][index[1]])
-        else:
-            print(e)
 
 
     # ******* Tools *******
@@ -200,6 +209,18 @@ class SudokuSolverGUI():
                     return (i, j)
         return (0, 0)
 
+    def draft(self, btn, number):
+        pass
+
+    def setValue(self, btn, number):
+        index = self.getBtnIndex(btn)
+        btn["text"] = str(number)
+        if self.solution[index[0]][index[1]] == number:
+            btn["disabledforeground"] = "blue"
+            btn["state"] = tk.DISABLED
+        else:
+            btn["fg"] = "red"
+
     # Sudoku logic:
     def loadEasy(self):
         self.loadSudoku(input.easy())
@@ -212,11 +233,14 @@ class SudokuSolverGUI():
 
     def loadSudoku(self, sudoku):
         self.sudokuObject = Sudoku(sudoku)
+        self.solution = self.sudokuObject.getSolutions()
+        if len(self.solution) > 1:
+            raise Exception("The current sudoku has more than one solution")
+        self.solution = self.solution[0]
         self.fillBoard()
 
-
     def fillBoard(self):
-        board = self.sudokuObject.getBoard()
+        board = self.sudokuObject.toList()
 
         for r in range(9):
             for c in range(9):
