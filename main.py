@@ -11,6 +11,7 @@ class SudokuSolverGUI():
         # Variables:
         self.COLORS = {
             "BtnNormal": "#ffffff",
+            "BtnData": "#ffffff",
             "BtnFocus": "#e0e0e0",
             "BtnSelected": "#b8b8b8",
             "BtnText": "black"
@@ -151,13 +152,20 @@ class SudokuSolverGUI():
         
         if (state == "DATA"):
             btn["state"] = tk.DISABLED
+            btn["background"] = self.COLORS["BtnData"]
             # btn["font"] = self.FONTS["DATA"]
+        elif (state == "DATAFOCUS"):
+            btn["background"] = self.COLORS["BtnFocus"]
         elif (state == "NORMAL"):
-            # if (btn["state"] == tk.DISABLED):
-
+            if (btn["state"] == tk.DISABLED):
+                self.setBtnState(btn, "DATA")
+                return
             btn["background"] = self.COLORS["BtnNormal"]
             # btn["font"] = self.FONTS["NORMAL"]
         if (state == "SELECTED"):
+            if (btn["state"] == tk.DISABLED):
+                self.setBtnState(btn, "DATAFOCUS")
+                return
             btn["background"] = self.COLORS["BtnSelected"]
     
     def changeFocus(self, newBtn):
