@@ -5,7 +5,8 @@ from Classes.sudoku import Sudoku
 import input
 
 class SudokuSolverGUI():
-    # Variables:
+    # ******* Constructor *******
+    
     def __init__(self) -> None:
         # Variables:
         self.COLORS = {
@@ -62,7 +63,6 @@ class SudokuSolverGUI():
                 self.buttons[r].append(
                     tk.Button(
                         self.root,
-                        text="{}, {}".format(r, c),
                         background = self.COLORS.get("BtnNormal"),
                         activebackground = self.COLORS.get("BtnFocus"),
                         disabledforeground = self.COLORS.get("BtnText"),
@@ -93,17 +93,22 @@ class SudokuSolverGUI():
         file_menu.add_command(label="Exit",command=self.root.quit)
 
         # loadSudokuMenu
-        loadSudokuMenu.add_command(label="Easy", command=self.loadEasy)
+        loadSudokuMenu.add_command(label="Easy", command=lambda: self.loadSudoku(input.easy()))
+        # loadSudokuMenu.add_command(label="Easy", command=self.loadEasy)
         loadSudokuMenu.add_command(label="Medium", command=self.loadMedium)
         loadSudokuMenu.add_command(label="Hard", command=self.loadHard)
 
+    # ******* GUI manipulation *******
+    
     def resize(self, event):
         '''
         When the screen is resized, this function is executed.
         '''
         self.mainWidth, self.mainHeight = event.width, event.height # Store the current window size on global variables
 
-    # User input
+    
+    # ******* User input ******* 
+    
     def leftMousePressed(self, event):
         '''
         If this method is selected, a cell has been selected by the user
@@ -126,6 +131,8 @@ class SudokuSolverGUI():
             print(e.char)
 
 
+    # ******* Tools *******
+    
     def setBtnState(self, btn, state):
         if btn == None:
             return
@@ -134,8 +141,8 @@ class SudokuSolverGUI():
             btn["state"] = tk.DISABLED
             # btn["font"] = self.FONTS["DATA"]
         elif (state == "NORMAL"):
-            # btn["font"] = self.FONTS["NORMAL"]
             btn["background"] = self.COLORS["BtnNormal"]
+            # btn["font"] = self.FONTS["NORMAL"]
         if (state == "SELECTED"):
             btn["background"] = self.COLORS["BtnSelected"]
     
@@ -161,6 +168,7 @@ class SudokuSolverGUI():
         for r in range(9):
             for c in range(9):
                 if board[r][c].getValue() == 0: # If value not given
+                    self.buttons[r][c]["text"] = ""
                     self.setBtnState(self.buttons[r][c], "NORMAL")
                 else:
                     self.buttons[r][c]["text"] = str(board[r][c].getValue())
