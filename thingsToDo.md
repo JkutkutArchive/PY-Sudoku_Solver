@@ -6,6 +6,9 @@
 - Create Class Sudoku, to give it modularity and have all the specific functions together
 
 
+## GUI:
+- When selecting a number, hightlight all cells with the sameNumber
+
 ## main:
 - handle Errors
 - expert sudokus

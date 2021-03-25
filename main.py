@@ -150,9 +150,9 @@ class SudokuSolverGUI():
                     self.draft(self.currentBtn, num)
                 else:
                     self.setValue(self.currentBtn, num)
-                print("ready to change value (draf: {}) to {}".format(draft, num))
-            else:
-                print("data cell, value can not change")
+                # print("ready to change value (draf: {}) to {}".format(draft, num))
+            # else:
+            #     print("data cell, value can not change")
         elif (e.char in arrows or e.keysym in keys):
             extraIndex = [
                 (-1,  0),
