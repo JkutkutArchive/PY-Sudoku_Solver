@@ -52,7 +52,12 @@ class SudokuSolverGUI():
         # link special events to methods
         self.root.bind("<Configure>", self.resize)
         self.root.bind("<Button-1>", self.leftMousePressed)
+        # userControl
         self.root.bind("<KeyPress>", self.keydown)
+        self.root.bind('<Up>', self.keydown)
+        self.root.bind('<Down>', self.keydown)
+        self.root.bind('<Left>', self.keydown)
+        self.root.bind('<Right>', self.keydown)
 
         # Create the buttons
         self.buttons = []
@@ -121,27 +126,42 @@ class SudokuSolverGUI():
             self.changeFocus(event.widget)
     
     def keydown(self, e):
-        arrows = {'w', 'a', 's', 'd'}
+        arrows = ['w', 's', 'a', 'd']
+        keys = ["Up", "Down", "Left", "Right"]
         if (e.char.isnumeric()):
             print("Number")
-        elif (e.char in arrows):
-            # print("Arrow: " + e.char)
-            if e.char == "w":
-                extraIndex = (-1,  0)
-            elif e.char == "s":
-                extraIndex = ( 1,  0)
-            elif e.char == "a":
-                extraIndex = ( 0, -1)
+        elif (e.char in arrows or e.keysym in keys):
+            extraIndex = [
+                (-1,  0),
+                ( 1,  0),
+                ( 0, -1),
+                ( 0,  1)
+            ]
+
+            if (e.char in arrows):
+                indi = arrows.index(e.char)
             else:
-                extraIndex = ( 0,  1)
+                indi = keys.index(e.keysym)
+            
+            
+            # print("Arrow: " + e.char)
+            # if e.char == "w":
+            #     extraIndex = (-1,  0)
+            # elif e.char == "s":
+            #     extraIndex = ( 1,  0)
+            # elif e.char == "a":
+            #     extraIndex = ( 0, -1)
+            # else:
+            #     extraIndex = ( 0,  1)
 
             # print(str(self.currentBtn))
             currentIndex = self.getBtnIndex(self.currentBtn)
-            index = (currentIndex[0] + extraIndex[0], currentIndex[1] + extraIndex[1])
-
-            self.changeFocus(self.buttons[index[0]][index[1]])
+            index = (currentIndex[0] + extraIndex[indi][0], currentIndex[1] + extraIndex[indi][1])
+            
+            if (index[0] >= 0 and index[0] < 9 and index[1] >= 0 and index[1] < 9):
+                self.changeFocus(self.buttons[index[0]][index[1]])
         else:
-            print(e.char)
+            print(e)
 
 
     # ******* Tools *******
