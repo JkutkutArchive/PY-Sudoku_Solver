@@ -117,16 +117,28 @@ class SudokuSolverGUI():
             return # do not select it
 
         if self.currentBtn != event.widget:
-            self.setBtnState(self.currentBtn, "NORMAL")
-            self.setBtnState(event.widget, "SELECTED")
-            self.currentBtn = event.widget
+            self.changeFocus(event.widget)
     
     def keydown(self, e):
         arrows = {'w', 'a', 's', 'd'}
         if (e.char.isnumeric()):
             print("Number")
         elif (e.char in arrows):
-            print("Arrow: " + e.char)
+            # print("Arrow: " + e.char)
+            if e.char == "w":
+                extraIndex = (-1,  0)
+            elif e.char == "s":
+                extraIndex = ( 1,  0)
+            elif e.char == "a":
+                extraIndex = ( 0, -1)
+            else:
+                extraIndex = ( 0,  1)
+
+            # print(str(self.currentBtn))
+            currentIndex = self.getBtnIndex(self.currentBtn)
+            index = (currentIndex[0] + extraIndex[0], currentIndex[1] + extraIndex[1])
+
+            self.changeFocus(self.buttons[index[0]][index[1]])
         else:
             print(e.char)
 
@@ -141,11 +153,24 @@ class SudokuSolverGUI():
             btn["state"] = tk.DISABLED
             # btn["font"] = self.FONTS["DATA"]
         elif (state == "NORMAL"):
+            # if (btn["state"] == tk.DISABLED):
+
             btn["background"] = self.COLORS["BtnNormal"]
             # btn["font"] = self.FONTS["NORMAL"]
         if (state == "SELECTED"):
             btn["background"] = self.COLORS["BtnSelected"]
     
+    def changeFocus(self, newBtn):
+        self.setBtnState(self.currentBtn, "NORMAL")
+        self.setBtnState(newBtn, "SELECTED")
+        self.currentBtn = newBtn
+
+    def getBtnIndex(self, btn):
+        for i in range(9):
+            for j in range(9):
+                if btn == self.buttons[i][j]:
+                    return (i, j)
+        return (0, 0)
 
     # Sudoku logic:
     def loadEasy(self):
@@ -167,6 +192,7 @@ class SudokuSolverGUI():
 
         for r in range(9):
             for c in range(9):
+                self.buttons[r][c]["state"] = "normal"
                 if board[r][c].getValue() == 0: # If value not given
                     self.buttons[r][c]["text"] = ""
                     self.setBtnState(self.buttons[r][c], "NORMAL")
