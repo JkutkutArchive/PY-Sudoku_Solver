@@ -41,6 +41,7 @@ class SudokuSolverGUI():
 
         # Icon
         self.root.iconphoto(False, tk.PhotoImage(file = "Res/icon.png"))
+        self.root.configure(background='black')
 
         # Menu
         self.menu = tk.Menu(self.root)
@@ -101,7 +102,6 @@ class SudokuSolverGUI():
                 trueC = c - extraC
                 
                 if c != 3 and c != 7:
-                    print((trueR, trueC))
                     self.buttons[trueR].append(
                         tk.Button(
                             self.root,
