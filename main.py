@@ -11,11 +11,14 @@ class SudokuSolverGUI():
     def __init__(self) -> None:
         # Variables:
         self.COLORS = {
+            # Btns
             "BtnNormal": "#ffffff",
             "BtnData": "#ffffff",
             "BtnFocus": "#e0e0e0",
             "BtnSelected": "#b8b8b8",
-            "BtnText": "black"
+            "BtnText": "black",
+            # Separator = background
+            "rootBg": "black"
         }
         # self.FONTS = {
         #     "NORMAL": TkFont.Font(
@@ -41,7 +44,7 @@ class SudokuSolverGUI():
 
         # Icon
         self.root.iconphoto(False, tk.PhotoImage(file = "Res/icon.png"))
-        self.root.configure(background='black')
+        self.root.configure(background=self.COLORS.get("rootBg"))
 
         # Menu
         self.menu = tk.Menu(self.root)
