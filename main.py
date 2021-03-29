@@ -1,5 +1,6 @@
 import tkinter as tk
 import tkinter.font as TkFont
+from tkinter.ttk import Separator as tkSeparator
 
 from Classes.sudoku import Sudoku
 import input
@@ -62,21 +63,63 @@ class SudokuSolverGUI():
 
         # Create the buttons
         self.buttons = []
-        for r in range(9):
-            self.buttons.append([])
-            tk.Grid.rowconfigure(self.root, index=r, weight=1)
-            tk.Grid.columnconfigure(self.root, index=r, weight=1)
-            for c in range(9):
-                self.buttons[r].append(
-                    tk.Button(
-                        self.root,
-                        background = self.COLORS.get("BtnNormal"),
-                        activebackground = self.COLORS.get("BtnFocus"),
-                        disabledforeground = self.COLORS.get("BtnText"),
-                        bd=3
+        extraR = 0
+        extraC = 0
+        for r in range(11):
+            extraR = 0
+            if r >= 3:
+                    extraR = extraR + 1
+            if r >= 7:
+                extraR = extraR + 1
+            trueR = r - extraR
+            
+            if r != 3 and r != 7:
+                self.buttons.append([])
+                tk.Grid.rowconfigure(self.root, index=r, weight=3)
+                tk.Grid.columnconfigure(self.root, index=r, weight=3)
+            else:
+                tk.Grid.rowconfigure(self.root, index=r, weight=1)
+                tk.Grid.columnconfigure(self.root, index=r, weight=1)
+                continue
+
+            # if r == 3:
+            #     separator = tkSeparator(self.root, orient='horizontal')
+            #     # # separator.place(relwidth=1, relheight=1)
+            #     # # separator.pack()
+            #     # separator.place(relx=0, rely=0.47, relwidth=1, relheight=2)
+            #     # separator = tkSeparator(self.root, orient='horizontal')
+            #     # separator.pack(fill='x', padx=10, pady=10)
+            #     separator.grid(row=r, column=c, sticky="ew")
+            
+
+            for c in range(11):
+                extraC = 0
+                if c >= 3:
+                    extraC = extraC + 1
+                if c >= 7:
+                    extraC = extraC + 1
+                trueC = c - extraC
+                
+                if c != 3 and c != 7:
+                    print((trueR, trueC))
+                    self.buttons[trueR].append(
+                        tk.Button(
+                            self.root,
+                            background = self.COLORS.get("BtnNormal"),
+                            activebackground = self.COLORS.get("BtnFocus"),
+                            disabledforeground = self.COLORS.get("BtnText"),
+                            bd=3
+                        )
                     )
-                )
-                self.buttons[r][c].grid(row=r, column=c, sticky='nsew')
+                    self.buttons[trueR][trueC].grid(row=r, column=c, sticky='nsew')
+                else:
+                    continue
+                
+                # if r == 3:
+                #     separator = tkSeparator(self.root, orient='horizontal')
+                #     separator.grid(row=r, sticky="ew", ipady=10)
+        
+
         
 
         # Fill the board
