@@ -67,114 +67,19 @@ class SudokuSolverGUI():
 
         # Create the buttons
         self.buttons = []
-        extraR = 0
-        extraC = 0
-        # for r in range(11):
-        #     extraR = 0
-        #     if r >= 3:
-        #             extraR = extraR + 1
-        #     if r >= 7:
-        #         extraR = extraR + 1
-        #     trueR = r - extraR
-            
-        #     if r != 3 and r != 7:
-        #         self.buttons.append([])
-        #         tk.Grid.rowconfigure(self.root, index=r, weight=3)
-        #         tk.Grid.columnconfigure(self.root, index=r, weight=3)
-        #     else:
-                # tk.Grid.rowconfigure(self.root, index=r, weight=1)
-                # tk.Grid.columnconfigure(self.root, index=r, weight=1)
-                # continue
-            
-
-        #     for c in range(11):
-        #         extraC = 0
-        #         if c >= 3:
-        #             extraC = extraC + 1
-        #         if c >= 7:
-        #             extraC = extraC + 1
-        #         trueC = c - extraC
-                
-        #         if c != 3 and c != 7:
-        #             self.buttons[trueR].append(
-        #                 tk.Button(
-        #                     self.root,
-        #                     background = self.COLORS.get("BtnNormal"),
-        #                     activebackground = self.COLORS.get("BtnFocus"),
-        #                     disabledforeground = self.COLORS.get("BtnText"),
-        #                     bd=3
-        #                 )
-        #             )
-        #             self.buttons[trueR][trueC].grid(row=r, column=c, sticky='nsew')
-        #         # else:
-        #         #     continue
-
-        # for r in range(21):
-        #     if r % 2 == 1: # Small gaps
-        #         # print(r)
-        #         tk.Grid.rowconfigure(self.root, index=r, weight=1)
-        #         tk.Grid.columnconfigure(self.root, index=r, weight=1)
-        #         continue
-            
-        #     if r != 6 and r != 14: # Cell index
-        #         self.buttons.append([])
-        #         tk.Grid.rowconfigure(self.root, index=r, weight=30)
-        #         tk.Grid.columnconfigure(self.root, index=r, weight=30)
-
-        #         trueR = r * 2
-
-        #         if r >= 3:
-        #             trueR = trueR + 2
-        #         if r >= 6:
-        #             trueR = trueR + 2
-
-        #         indexR = r // 2
-
-        #         if r >= 8:
-        #             indexR = indexR - 1
-        #         if r >= 14:
-        #             indexR = indexR - 1
-        #         # indexR = indexR * 2           
-
-        #     else: # Big gaps
-        #         tk.Grid.rowconfigure(self.root, index=r, weight=8)
-        #         tk.Grid.columnconfigure(self.root, index=r, weight=8)
-        #         continue
-
-        #     for c in range(9):
-        #         trueC = c * 2
-
-        #         if c >= 3:
-        #             trueC = trueC + 2
-        #         if c >= 6:
-        #             trueC = trueC + 2
-                
-        #         print(str((indexR, c)) + " -> " + str(""))
-        #         self.buttons[indexR].append(
-        #             tk.Button(
-        #                 self.root,
-        #                 background = self.COLORS.get("BtnNormal"),
-        #                 activebackground = self.COLORS.get("BtnFocus"),
-        #                 disabledforeground = self.COLORS.get("BtnText"),
-        #                 bd=3
-        #             )
-        #         )
-        #         self.buttons[indexR][c].grid(row=trueR, column=trueC, sticky='nsew')
-
+        
         for r in range(21):
-                if r % 2 == 1: # Small gaps
-                    tk.Grid.rowconfigure(self.root, index=r, weight=4)
-                    tk.Grid.columnconfigure(self.root, index=r, weight=4)
-                    continue
-                
-                if r != 6 and r != 14: # Cell index
-                    self.buttons.append([])
-                    tk.Grid.rowconfigure(self.root, index=r, weight=30)
-                    tk.Grid.columnconfigure(self.root, index=r, weight=30)
-                else: # Big gaps
-                    tk.Grid.rowconfigure(self.root, index=r, weight=8)
-                    tk.Grid.columnconfigure(self.root, index=r, weight=8)
-                    continue
+            weight = 0
+            if r % 2 == 1: # Small gaps
+                weight = 4
+            elif r != 6 and r != 14: # Cell index
+                self.buttons.append([])
+                weight = 30
+            else: # Big gaps
+                weight = 8
+
+            tk.Grid.rowconfigure(self.root, index=r, weight=weight)
+            tk.Grid.columnconfigure(self.root, index=r, weight=weight)
 
 
         for r in range(9):
@@ -186,13 +91,11 @@ class SudokuSolverGUI():
             
             for c in range(9):
                 trueC = c * 2
-
                 if c >= 3:
                     trueC = trueC + 2
                 if c >= 6:
                     trueC = trueC + 2
-                
-                # print(str((r, c)) + " -> " + str(""))
+
                 self.buttons[r].append(
                     tk.Button(
                         self.root,
