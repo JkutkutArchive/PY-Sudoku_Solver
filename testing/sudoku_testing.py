@@ -34,9 +34,6 @@ class TestStringMethods(unittest.TestCase):
                 self.assertEqual(sud2Board[r][c].getValue(), board[r][c])
 
     def test_fillBoard(self):
-        testSudoku = Sudoku()
-        boardTest = testSudoku.toList()
-
         for spected in [input.full(), input.empty(), input.easy()]:
             self.sudoku.fillBoard(spected)
             board = self.sudoku.toList()
