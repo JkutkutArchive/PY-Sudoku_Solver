@@ -24,6 +24,7 @@ class Sudoku():
         # If here, the data is correct
         for i in range(9):
             for j in range(9):
+                self.board[i][j].reset() # Reset the cell
                 if data[i][j] != 0:
                     if type(data[i][j]) is int:
                         self.board[i][j].setValue(data[i][j])
@@ -31,6 +32,7 @@ class Sudoku():
                         self.board[i][j].setValue(data[i][j].getValue())
                 else:
                     self.remainingCells.add(self.board[i][j])
+
     
 
     # ******    Visualization / getters:    ******
@@ -263,17 +265,15 @@ class Sudoku():
 
         Return: whenever the value of the cell was discovered
         '''
-        cellWithValueDefined = False
-        
         if cell.getValue() != 0: return False # if this cell got it's value defined, do not continue
 
+        
         # ----------    BASIC   ----------
         values = [] # Values in row, col, 3by3
         typeH = Classes.typeHandler.TypeHandler()
         tipos = ["row", "col", "3by3"]
 
-        for i in tipos:
-        # for i in range(3):
+        for i in range(3):
             values = set(self.solver_basic_rowCol3by3(cell, i)) # All values this cell can not be and they are posValues of the cell
             if len(values) == 0: # If none, go to the next one
                 continue
@@ -284,10 +284,11 @@ class Sudoku():
             # cell.addData(data)
             if len(cell.getPosVal()) == 1: # We got the value
                 cell.setValue(list(cell.getPosVal())[0])
-                cellWithValueDefined = True
-                break # Exit the loop
-        return cellWithValueDefined
+                print("hey")
+                return True # Exit the loop
+        return False
     
+
     def solver_basic_rowCol3by3(self, cell, type):
         board = self.toList()
         valuesToRemove = []
