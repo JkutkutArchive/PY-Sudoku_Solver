@@ -33,7 +33,7 @@ import Classes.cell
 
 
 class DataSudoku():
-    def __init__(self, typeData, cellGiven, details):
+    def __init__(self, typeData, cellsGiven=None, values=None):
         self.typeHandler = Classes.typeHandler.TypeHandler()
         
         if self.typeHandler.validType(typeData):
@@ -41,9 +41,10 @@ class DataSudoku():
         else:
             raise Exception("DataType not valid")
 
-        if type(cellGiven) is Classes.cell.Cell:
-            self.cell = cellGiven
+        if any([type(cellsGiven) is posType for posType in [Classes.cell.Cell, list]]):
+            self.CELLs = cellsGiven
         else:
             raise Exception("The cell adressed is not a Cell")
 
-        self.details = details
+        if any([type(values) is posType for posType in [int, list]]):
+            self.VALUEs = values

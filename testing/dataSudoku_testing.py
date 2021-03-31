@@ -38,7 +38,8 @@ class TestStringMethods(unittest.TestCase):
 
         testValid = [
             [self.typeHandler.therefore(), self.cell, []],
-            [1, self.cell, []]
+            [1, [self.cell, self.cell], []],
+            [1, [self.cell, self.cell], 3],
         ]
 
         for t in range(len(testInvalid)):

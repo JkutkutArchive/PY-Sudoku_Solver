@@ -3,18 +3,6 @@ class TypeHandler():
     This class enables to control the type of data asociated with a discovery on a sudoku cell
     '''
     def __init__(self):
-        # [                <TYPE>, <CELLs>, <VALUEs>]
-        # [           "therefore",    NONE,     NONE]
-        # [     "basic <SUBTYPE>",    NONE, <VALUEs>]
-        # [    "unique <SUBTYPE>",    NONE, <VALUEs>]
-        # [     "pairs <SUBTYPE>", <CELLs>, <VALUEs>]
-        # [           "Pairs_two",  <CELL>,  <VALUE>]
-        # [   "delPair_set_value",  <CELL>,  <VALUE>]
-        # ["delPair_remove_value",  <CELL>,  <VALUE>]
-        # [    "xWing <SUBTYPE>", <CELLs>,  <VALUE>]; <SUBTYPE>=[row, col]
-        # [             "xyWing", <CELLs>, <VALUEs>]
-        # [     "uniqueRectangle", <CELLs>,  <VALUE>]
-        # [ "swordfish <SUBTYPE>", <CELLs>,  <VALUE>]; <SUBTYPE>=[row, col]
         self.switcher = [ # Posible methods (part 1/2)
             "therefore",
             "basic",
@@ -25,7 +13,7 @@ class TypeHandler():
             "delPair_remove_value",
             "xWing",
             "xyWing",
-            "uniqueRectangle",
+            "UniqueRectangle",
             "swordfish"
         ]
         for i in range(len(self.switcher)): # For each possible method (part 1)
