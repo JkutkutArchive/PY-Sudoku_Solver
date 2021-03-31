@@ -281,7 +281,7 @@ class Sudoku():
             # print(values)
             if len(values) == 0: # If none, go to the next one
                 continue
-            values = set(values)
+            
             # data = dS.DataSudoku(typeH.basic() + 0.25 * i, values)
             
             cell.removePosVal(values)
@@ -300,7 +300,7 @@ class Sudoku():
 
     def solver_basic_rowCol3by3(self, cell, type):
         board = self.toList()
-        valuesToRemove = []
+        valuesToRemove = set()
         if type == 0 or type == "row":
             for i in range(9): # For each row, col and 3by3
                 # Rows (r=cte) -- If not the same cell
@@ -309,7 +309,8 @@ class Sudoku():
                     # if otherCell has it's value defined and that value is possible value of Cell
                     if otherValue != 0 and (otherValue in cell.getPosVal()):                        
                         # Add the othervalue to the list of values to remove
-                        valuesToRemove.append(otherValue)
+                        # valuesToRemove.append(otherValue)
+                        valuesToRemove.add(otherValue)
         
         elif type == 1 or type == "col":
             for i in range(9): # For each col
@@ -317,7 +318,8 @@ class Sudoku():
                 if i != cell.gR(): 
                     otherValue = board[i][cell.gC()].getValue()
                     if otherValue != 0 and (otherValue in cell.getPosVal()):
-                        valuesToRemove.append(otherValue)
+                        # valuesToRemove.append(otherValue)
+                        valuesToRemove.add(otherValue)
         
         elif type == 2 or type == "3by3":    
             for i in range(9): # For each 3by3    
@@ -327,7 +329,8 @@ class Sudoku():
                 if cell.gR() != r or cell.gC() != c: # If not same cell
                     otherValue = board[r][c].getValue()
                     if otherValue != 0 and (otherValue in cell.getPosVal()):
-                        valuesToRemove.append(otherValue)
+                        # valuesToRemove.append(otherValue)
+                        valuesToRemove.add(otherValue)
         else:
             print("type not valid")
         return valuesToRemove
