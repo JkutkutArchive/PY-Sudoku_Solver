@@ -1,6 +1,9 @@
 class TypeHandler():
+    '''
+    This class enables to control the type of data asociated with a discovery on a sudoku cell
+    '''
     def __init__(self):
-        self.switcher = [
+        self.switcher = [ # Posible methods (part 1/2)
             "therefore",
             "basic",
             "unique",
@@ -12,15 +15,16 @@ class TypeHandler():
             "uniqueRectangle",
             "swordfish"
         ]
-        for i in range(len(self.switcher)):
-            exec("self." + self.switcher[i] + " = lambda: " + str(i))
-        self.subSwitcher = [
+        for i in range(len(self.switcher)): # For each possible method (part 1)
+            exec("self." + self.switcher[i] + " = lambda: " + str(i)) # Create the method
+        
+        self.subSwitcher = [ # Possible methods (part 2/2)
             "row",
             "col",
             "3by3"
         ]
-        for i in range(len(self.subSwitcher)):
-            exec("self." + self.subSwitcher[i] + " = lambda: " + str((i + 1) * 0.25))
+        for i in range(len(self.subSwitcher)): # For each subMethod
+            exec("self.sub" + self.subSwitcher[i] + " = lambda: " + str((i + 1) * 0.25)) # cretate it
 
     def validType(self, typeData) -> bool:
         if not type(typeData) is int:
