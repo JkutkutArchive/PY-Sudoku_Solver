@@ -20,13 +20,13 @@ import Classes.cell
 # [     "basic <SUBTYPE>",    NONE, <VALUEs>]
 # [    "unique <SUBTYPE>",    NONE, <VALUEs>]
 # [     "pairs <SUBTYPE>", <CELLs>, <VALUEs>]
-# [           "pairs two",  <CELL>,  <VALUE>]
-# [   "delPair set value",  <CELL>,  <VALUE>]
-# ["delPair remove value",  <CELL>,  <VALUE>]
-# [    "X-Wing <SUBTYPE>", <CELLs>,  <VALUE>]; <SUBTYPE>=[row, col]
-# [             "XY-Wing", <CELLs>, <VALUEs>]
-# [     "UniqueRectangle", <CELLs>,  <VALUE>]
-# [ "Swordfish <SUBTYPE>", <CELLs>,  <VALUE>]; <SUBTYPE>=[row, col]
+# [           "Pairs_two",  <CELL>,  <VALUE>]
+# [   "delPair_set_value",  <CELL>,  <VALUE>]
+# ["delPair_remove_value",  <CELL>,  <VALUE>]
+# [    "xWing <SUBTYPE>", <CELLs>,  <VALUE>]; <SUBTYPE>=[row, col]
+# [             "xyWing", <CELLs>, <VALUEs>]
+# [     "uniqueRectangle", <CELLs>,  <VALUE>]
+# [ "swordfish <SUBTYPE>", <CELLs>,  <VALUE>]; <SUBTYPE>=[row, col]
 
 
 
