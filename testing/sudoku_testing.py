@@ -130,21 +130,14 @@ class TestStringMethods(unittest.TestCase):
 
     def test_solver_basic_easy(self):
         self.sudoku.fillBoard(input.easy())
-        print("*******")
-        self.sudoku.print()
-        print("*******")
-        # print(self.sudoku.toList()[1][2].toString())
-        
 
         solutions = []
         self.sudoku.findSolutions(solutions)
         self.assertEqual(len(solutions), 1)
         
-        # preSolver = len(self.sudoku.getRemainingCells())
-        # print(self.sudoku.toList()[1][2].toString())
         somethingDone = self.sudoku.solver_basic_loop()
-        # self.assertEqual(preSolver - len(self.sudoku.getRemainingCells()), 43 -31)
         self.assertTrue(somethingDone)
+        self.sudoku.print()
 
     def test_solver_basic_rowCol3by3(self):
         # Easy sudoku
@@ -156,14 +149,14 @@ class TestStringMethods(unittest.TestCase):
         ]
         espected = [
             [
-                [6, 1, 7],
-                [4, 7, 9, 5, 6],
-                [9, 8, 4, 6, 1, 2, 5, 7]
+                set([6, 1, 7]),
+                set([4, 7, 9, 5, 6]),
+                set([9, 8, 4, 6, 1, 2, 5, 7])
             ],
             [
-                [3, 6, 1],
-                [3, 7],
-                [6, 3, 7, 5]
+                set([3, 6, 1]),
+                set([3, 7]),
+                set([6, 3, 7, 5])
             ]
         ]
         # easyS.print()
