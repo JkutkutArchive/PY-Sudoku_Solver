@@ -230,7 +230,7 @@ class Sudoku():
             print("Iteration nº" + str(iteration))
             iteration = iteration + 1
 
-            if self.solver_basic():
+            if self.solver_basic_loop():
                 continue
             # if self.solver_unique():
             #     continue
@@ -242,33 +242,50 @@ class Sudoku():
         return self.validSolution()
 
 
-    def solver_basic(self):
+    def solver_basic_loop(self) -> bool:
         '''
-        This code tries to find values of the cells using basic scanning techniques.
+        Tries to find the values of the remaining cells using basic scanning techniques.
+
+        It will atempt to find the value of a undefined cell until it does or until there're no more cells to check
+
+        This method will loop the no-loop method with the same name.
+
+        Return: whenever the value of a cell was discovered 
         '''
         cellWithValueDefined = False
-        for cell in self.getRemainingCells(): 
-            if cell.getValue() != 0: continue # if during this loop, this cell got it's value defined, go to next one
+        for cell in self.getRemainingCells():
+            cellWithValueDefined = cellWithValueDefined or self.solver_basic(cell)
+        return cellWithValueDefined
 
-            # ----------    BASIC   ----------
-            values = [] # Values in row, col, 3by3
-            typeH = Classes.typeHandler.TypeHandler()
-            tipos = ["row", "col", "3by3"]
+    def solver_basic(self, cell) -> bool:
+        '''
+        This code tries to find values of the cell using basic scanning techniques.
 
-            for i in range(3):
-                values = self.solver_basic_rowCol3by3(cell, i)
-                if len(values) == 0:
-                    continue
-                else:
-                    values = set(values)
-                # data = dS.DataSudoku(typeH.basic() + 0.25 * i, values)
-                
-                cell.removePosVal(values)
-                # cell.addData(data)
-                if len(cell.getPosVal()) == 1: # We got the value
-                    cell.setValue(list(cell.getPosVal())[0])
-                    cellWithValueDefined = True
-                    break
+        Return: whenever the value of the cell was discovered
+        '''
+        cellWithValueDefined = False
+        
+        if cell.getValue() != 0: return False # if this cell got it's value defined, do not continue
+
+        # ----------    BASIC   ----------
+        values = [] # Values in row, col, 3by3
+        typeH = Classes.typeHandler.TypeHandler()
+        tipos = ["row", "col", "3by3"]
+
+        for i in tipos:
+        # for i in range(3):
+            values = set(self.solver_basic_rowCol3by3(cell, i)) # All values this cell can not be and they are posValues of the cell
+            if len(values) == 0: # If none, go to the next one
+                continue
+            
+            # data = dS.DataSudoku(typeH.basic() + 0.25 * i, values)
+            
+            cell.removePosVal(values)
+            # cell.addData(data)
+            if len(cell.getPosVal()) == 1: # We got the value
+                cell.setValue(list(cell.getPosVal())[0])
+                cellWithValueDefined = True
+                break # Exit the loop
         return cellWithValueDefined
     
     def solver_basic_rowCol3by3(self, cell, type):
