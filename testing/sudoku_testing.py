@@ -51,7 +51,7 @@ class TestStringMethods(unittest.TestCase):
 
         self.sudoku.fillBoard(input.medium())
         self.assertEqual(self.sudoku.print(arr=input.easy(), returnAsString=True), espected)
-        self.assertIsNone(self.sudoku.print())
+        # self.assertIsNone(self.sudoku.print())
 
     def test_validSolution(self):
         self.assertFalse(self.sudoku.validSolution())
@@ -130,13 +130,18 @@ class TestStringMethods(unittest.TestCase):
 
     def test_solver_basic_easy(self):
         self.sudoku.fillBoard(input.easy())
+        print("*******")
         self.sudoku.print()
+        print("*******")
+        # print(self.sudoku.toList()[1][2].toString())
+        
 
         solutions = []
         self.sudoku.findSolutions(solutions)
         self.assertEqual(len(solutions), 1)
         
-        preSolver = len(self.sudoku.getRemainingCells())
+        # preSolver = len(self.sudoku.getRemainingCells())
+        # print(self.sudoku.toList()[1][2].toString())
         somethingDone = self.sudoku.solver_basic_loop()
         # self.assertEqual(preSolver - len(self.sudoku.getRemainingCells()), 43 -31)
         self.assertTrue(somethingDone)

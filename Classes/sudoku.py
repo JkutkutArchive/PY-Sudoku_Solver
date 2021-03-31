@@ -173,7 +173,8 @@ class Sudoku():
                         if valid: # If the value val may be correct
                             arr[r][c].setValue(val, force=True) # Try to solve the sudoku using this value as correct
                             self.findSolutions(solutions, arr)
-                            arr[r][c].setValue(0, force=True) # if here, the path wasn't good => undo move
+                            arr[r][c].reset() # if here, the path wasn't good => undo move
+                            # arr[r][c].setValue(0, force=True) # if here, the path wasn't good => undo move
                     return # If here, all posible valid combinations have been tested => end execution
         
         ## if here, solution founded
@@ -274,17 +275,25 @@ class Sudoku():
         tipos = ["row", "col", "3by3"]
 
         for i in range(3):
-            values = set(self.solver_basic_rowCol3by3(cell, i)) # All values this cell can not be and they are posValues of the cell
+            values = self.solver_basic_rowCol3by3(cell, i) # All values this cell can not be and they are posValues of the cell
+            # if cell.getPos() == (1, 2):
+            #     print(cell.getPosVal())
+            # print(values)
             if len(values) == 0: # If none, go to the next one
                 continue
-            
+            values = set(values)
             # data = dS.DataSudoku(typeH.basic() + 0.25 * i, values)
             
             cell.removePosVal(values)
             # cell.addData(data)
+            # if cell.getPos() == (1, 2):
+            #     print(cell.getPosVal())
+            # print(cell.getPos())
+
+
             if len(cell.getPosVal()) == 1: # We got the value
                 cell.setValue(list(cell.getPosVal())[0])
-                print("hey")
+                # print("hey")
                 return True # Exit the loop
         return False
     
@@ -319,6 +328,8 @@ class Sudoku():
                     otherValue = board[r][c].getValue()
                     if otherValue != 0 and (otherValue in cell.getPosVal()):
                         valuesToRemove.append(otherValue)
+        else:
+            print("type not valid")
         return valuesToRemove
 
     def solver_basic_unique(self):
