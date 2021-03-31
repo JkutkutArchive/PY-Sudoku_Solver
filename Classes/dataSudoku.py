@@ -12,8 +12,24 @@ import Classes.cell
 # ["delPair <TYPE> value", <MATECELL.pos()>, <VALUE>]
 # ["X-Wing <TYPE>", p1, p2, value]; <TYPE>=[row, col]
 # ["XY-Wing <TYPE>", [c1, c2, c3], [v1, v2, v3]]
-# ["uniqueRectangle", [c1, c2, c3], <VALUE>]
+# ["UniqueRectangle", [c1, c2, c3], <VALUE>]
 # ["Swordfish <TYPE>", result, coordinates, v]
+
+# [                <TYPE>, <CELLs>, <VALUEs>]
+# [           "therefore",    NONE,     NONE]
+# [     "basic <SUBTYPE>",    NONE, <VALUEs>]
+# [    "unique <SUBTYPE>",    NONE, <VALUEs>]
+# [     "pairs <SUBTYPE>", <CELLs>, <VALUEs>]
+# [           "pairs two",  <CELL>,  <VALUE>]
+# [   "delPair set value",  <CELL>,  <VALUE>]
+# ["delPair remove value",  <CELL>,  <VALUE>]
+# [    "X-Wing <SUBTYPE>", <CELLs>,  <VALUE>]; <SUBTYPE>=[row, col]
+# [             "XY-Wing", <CELLs>, <VALUEs>]
+# [     "UniqueRectangle", <CELLs>,  <VALUE>]
+# [ "Swordfish <SUBTYPE>", <CELLs>,  <VALUE>]; <SUBTYPE>=[row, col]
+
+
+
 
 
 class DataSudoku():
