@@ -19,6 +19,12 @@ class Cell():
         self.data = [] # Here all the conclusions made by the algo will be stored here to dispay it later
         self.sudoku = parentSudoku # sudoku storing this cell
 
+    def reset(self):
+        self.value = None # Value of the cell (Now, undefined)
+        self.posVal = set([i for i in range(1, 10, 1)]) # Possible values of the cell
+        self.pairs = set() # Set with tuple with the linked cell and the value: "(<Cell>, <Value>)"
+        self.data = [] # Here all the conclusions made by the algo will be stored here to dispay it later
+
     def __str__(self) -> str:
         '''
         Custom way to default-print this class. The output is a str with the current value of the cell (0 if not defined).
