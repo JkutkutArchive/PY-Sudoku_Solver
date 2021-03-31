@@ -55,7 +55,6 @@ class SudokuSolverGUI():
         self.root.minsize(self.mainWidth, self.mainHeight)
 
         # link special events to methods
-        # self.root.bind("<Configure>", self.resize)
         self.root.bind("<Button-1>", self.leftMousePressed)
         # userControl
         self.root.bind("<KeyPress>", self.keydown)
@@ -65,24 +64,24 @@ class SudokuSolverGUI():
         self.root.bind('<Left>', self.keydown)
         self.root.bind('<Right>', self.keydown)
 
-        # Create the buttons
-        self.buttons = []
-        
+
+        # Create the grid
         for r in range(21):
             weight = 0
             if r % 2 == 1: # Small gaps
-                weight = 4
+                weight = 3
             elif r != 6 and r != 14: # Cell index
-                self.buttons.append([])
                 weight = 30
             else: # Big gaps
-                weight = 8
+                weight = 6
 
             tk.Grid.rowconfigure(self.root, index=r, weight=weight)
             tk.Grid.columnconfigure(self.root, index=r, weight=weight)
 
-
+        # Create the buttons
+        self.buttons = []
         for r in range(9):
+            self.buttons.append([])
             trueR = r * 2
             if r >= 3:
                 trueR = trueR + 2
@@ -107,8 +106,6 @@ class SudokuSolverGUI():
                 )
                 self.buttons[r][c].grid(row=trueR, column=trueC, sticky='nsew')
             
-        
-
         
 
         # Fill the board
@@ -151,9 +148,7 @@ class SudokuSolverGUI():
         for f in format:
             windowSize_menu.add_command(label=f, command=eval(
                     f"lambda: r(\"{f}\")",
-                    # {"r": self.root.geometry, "fo": f}
                     {"r": self.root.geometry}
-                    # {"r": print}
                 )
             )
         
@@ -268,6 +263,7 @@ class SudokuSolverGUI():
         if self.solution[index[0]][index[1]] == number:
             btn["disabledforeground"] = "blue"
             btn["state"] = tk.DISABLED
+            self.setBtnState(btn, "DATAFOCUS")
         else:
             btn["fg"] = "red"
 
