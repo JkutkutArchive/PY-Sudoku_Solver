@@ -27,11 +27,17 @@ class TypeHandler():
             exec("self.sub" + self.subSwitcher[i] + " = lambda: " + str((i + 1) * 0.25)) # cretate it
 
     def validType(self, typeData) -> bool:
-        if not type(typeData) is int:
-            return False
-        if typeData < 0:
-            return False
-        if typeData > len(self.switcher):
+        '''
+        Check whenever the input is a valid type of this class
+        
+        Valid type: a integer greater than 0 and less than the number of methods
+
+        Returns: Result of the check
+        '''
+        
+        if not type(typeData) is int or \
+            typeData < 0 or \
+            typeData > len(self.switcher): 
             return False
         return True
     
