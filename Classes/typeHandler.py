@@ -12,7 +12,7 @@ class TypeHandler():
             "delPair",
             "xWing",
             "xyWing",
-            "uniqueRectangle",
+            "uniqRectangle",
             "swordfish"
         ]
         for i in range(len(self.switcher)): # For each possible method (part 1)

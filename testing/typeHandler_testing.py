@@ -22,11 +22,24 @@ class TestStringMethods(unittest.TestCase):
         sw = self.typeHandler.switcher
         
         errorNotFound = "Data type not found"
+        notValidInput = "The input is not valid"
         for i in range(len(sw)):
             self.assertTrue(self.typeHandler.validType(i))
             self.assertTrue(self.typeHandler.typeConversor(i) != errorNotFound)
-        self.assertEqual(self.typeHandler.typeConversor(1 + len(sw)), errorNotFound)
-        self.assertEqual(self.typeHandler.typeConversor(-1), errorNotFound)
+        
+        self.assertEqual(self.typeHandler.typeConversor(1 + len(sw)), notValidInput)
+        self.assertEqual(self.typeHandler.typeConversor(-1), notValidInput)
+
+        for type in sw:
+            typeIndex = self.typeHandler.typeConversor(type) # int eq to type
+            self.assertTrue(self.typeHandler.validType(typeIndex))
+            self.assertTrue(type == self.typeHandler.typeConversor(typeIndex)) # check the conversor is circular
+
+            for subType in ["row", "col", "3by3"]:
+                typeIndex = self.typeHandler.typeConversor(type + " " + subType) # int eq to type+subtype
+                self.assertTrue(self.typeHandler.validType(typeIndex))
+                self.assertTrue(type + " " + subType == self.typeHandler.typeConversor(typeIndex))
+                
     
     # def test_subTypeExist(self):
     #     subSw = self.typeHandler.subSwitcher
