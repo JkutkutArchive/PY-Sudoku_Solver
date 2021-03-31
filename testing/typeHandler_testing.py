@@ -40,11 +40,13 @@ class TestStringMethods(unittest.TestCase):
                 self.assertTrue(self.typeHandler.validType(typeIndex))
                 self.assertTrue(type + " " + subType == self.typeHandler.typeConversor(typeIndex))
                 
-    
-    # def test_subTypeExist(self):
-    #     subSw = self.typeHandler.subSwitcher
-
-    #     for i in range(len(subSw)):
+    def test_methodsExist(self):
+        sw = self.typeHandler.switcher
+        subSw = self.typeHandler.subSwitcher
+        for type in sw:
+            self.assertTrue(type in dir(self.typeHandler))
+        for subType in subSw:
+            self.assertTrue("sub"+subType in dir(self.typeHandler))
 
 
 
