@@ -35,7 +35,7 @@ class TypeHandler():
         Returns: Result of the check
         '''
         
-        if not type(typeData) is int or \
+        if not type(typeData) is int and not type(typeData) is float or \
             typeData < 0 or \
             typeData > len(self.switcher): 
             return False
@@ -53,19 +53,19 @@ class TypeHandler():
         '''
         if type(t) is str: # If string given -> output a int
             for i in range(len(self.switcher)): # For each possible type
-                if t in self.switcher[i]: # If type found
+                if self.switcher[i] in t: # If type found
                     subType = 0
                     for subT in range(len(self.subSwitcher)): # For each possible subtype
-                        if t in self.subSwitcher[subT]: # If subtype found
-                            subType = (t + 1) * 0.25
+                        if self.subSwitcher[subT] in t: # If subtype found
+                            subType = (subT + 1) * 0.25
                     return i + subType # Return int type
             return "Data type not found" # If not found, return this
 
         elif self.validType(t): # If valid integer given -> output str
             subType = ""
             if t % 1 != 0: # If decimal value, there is a subtype required
-                indexSubType = (t % 1) // 0.25
+                indexSubType = int((t % 1) // 0.25)
                 subType = " " + self.subSwitcher[indexSubType] # If subtype, it will follow this syntax: "<type> <subtype>"
-            return self.switcher[t] + subType # Return the type
+            return self.switcher[int(t // 1)] + subType # Return the type
         else:    
             return "The input is not valid" # If not valid input, return this
