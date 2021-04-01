@@ -120,10 +120,6 @@ class DataSudoku():
             all([type(v) is int for v in values]) and \
             all([v > 0 and v < 10 for v in values])
 
-        # print("hola")
-        # print(self.VALUEs)
-        # print("adiós")
-
         if self.VALUEs == None: # Clone the input (if valid)
             if type(values) is int:
                 self.VALUEs = values
