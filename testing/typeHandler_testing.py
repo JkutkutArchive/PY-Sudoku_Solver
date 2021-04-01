@@ -14,7 +14,6 @@ import input
 
 class TestStringMethods(unittest.TestCase):
     def setUp(self):
-        # self.typeHandler = TypeHandler()
         self.cell = Cell(0, 0)
         self.data = DataSudoku(TypeHandler.therefore(), self.cell, None)
     
