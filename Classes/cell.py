@@ -11,19 +11,23 @@ class Cell():
         if not parentSudoku == None and not type(parentSudoku) is Classes.sudoku.Sudoku:
             raise Exception("parentSudoku must be a Sudoku object")
 
+        self.sudoku = parentSudoku # sudoku storing this cell
+        self.typeHandler = Classes.typeHandler.TypeHandler
+
         self.r = r # Position on the grid (row)
         self.c = c # Position on the grid (element in row/column)
         self.value = None # Value of the cell (Now, undefined)
-        self.posVal = set([i for i in range(1, 10, 1)]) # Possible values of the cell
-        self.pairs = set() # Set with tuple with the linked cell and the value: "(<Cell>, <Value>)"
-        self.data = [] # Here all the conclusions made by the algo will be stored here to dispay it later
-        self.sudoku = parentSudoku # sudoku storing this cell
+        self.posVal = None # Possible values of the cell
+        self.pairs = None # Set with tuple with the linked cell and the value: "(<Cell>, <Value>)"
+        self.data = None # Here all the conclusions made by the algo will be stored here to dispay it later
+        self.reset()
 
     def reset(self):
         self.value = None # Value of the cell (Now, undefined)
         self.posVal = set([i for i in range(1, 10, 1)]) # Possible values of the cell
         self.pairs = set() # Set with tuple with the linked cell and the value: "(<Cell>, <Value>)"
-        self.data = [] # Here all the conclusions made by the algo will be stored here to dispay it later
+        self.data = {} # Here all the conclusions made by the algo will be stored here to dispay it later
+
 
     def __str__(self) -> str:
         '''
