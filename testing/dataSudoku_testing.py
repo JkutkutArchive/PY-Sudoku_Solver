@@ -53,8 +53,8 @@ class TestStringMethods(unittest.TestCase):
         testValid = [
             [TypeHandler.therefore(), self.cell, set([1,2])],
             [1, set([self.cell, self.cell]), set([1,2])],
-            [1, set([self.cell, self.cell]), 3],
-            [1]
+            [1.25, set([self.cell, self.cell]), 3],
+            [1.75]
         ]
 
         for t in range(len(testValid)):
@@ -173,7 +173,6 @@ class TestStringMethods(unittest.TestCase):
             with self.assertRaises(Exception) as context:
                 data3.addValues(set(test))
             self.assertEqual(ex[2], str(context.exception))
-            
 
 
 
