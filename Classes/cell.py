@@ -12,7 +12,6 @@ class Cell():
             raise Exception("parentSudoku must be a Sudoku object")
 
         self.sudoku = parentSudoku # sudoku storing this cell
-        self.typeHandler = Classes.typeHandler.TypeHandler
 
         self.r = r # Position on the grid (row)
         self.c = c # Position on the grid (element in row/column)
@@ -342,24 +341,39 @@ class Cell():
         Add the data to the cell.
         The content of the input is analized to store it on the correct directory.
         '''
+
+        '''
+        data = {
+            "therefore": DataSudoku,
+            "basic": { 
+                "row":  DataSudoku,
+                "col":  DataSudoku,
+                "3by3": DataSudoku
+            },
+            "unique": DataSudoku,
+            "pairs": set(DataSudoku),
+            "pairs_two": set(DataSudoku),
+            "delPair_set_value": set(DataSudoku),
+            "delPair_remove_value": set(DataSudoku),
+            "xWing": set(DataSudoku),
+            "xyWing": set(DataSudoku),
+            "UniqueRectangle": set(DataSudoku),
+            "swordFish": set(DataSudoku)
+        }
+        '''
         if not type(data) is DataSudoku:
             raise Exception("The data must be contained on a DataSudoku object")
         
         dataTypeName = data.getTypeName()
-        # if dataArr not in self.data: # If this data not added yet
-        #     key = dataArr[0] # This first element represents the type of data
-        #     if "basic" in key: # If key is the type "basic": row, col or 3by3
-        #         for d in self.data: # Search for it
-        #             if key == d[0]: # If data on d has exacly the same data type
-        #                 d[1].extend(dataArr[1]) # Update the previous data (Basic: row, col, 3by3)
-        #                 return # end Execution
-            
-        #     elif "cell" in key: # "pair one cell" is eq to: "pair row cell" and "pair col cell"
-        #         for d in self.data:
-        #             if "cell" in d[0] and dataArr[1:] == d[1:]: # If the data entered now has already been added
-        #                 return # Do not added
-        #     self.data.append(dataArr) # If not founded or not basic, add it as new data
-        return
+        if dataTypeName in ["therefore", "unique"]:
+            self.data[dataTypeName] = data
+        elif dataTypeName == "basic":
+            dataSubTypeName = data.getSubTypeName()
+            self.data[dataTypeName][dataSubTypeName].addValues(data.getValues())
+        else:
+            self.data[dataTypeName].add(data) # If already in, ignored (is a set)
+
+        
 
     def dataToText(self): # Return a array of strings with the data ready to be red.
         # s = ["Let's focus on the cell on the position " + str(self.getPos())] # Start by giving the position of the cell
