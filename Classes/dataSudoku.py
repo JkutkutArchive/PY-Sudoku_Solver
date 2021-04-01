@@ -67,11 +67,14 @@ class DataSudoku():
         return self.subType
     
     def getFullName(self):
-        return self.typeHandler.typeConversor(self.getType())
+        return self.typeHandler.typeConversor(self.getFullType())
     
     def getTypeName(self):
-        return self.typeHandler.typeConversor(self.type)
-
+        return self.typeHandler.typeConversor(self.getType())
+    
+    def getSubTypeName(self):
+        return self.typeHandler.subTypeConversor(self.getSubType())
+    
     def getCells(self):
         return self.CELLs
     
