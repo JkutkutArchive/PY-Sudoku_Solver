@@ -1,10 +1,6 @@
 import Classes.typeHandler
 import Classes.cell
 
-# Format:
-# [ID, VALUEs, CELLs]
-
-
 # ["therefore"]
 # ["basic <TYPE>", <VALUE>]
 # ["unique <TYPE>", <VALUE>]
@@ -27,9 +23,6 @@ import Classes.cell
 # [             "xyWing", <CELLs>, <VALUEs>]
 # [     "uniqueRectangle", <CELLs>,  <VALUE>]
 # [ "swordfish <SUBTYPE>", <CELLs>,  <VALUE>]; <SUBTYPE>=[row, col]
-
-
-
 
 
 class DataSudoku():
