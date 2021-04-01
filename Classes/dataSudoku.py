@@ -1,4 +1,4 @@
-import Classes.typeHandler
+import Classes.typeHandler as TypeHandler
 import Classes.cell
 
 # ["therefore"]
@@ -27,21 +27,21 @@ import Classes.cell
 
 class DataSudoku():
     def __init__(self, typeData, cellsGiven=None, values=None, subType=None):
-        self.typeHandler = Classes.typeHandler.TypeHandler()
-        
-        if self.typeHandler.validType(typeData):
+
+        if TypeHandler.validType(typeData):
             self.type = typeData
         else:
             raise Exception("DataType not valid")
 
         if subType != None:
-            if subType > 0 and subType < 1 and self.typeHandler.validType(self.type + subType):
+            if subType > 0 and subType < 1 and TypeHandler.validType(self.type + subType):
                 self.subType = subType
             else:
                 raise Exception("Subtype not valid")
         else:
             self.subType = 0
 
+        # function to evaluate if the specifified input is valid or not
         validInput = lambda inputed, specialType: \
             any([type(inputed) is posType for posType in [specialType, list, set, type(None)]])
 
@@ -49,13 +49,13 @@ class DataSudoku():
             self.CELLs = cellsGiven
         else:
             raise Exception("Cells given not valid")
-            # raise Exception("Cells given not valid:\n" + str(cellsGiven))
+            # raise Exception("Cells given not valid:\n" + str(cellsGiven)) # Debug
 
         if validInput(values, int):
             self.VALUEs = values
         else:
             raise Exception("Values given not valid")
-            # raise Exception("Values given not valid" + str(values))
+            # raise Exception("Values given not valid" + str(values)) # Debug
 
     # GETTERS
 
@@ -69,13 +69,13 @@ class DataSudoku():
         return self.subType
     
     def getFullName(self):
-        return self.typeHandler.typeConversor(self.getFullType())
+        return TypeHandler.typeConversor(self.getFullType())
     
     def getTypeName(self):
-        return self.typeHandler.typeConversor(self.getType())
+        return TypeHandler.typeConversor(self.getType())
     
     def getSubTypeName(self):
-        return self.typeHandler.subTypeConversor(self.getSubType())
+        return TypeHandler.subTypeConversor(self.getSubType())
     
     def getCells(self):
         return self.CELLs
