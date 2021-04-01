@@ -28,6 +28,14 @@ class Cell():
         self.pairs = set() # Set with tuple with the linked cell and the value: "(<Cell>, <Value>)"
         self.data = {} # Here all the conclusions made by the algo will be stored here to dispay it later
 
+        for dataType in self.typeHandler.switcher:
+            self.data[dataType] = set()
+        
+        # for specialTypes in ["basic", "unique", "pairs"]
+        # self.data["basic"] = {}
+        # for subDataType in self.typeHandler.subSwitcher:
+            
+
 
     def __str__(self) -> str:
         '''

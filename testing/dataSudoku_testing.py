@@ -14,32 +14,29 @@ import input
 
 class TestStringMethods(unittest.TestCase):
     def setUp(self):
-        self.typeHandler = TypeHandler()
         self.cell = Cell(0, 0)
-        self.data = DataSudoku(self.typeHandler.therefore(), self.cell, None)
+        self.data = DataSudoku(TypeHandler.therefore(), self.cell, None)
         
-    def test_initdata(self):        
+    def test_initdataInvalid(self):
         testInvalid = [
-            ["", self.cell, []],
-            [None, self.cell, []],
-            [100, self.cell, []],
-            [-1, self.cell, []],
-            [self.typeHandler.therefore(), None, []],
-            [self.typeHandler.therefore(), {}, []],
+            ["", self.cell, None],
+            [None, self.cell, None],
+            [100, self.cell, None],
+            [-1, self.cell, None],
+            [TypeHandler.therefore(), "", set()],
+            [TypeHandler.therefore(), {}, 2],
+            [TypeHandler.therefore(), set(), ""],
+            [TypeHandler.therefore(), self.cell, {}],
         ]
         exceptions = [
             "DataType not valid",
             "DataType not valid",
             "DataType not valid",
             "DataType not valid",
-            "The cell adressed is not a Cell",
-            "The cell adressed is not a Cell"
-        ]
-
-        testValid = [
-            [self.typeHandler.therefore(), self.cell, []],
-            [1, [self.cell, self.cell], []],
-            [1, [self.cell, self.cell], 3],
+            "Cells given not valid",
+            "Cells given not valid",
+            "Values given not valid",
+            "Values given not valid"
         ]
 
         for t in range(len(testInvalid)):
@@ -47,12 +44,32 @@ class TestStringMethods(unittest.TestCase):
                 DataSudoku(*testInvalid[t])
             self.assertTrue(exceptions[t] in str(context.exception))
         
+        exception = "Subtype not valid"
+        with self.assertRaises(Exception) as context:
+            DataSudoku(len(TypeHandler.switcher) - 0.25, subType=0.25)
+            self.assertEqual(exception, context.exception)
+        
+        
+
+    def test_initdataValid(self):
+        testValid = [
+            [TypeHandler.therefore(), self.cell, set([1,2])],
+            [1, set([self.cell, self.cell]), set([1,2])],
+            [1, set([self.cell, self.cell]), 3],
+            [1]
+        ]
+
         for t in range(len(testValid)):
             try:
                 DataSudoku(*testValid[t])
             except:
                 self.assertFalse(True)
             self.assertTrue(True)
+        
+        try:
+            DataSudoku(1, subType=0.25)
+        except:
+            raise Exception("Special creation failed")
         
         
 

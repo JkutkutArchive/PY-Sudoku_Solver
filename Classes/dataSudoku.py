@@ -26,7 +26,7 @@ import Classes.cell
 
 
 class DataSudoku():
-    def __init__(self, typeData, cellsGiven=None, values=None):
+    def __init__(self, typeData, cellsGiven=None, values=None, subType=None):
         self.typeHandler = Classes.typeHandler.TypeHandler()
         
         if self.typeHandler.validType(typeData):
@@ -34,21 +34,34 @@ class DataSudoku():
         else:
             raise Exception("DataType not valid")
 
-        if any([type(cellsGiven) is posType for posType in [Classes.cell.Cell, set, type(None)]]):
+        if subType != None:
+            if subType > 0 and subType < 1 and self.typeHandler.validType(self.type + subType):
+                self.subType = subType
+            else:
+                raise Exception("Subtype not valid")
+        else:
+            self.subType = 0
+
+        validInput = lambda inputed, specialType: \
+            any([type(inputed) is posType for posType in [specialType, list, set, type(None)]])
+
+        if validInput(cellsGiven, Classes.cell.Cell):
             self.CELLs = cellsGiven
         else:
-            raise Exception("Cells given not valid:\n" + str(cellsGiven))
+            raise Exception("Cells given not valid")
+            # raise Exception("Cells given not valid:\n" + str(cellsGiven))
 
-        if any([type(values) is posType for posType in [int, set, type(None)]]):
+        if validInput(values, int):
             self.VALUEs = values
         else:
-            raise Exception("Values given not valid" + str(values))
+            raise Exception("Values given not valid")
+            # raise Exception("Values given not valid" + str(values))
 
     def getType(self):
-        return self.type
+        return self.type + self.subType
     
     def getTypeName(self):
-        return self.typeHandler.typeConversor(self.type)
+        return self.typeHandler.typeConversor(self.getType())
 
     def getCells(self):
         return self.CELLs
