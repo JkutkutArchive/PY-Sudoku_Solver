@@ -69,6 +69,7 @@ class TypeHandler():
         (str|int): equivalent type.
         '''
         if type(t) is str: # If string given -> output a int
+            # OPTIMICE WITH SPLIT
             for i in range(len(cls.switcher)): # For each possible type
                 if cls.switcher[i] in t: # If type found
                     subType = 0
@@ -83,18 +84,20 @@ class TypeHandler():
             if t % 1 != 0: # If decimal value, there is a subtype required
                 indexSubType = int((t % 1) // 0.25) - 1
                 t = int(t // 1)
-                subType = " " + cls.subSwitcher[indexSubType] # If subtype, it will follow this syntax: "<type> <subtype>"
-            return cls.switcher[t] + subType # Return the type
+                subType = cls.subSwitcher[indexSubType] # If subtype, it will follow this syntax: "<type> <subtype>"
+            return cls.switcher[t] + " " + subType # Return the type
         else:    
             return "The input is not valid" # If not valid input, return this
 
     
-    # @classmethod
-    # def subTypeConversor(cls, st) -> str or int:
-    #     if type(st) is str:
-    #         if st in cls.subSwitcher:
-    #             return cls.subSwitcher.index(st)
-    #         else:
-    #             raise Exception("Subtype not found")
-    #     else:
-            
+    @classmethod
+    def subTypeConversor(cls, st) -> str or int:
+        if type(st) is str: # If string given -> output a int
+            if st in cls.subSwitcher:
+                return (cls.subSwitcher.index(st) + 1) * 0.25
+            else:
+                raise Exception("Subtype not found")
+        elif cls.validSubType(st): # If valid integer given -> output str
+            return cls.subSwitcher[int(st // 0.25)]
+        else:
+            raise Exception("The input is not valid")
