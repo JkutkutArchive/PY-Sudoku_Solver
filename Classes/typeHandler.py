@@ -92,12 +92,13 @@ class TypeHandler():
     
     @classmethod
     def subTypeConversor(cls, st) -> str or int:
+        print(st)
         if type(st) is str: # If string given -> output a int
             if st in cls.subSwitcher:
                 return (cls.subSwitcher.index(st) + 1) * 0.25
             else:
                 raise Exception("Subtype not found")
         elif cls.validSubType(st): # If valid integer given -> output str
-            return cls.subSwitcher[int(st // 0.25)]
+            return cls.subSwitcher[int(st // 0.25) - 1]
         else:
             raise Exception("The input is not valid")
