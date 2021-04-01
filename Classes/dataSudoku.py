@@ -113,11 +113,41 @@ class DataSudoku():
     def addValues(self, values) -> None:
         '''
         Add the values to the current values.
-        values (set(int)): values to add to the current set
+        values (set(int) or list[int]): values to add to the current set
         '''
-        if type(values) is set and \
-           all([type(v) is int for v in values]) and \
-           all([v < 0 and v < 10 for v in values]):
-            self.VALUEs.update(values)
-        else: 
-            raise Exception("The input must be a set of integers")
+        validInput = lambda values, specialType: \
+            type(values) is specialType and \
+            all([type(v) is int for v in values]) and \
+            all([v < 0 and v < 10 for v in values])
+
+        # print("hola")
+        # print(self.VALUEs)
+        # print("adiós")
+
+        if self.VALUEs == None: # Clone the input (if valid)
+            if type(values) is int:
+                self.VALUEs = values
+            if type(values) is list and validInput(values, list):
+                self.VALUEs = values.copy()
+            elif type(values) is validInput(values, set):
+                self.VALUEs = set(values)
+            else:
+                raise Exception("The input must be a set(int), list[int] or int")
+
+        elif type(self.VALUEs) is int:
+            self.VALUEs = set(self.VALUEs)
+            self.VALUEs.update(set(values))  
+        
+        elif type(self.VALUEs) is set:
+            if validInput(values, set):
+                self.VALUEs.update(values)
+            else: 
+                raise Exception("The input must be a set of integers")
+        
+        elif type(self.VALUEs) is list:
+            if validInput(values, list):
+                for v in values:
+                    if not v in self.VALUEs:
+                        self.VALUEs.append(v)
+            else: 
+                raise Exception("The input must be a list of integers")

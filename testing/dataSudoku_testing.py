@@ -15,7 +15,7 @@ import input
 class TestStringMethods(unittest.TestCase):
     def setUp(self):
         self.cell = Cell(0, 0)
-        self.data = DataSudoku(TypeHandler.therefore(), self.cell, None)
+        self.data = DataSudoku(TypeHandler.therefore())
         
     def test_initdataInvalid(self):
         testInvalid = [
@@ -101,6 +101,57 @@ class TestStringMethods(unittest.TestCase):
             
 
             self.assertEqual(d.getFullTypeName(), TypeHandler.typeConversor(sum(case)))
+
+    def test_addValues(self):
+        data2 = DataSudoku(TypeHandler.therefore(), values=set([1, 2]))
+        data3 = DataSudoku(TypeHandler.therefore(), values=[1, 2])
+
+        invalid = [
+            [1, "a", 3],
+            set(["a"]),
+            "",
+            None
+        ]
+        ex = [
+            "The input must be a set(int), list[int] or int",
+            "The input must be a set of integers",
+            "The input must be a list of integers"
+        ]
+
+        # empty data
+        for t in invalid:
+            with self.assertRaises(Exception) as context:
+                self.data.addValues(t)
+            self.assertEqual(ex[0], str(context.exception))
+
+        for t in range(len(invalid)):
+            with self.assertRaises(Exception) as context:
+                data2.addValues(t)
+            self.assertEqual(ex[1], str(context.exception))
+
+            with self.assertRaises(Exception) as context:
+                data3.addValues(t)
+            self.assertEqual(ex[2], str(context.exception))
+
+        
+        # valid = [
+        #     set([i for i in range(3)]),
+        #     set([i for i in range(3, 6)]),
+        #     set([i for i in range(0, 6)]),
+        # ]
+        # spectedLen = [
+        #     3,
+        #     6,
+        #     6
+        # ]
+
+        # for i in range(len(valid)):
+        #     try:
+        #         self.data.addValues(valid[i])
+        #         self.assertEqual(spectedLen[i], len(self.data.getValues()))
+        #     except:
+        #         # print(f"Error at {i} -> " + str(len(self.data.getValues())))
+        #         self.assertFalse(True)
 
 
 
