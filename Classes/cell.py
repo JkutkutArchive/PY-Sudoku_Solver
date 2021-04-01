@@ -31,9 +31,37 @@ class Cell():
         for dataType in self.typeHandler.switcher:
             self.data[dataType] = set()
         
-        # for specialTypes in ["basic", "unique", "pairs"]
-        # self.data["basic"] = {}
-        # for subDataType in self.typeHandler.subSwitcher:
+        for specialTypes in ["basic", "unique", "pairs"]:
+            self.data[specialTypes] = {}
+
+            for subType in ["row", "col"]:
+                self.data[specialTypes][subType] = set()
+
+            if not specialTypes in ["xWing", "swordfish"]:
+                self.data[specialTypes]["3by3"] = set() 
+                
+                if specialTypes == "pairs":
+                    for subType in ["row", "col", "3by3"]:
+                        self.data[specialTypes][subType] = list()
+        '''
+        data = {
+            "therefore": DataSudoku,
+            "basic": { 
+                "row":  DataSudoku,
+                "col":  DataSudoku,
+                "3by3": DataSudoku
+            },
+            "unique": DataSudoku,
+            "pairs": set(DataSudoku),
+            "pairs_two": set(DataSudoku),
+            "delPair_set_value": set(DataSudoku),
+            "delPair_remove_value": set(DataSudoku),
+            "xWing": set(DataSudoku),
+            "xyWing": set(DataSudoku),
+            "UniqueRectangle": set(DataSudoku),
+            "swordFish": set(DataSudoku)
+        }
+        '''
             
 
 

@@ -21,7 +21,7 @@ import Classes.cell
 # ["delPair_remove_value",  <CELL>,  <VALUE>]
 # [    "xWing <SUBTYPE>", <CELLs>,  <VALUE>]; <SUBTYPE>=[row, col]
 # [             "xyWing", <CELLs>, <VALUEs>]
-# [     "uniqueRectangle", <CELLs>,  <VALUE>]
+# [     "UniqueRectangle", <CELLs>,  <VALUE>]
 # [ "swordfish <SUBTYPE>", <CELLs>,  <VALUE>]; <SUBTYPE>=[row, col]
 
 
