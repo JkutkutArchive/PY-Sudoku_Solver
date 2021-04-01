@@ -1,6 +1,6 @@
 import Classes.sudoku
-import Classes.dataSudoku
-import Classes.typeHandler
+import Classes.dataSudoku as DataSudoku
+import Classes.typeHandler as TypeHandler
 
 class Cell():
     def __init__(self, r, c, parentSudoku=None):
@@ -26,23 +26,7 @@ class Cell():
         self.value = None # Value of the cell (Now, undefined)
         self.posVal = set([i for i in range(1, 10, 1)]) # Possible values of the cell
         self.pairs = set() # Set with tuple with the linked cell and the value: "(<Cell>, <Value>)"
-        self.data = {} # Here all the conclusions made by the algo will be stored here to dispay it later
-
-        for dataType in self.typeHandler.switcher:
-            self.data[dataType] = set()
         
-        for specialTypes in ["basic", "unique", "pairs"]:
-            self.data[specialTypes] = {}
-
-            for subType in ["row", "col"]:
-                self.data[specialTypes][subType] = set()
-
-            if not specialTypes in ["xWing", "swordfish"]:
-                self.data[specialTypes]["3by3"] = set() 
-                
-                if specialTypes == "pairs":
-                    for subType in ["row", "col", "3by3"]:
-                        self.data[specialTypes][subType] = list()
         '''
         data = {
             "therefore": DataSudoku,
@@ -62,6 +46,23 @@ class Cell():
             "swordFish": set(DataSudoku)
         }
         '''
+        self.data = { # Here all the conclusions made by the algo will be stored here to dispay it later
+            "therefore": DataSudoku(TypeHandler.therefore()),
+            "basic": { 
+                "row":  DataSudoku(TypeHandler.basic(), subType = TypeHandler.subrow()),
+                "col":  DataSudoku(TypeHandler.basic(), subType = TypeHandler.subcol()),
+                "3by3": DataSudoku(TypeHandler.basic(), subType = TypeHandler.sub3by3())
+            },
+            "unique": DataSudoku(TypeHandler.unique()),
+            "pairs": set(),
+            "pairs_two": set(),
+            "delPair_set_value": set(),
+            "delPair_remove_value": set(),
+            "xWing": set(),
+            "xyWing": set(),
+            "UniqueRectangle": set(),
+            "swordFish": set()
+        }
             
 
 
