@@ -39,7 +39,7 @@ class DataSudoku():
             else:
                 raise Exception("Subtype not valid")
         else:
-            self.subType = 0
+            self.subType = 0.0
 
         # function to evaluate if the specifified input is valid or not
         validInput = lambda inputed, specialType: \
@@ -59,34 +59,64 @@ class DataSudoku():
 
     # GETTERS
 
-    def getFullType(self):
+    def getFullType(self) -> float:
+        '''
+        Returns: the full type as a float number
+        '''
         return self.type + self.subType
     
-    def getType(self):
+    def getType(self) -> int:
+        '''
+        Returns: the type as a int number
+        '''
         return self.type
 
-    def getSubType(self):
+    def getSubType(self) -> float:
+        '''
+        Returns: the subType as a int float
+        '''
         return self.subType
     
-    def getFullName(self):
+    def getFullTypeName(self) -> str:
+        '''
+        Returns: Full name of the Type as a string
+        '''
         return TypeHandler.typeConversor(self.getFullType())
     
-    def getTypeName(self):
+    def getTypeName(self) -> str:
+        '''
+        Returns: Name of the Type as a string
+        '''
         return TypeHandler.typeConversor(self.getType())
     
-    def getSubTypeName(self):
+    def getSubTypeName(self) -> str:
+        '''
+        Returns: name of the subType as a string
+        '''
         return TypeHandler.subTypeConversor(self.getSubType())
     
     def getCells(self):
+        '''
+        Returns: cells stored
+        '''
         return self.CELLs
     
     def getValues(self):
+        '''
+        Returns: values stored
+        '''
         return self.VALUEs
 
     # SETTERS
 
-    def addValues(self, values):
-        if type(values) is set:
+    def addValues(self, values) -> None:
+        '''
+        Add the values to the current values.
+        values (set(int)): values to add to the current set
+        '''
+        if type(values) is set and \
+           all([type(v) is int for v in values]) and \
+           all([v < 0 and v < 10 for v in values]):
             self.VALUEs.update(values)
         else: 
-            raise Exception("The input must be a set")
+            raise Exception("The input must be a set of integers")
