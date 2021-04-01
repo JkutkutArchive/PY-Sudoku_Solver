@@ -57,6 +57,8 @@ class DataSudoku():
             raise Exception("Values given not valid")
             # raise Exception("Values given not valid" + str(values))
 
+    # GETTERS
+
     def getFullType(self):
         return self.type + self.subType
     
@@ -80,3 +82,11 @@ class DataSudoku():
     
     def getValues(self):
         return self.VALUEs
+
+    # SETTERS
+
+    def addValues(self, values):
+        if type(values) is set:
+            self.VALUEs.update(values)
+        else: 
+            raise Exception("The input must be a set")
