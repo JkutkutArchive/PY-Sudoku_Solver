@@ -47,8 +47,12 @@ class TestStringMethods(unittest.TestCase):
         for subType in subSw:
             self.assertTrue("sub"+subType in dir(TypeHandler))
 
+    def test_subTypeConversor(self):
+        tests = ["row","col","3by3",0.25,0.5,0.75]
+        expected = [0.25,0.5,0.75,"row","col","3by3"]
 
-
+        for t in range(6):
+            self.assertEqual(TypeHandler.subTypeConversor(tests[t]), expected[t])
 
 
 
