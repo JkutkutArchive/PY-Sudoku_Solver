@@ -337,7 +337,15 @@ class Cell():
             self.setValue(next(iter(self.getPosVal())))
 
     # ******    DATA:    ******
-    def addData(self, *dataArr): # Add data. If already added, do not duplicate the info
+    def addData(self, data):
+        '''
+        Add the data to the cell.
+        The content of the input is analized to store it on the correct directory.
+        '''
+        if not type(data) is DataSudoku:
+            raise Exception("The data must be contained on a DataSudoku object")
+        
+        dataTypeName = data.getTypeName()
         # if dataArr not in self.data: # If this data not added yet
         #     key = dataArr[0] # This first element represents the type of data
         #     if "basic" in key: # If key is the type "basic": row, col or 3by3
