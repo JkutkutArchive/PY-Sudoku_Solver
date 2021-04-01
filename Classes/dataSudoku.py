@@ -58,6 +58,32 @@ class DataSudoku():
             raise Exception("Values given not valid")
             # raise Exception("Values given not valid" + str(values)) # Debug
 
+    def __eq__(self, other) -> bool:
+        if not type(other) is DataSudoku:
+            return False
+        if not self.type == other.type or not self.subType == other.subType:
+            return False
+        
+        if not self.VALUEs == other.VALUEs or not self.CELLs == other.CELLs:
+            return False
+
+        return True
+
+    def __hash__(self) -> int:
+        valH, cellH = 0, 0
+        if type(self.VALUEs) is int:
+            valH = hash(self.VALUEs)
+        elif not self.VALUEs == None:
+            for val in self.VALUEs:
+                valH = valH ^ hash(val)
+        if type(self.CELLs) is Classes.cell.Cell:
+            cellH = hash(self.CELLs)
+        elif not  self.CELLs == None:
+            for cell in self.CELLs:
+                cellH = cellH ^ hash(cell)
+
+        return hash(self.type) ^ hash(self.subType) ^ valH ^ cellH
+
     # GETTERS
 
     def getFullType(self) -> float:
