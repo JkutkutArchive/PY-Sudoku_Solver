@@ -49,6 +49,15 @@ class TypeHandler():
         return True
     
     @classmethod
+    def validSubType(cls, subTypeData) -> bool:
+        return all([
+            type(subTypeData) is float,
+            subTypeData > 0,
+            subTypeData < 1,
+            subTypeData % 0.25 == 0
+        ])
+
+    @classmethod
     def typeConversor(cls, t) -> str or int:
         '''
         Transforms the input to the equivalent type (str -> int and int -> str).
@@ -78,3 +87,14 @@ class TypeHandler():
             return cls.switcher[t] + subType # Return the type
         else:    
             return "The input is not valid" # If not valid input, return this
+
+    
+    # @classmethod
+    # def subTypeConversor(cls, st) -> str or int:
+    #     if type(st) is str:
+    #         if st in cls.subSwitcher:
+    #             return cls.subSwitcher.index(st)
+    #         else:
+    #             raise Exception("Subtype not found")
+    #     else:
+            
