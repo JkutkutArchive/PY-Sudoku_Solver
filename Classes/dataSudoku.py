@@ -57,11 +57,20 @@ class DataSudoku():
             raise Exception("Values given not valid")
             # raise Exception("Values given not valid" + str(values))
 
-    def getType(self):
+    def getFullType(self):
         return self.type + self.subType
     
-    def getTypeName(self):
+    def getType(self):
+        return self.type
+
+    def getSubType(self):
+        return self.subType
+    
+    def getFullName(self):
         return self.typeHandler.typeConversor(self.getType())
+    
+    def getTypeName(self):
+        return self.typeHandler.typeConversor(self.type)
 
     def getCells(self):
         return self.CELLs
