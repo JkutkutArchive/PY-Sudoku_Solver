@@ -101,7 +101,7 @@ class Cell():
             s = s + "\n - Data: " + "".join(["\n    - " + str(d) for d in self.dataToText()])
         return s
             
-    def __eq__(self, other) -> bool:
+    def __eq__(self, other, sameInstance=False) -> bool:
         '''
         Enable us to compare it to other cells or to integers by the value.
 
@@ -125,7 +125,7 @@ class Cell():
         if self.getValue() != other.getValue() or self.getPosVal() != other.getPosVal(): # If different values on those variables
             return False
 
-        if self.data != other.data: # If the data stored is different
+        if sameInstance and self.data != other.data: # If the data stored is different
             return False
 
         return True # If here, they are exacly equal
@@ -361,16 +361,16 @@ class Cell():
             "swordFish": set(DataSudoku)
         }
         '''
-        if not type(data) is DS.DataSudoku:
+        if not type(data) is DS.DataSudoku: # if input not dataSudoku, error
             raise Exception("The data must be contained on a DataSudoku object")
         
-        dataTypeName = data.getTypeName()
+        dataTypeName = data.getTypeName() # Type-name of data (therefore, basic...). SubType not in consideration
         if dataTypeName in ["therefore", "unique"]:
-            self.data[dataTypeName] = data
-        elif dataTypeName == "basic":
-            dataSubTypeName = data.getSubTypeName()
-            self.data[dataTypeName][dataSubTypeName].addValues(data.getValues())
-        else:
+            self.data[dataTypeName] = data # Direct asign (OVERWRITE)
+        elif dataTypeName == "basic": # If basic, store on correct subType
+            dataSubTypeName = data.getSubTypeName() # SubType of data (row, col or 3by3)
+            self.data[dataTypeName][dataSubTypeName].addValues(data.getValues()) # Just add the values to the current object stored
+        else: # If here, just add the the data
             self.data[dataTypeName].add(data) # If already in, ignored (is a set)
 
         
