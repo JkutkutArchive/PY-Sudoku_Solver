@@ -351,8 +351,90 @@ class TestStringMethods(unittest.TestCase):
                 self.cells[1][0].addPair(*tests[t])
             self.assertTrue(exceptions[t] in str(context.exception))
         
+    def test_data(self):
+        # invalid data
+        invalidTest = [
+            None,
+            1,
+            set([1,2]),
+            "",
+            range(3),
+            enumerate([1])
+        ]
+
+        ex = "The data must be contained on a DataSudoku object"
+
+        for test in invalidTest:
+            with self.assertRaises(Exception) as context:
+                self.cells[0][0].addData(test)
+                self.assertEqual(str(context.exception), ex)
+        # Store on correct place
+        tests = {
+            # unique data categories
+            "therefore": [
+                DataSudoku(TypeHandler.therefore(), values=4),
+                DataSudoku(TypeHandler.therefore(), values=[6]),
+                DataSudoku(TypeHandler.therefore(), values=set([9]))
+            ],
+            "unique": [
+                DataSudoku(TypeHandler.unique(), values=8),
+                DataSudoku(TypeHandler.unique(), values=[3, 2]),
+                DataSudoku(TypeHandler.unique(), values=set([9, 1]))
+            ],
+            # set categories
+            "pairs": [
+                DataSudoku(TypeHandler.pairs(), values=8),
+                DataSudoku(TypeHandler.pairs(), values=[3, 2]),
+                DataSudoku(TypeHandler.pairs(), values=[3, 2]),
+                DataSudoku(TypeHandler.pairs(), values=set([9, 1]))
+            ],
+            "xWing": [
+                DataSudoku(TypeHandler.xWing(), values=8),
+                DataSudoku(TypeHandler.xWing(), values=8),
+                DataSudoku(TypeHandler.xWing(), values=[3, 2]),
+                DataSudoku(TypeHandler.xWing(), values=set([9, 1]))
+            ],
+            # basic
+            "basic": {
+                "row": [
+                    DataSudoku(TypeHandler.basic(), subType=TypeHandler.subrow(), values=set([1, 2, 3])),
+                    DataSudoku(TypeHandler.basic(), subType=TypeHandler.subrow(), values=set([2, 3, 4])),
+                    DataSudoku(TypeHandler.basic(), subType=TypeHandler.subrow(), values=set([4, 5]))
+                ],
+                "col": [
+                    DataSudoku(TypeHandler.basic(), subType=TypeHandler.subcol(), values=set([1, 2, 3])),
+                    DataSudoku(TypeHandler.basic(), subType=TypeHandler.subcol(), values=set([2, 3, 4])),
+                    DataSudoku(TypeHandler.basic(), subType=TypeHandler.subcol(), values=set([4, 5]))
+                ],
+                "3by3": [
+                    DataSudoku(TypeHandler.basic(), subType=TypeHandler.sub3by3(), values=set([1, 2, 3])),
+                    DataSudoku(TypeHandler.basic(), subType=TypeHandler.sub3by3(), values=set([2, 3, 4])),
+                    DataSudoku(TypeHandler.basic(), subType=TypeHandler.sub3by3(), values=set([4, 5]))
+                ]
+            }
+        }
+        
+        for cases in ["therefore", "unique"]:
+            for i in range(3):
+                self.assertNotEqual(self.cells[0][0].data[cases], tests[cases][i])
+                self.cells[0][0].addData(tests[cases][i])
+                self.assertEqual(self.cells[0][0].data[cases], tests[cases][i])
 
 
+        for cases in ["pairs", "xWing"]:
+            for i in range(4):
+                self.cells[0][0].addData(tests[cases][i])
+                self.assertTrue(tests[cases][i] in self.cells[0][0].data[cases])
+            self.assertEqual(len(self.cells[0][0].data[cases]), 3)
+
+        spectedLenBasic = [3, 4, 5]
+        
+        # basic
+        for subCases in ["row", "col", "3by3"]:
+            self.assertEqual(0, len(self.cells[0][0].data["basic"][subCases].getValues()))
+            for i in range(3):
+                self.cells[0][0].addData(tests["basic"][subCases][i])
+                self.assertEqual(spectedLenBasic[i], len(self.cells[0][0].data["basic"][subCases].getValues()))
 
 
 if __name__ == '__main__':

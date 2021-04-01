@@ -48,9 +48,9 @@ class Cell():
         self.data = { # Here all the conclusions made by the algo will be stored here to dispay it later
             "therefore": None,
             "basic": { 
-                "row":  DS.DataSudoku(TH.TypeHandler.basic(), subType = TH.TypeHandler.subrow()),
-                "col":  DS.DataSudoku(TH.TypeHandler.basic(), subType = TH.TypeHandler.subcol()),
-                "3by3": DS.DataSudoku(TH.TypeHandler.basic(), subType = TH.TypeHandler.sub3by3())
+                "row":  DS.DataSudoku(TH.TypeHandler.basic(),  subType=TH.TypeHandler.subrow(), values=set()),
+                "col":  DS.DataSudoku(TH.TypeHandler.basic(),  subType=TH.TypeHandler.subcol(), values=set()),
+                "3by3": DS.DataSudoku(TH.TypeHandler.basic(), subType=TH.TypeHandler.sub3by3(), values=set())
             },
             "unique": None,
             "pairs": set(),
