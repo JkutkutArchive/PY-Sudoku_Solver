@@ -11,6 +11,7 @@ class Sudoku():
             self.fillBoard(board)
 
         self.getRemainingCells(forced=True)
+        self.typeHandler = Classes.typeHandler.TypeHandler
     
     def fillBoard(self, data):
         '''
@@ -271,7 +272,6 @@ class Sudoku():
         
         # ----------    BASIC   ----------
         values = [] # Values in row, col, 3by3
-        typeH = Classes.typeHandler.TypeHandler()
         tipos = ["row", "col", "3by3"]
 
         for i in range(3):
@@ -279,7 +279,7 @@ class Sudoku():
             if len(values) == 0: # If none, go to the next one
                 continue
             
-            data = Classes.dataSudoku.DataSudoku(typeH.basic() + 0.25 * i, values)
+            data = Classes.dataSudoku.DataSudoku(self.typeHandler.basic() + 0.25 * i, values)
             
             cell.removePosVal(values)
             # cell.addData(data)

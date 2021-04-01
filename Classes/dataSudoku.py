@@ -41,10 +41,12 @@ class DataSudoku():
         else:
             raise Exception("DataType not valid")
 
-        if any([type(cellsGiven) is posType for posType in [Classes.cell.Cell, list]]):
+        if any([type(cellsGiven) is posType for posType in [Classes.cell.Cell, set, type(None)]]):
             self.CELLs = cellsGiven
         else:
-            raise Exception("The cell adressed is not a Cell")
+            raise Exception("Cells given not valid:\n" + str(cellsGiven))
 
-        if any([type(values) is posType for posType in [int, list]]):
+        if any([type(values) is posType for posType in [int, set, type(None)]]):
             self.VALUEs = values
+        else:
+            raise Exception("Values given not valid" + str(values))
