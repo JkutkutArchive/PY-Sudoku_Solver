@@ -106,6 +106,7 @@ class TestStringMethods(unittest.TestCase):
         data2 = DataSudoku(TypeHandler.therefore(), values=set([1, 2]))
         data3 = DataSudoku(TypeHandler.therefore(), values=[1, 2])
 
+        # invalid values
         invalid = [
             [1, "a", 3],
             set(["a"]),
@@ -118,12 +119,13 @@ class TestStringMethods(unittest.TestCase):
             "The input must be a list of integers"
         ]
 
-        # empty data
+        # empty values
         for t in invalid:
             with self.assertRaises(Exception) as context:
                 self.data.addValues(t)
             self.assertEqual(ex[0], str(context.exception))
 
+        # not empty values
         for t in range(len(invalid)):
             with self.assertRaises(Exception) as context:
                 data2.addValues(t)
@@ -134,24 +136,44 @@ class TestStringMethods(unittest.TestCase):
             self.assertEqual(ex[2], str(context.exception))
 
         
-        # valid = [
-        #     set([i for i in range(3)]),
-        #     set([i for i in range(3, 6)]),
-        #     set([i for i in range(0, 6)]),
-        # ]
-        # spectedLen = [
-        #     3,
-        #     6,
-        #     6
-        # ]
+        # Valid values
+        valid = [
+            [i for i in range(1, 4)],
+            [i for i in range(4, 7)],
+            [i for i in range(1, 7)],
+        ]
+        spectedLen = [
+            3,
+            6,
+            6
+        ]
 
-        # for i in range(len(valid)):
-        #     try:
-        #         self.data.addValues(valid[i])
-        #         self.assertEqual(spectedLen[i], len(self.data.getValues()))
-        #     except:
-        #         # print(f"Error at {i} -> " + str(len(self.data.getValues())))
-        #         self.assertFalse(True)
+        for i in range(len(valid)):
+            try:
+                self.data.addValues(set(valid[i]))
+                self.assertEqual(spectedLen[i], len(self.data.getValues()))
+            except:
+                # print(f"{spectedLen[i]} -- {self.data.getValues()}")
+                self.assertFalse(True)
+            try:
+                data2.addValues(set(valid[i]))
+                self.assertEqual(spectedLen[i], len(data2.getValues()))
+            except:
+                self.assertFalse(True)
+            try:
+                data3.addValues(valid[i])
+                self.assertEqual(spectedLen[i], len(data2.getValues()))
+            except:
+                self.assertFalse(True)
+
+        for test in valid:
+            with self.assertRaises(Exception) as context:
+                data2.addValues(test)
+            self.assertEqual(ex[1], str(context.exception))
+            with self.assertRaises(Exception) as context:
+                data3.addValues(set(test))
+            self.assertEqual(ex[2], str(context.exception))
+            
 
 
 

@@ -118,7 +118,7 @@ class DataSudoku():
         validInput = lambda values, specialType: \
             type(values) is specialType and \
             all([type(v) is int for v in values]) and \
-            all([v < 0 and v < 10 for v in values])
+            all([v > 0 and v < 10 for v in values])
 
         # print("hola")
         # print(self.VALUEs)
@@ -129,7 +129,7 @@ class DataSudoku():
                 self.VALUEs = values
             if type(values) is list and validInput(values, list):
                 self.VALUEs = values.copy()
-            elif type(values) is validInput(values, set):
+            elif type(values) is set and validInput(values, set):
                 self.VALUEs = set(values)
             else:
                 raise Exception("The input must be a set(int), list[int] or int")
