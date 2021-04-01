@@ -84,6 +84,23 @@ class TestStringMethods(unittest.TestCase):
             self.assertEqual(d.getSubType(), case[1])
             self.assertEqual(d.getFullType(), sum(case))
 
+    def test_getNameType(self):
+        indices = [
+            [0, None],
+            [0, 0.25],
+        ]
+        for case in indices:
+            d = DataSudoku(case[0], subType=case[1])
+            
+            self.assertEqual(d.getTypeName(), TypeHandler.typeConversor(case[0]))
+            
+            if case[1] == None:
+                case[1] = 0.0
+            else:
+                self.assertEqual(d.getSubTypeName(), TypeHandler.subTypeConversor(case[1]))
+            
+
+            self.assertEqual(d.getFullTypeName(), TypeHandler.typeConversor(sum(case)))
 
 
 

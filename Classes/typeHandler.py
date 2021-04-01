@@ -83,9 +83,9 @@ class TypeHandler():
             subType = ""
             if t % 1 != 0: # If decimal value, there is a subtype required
                 indexSubType = int((t % 1) // 0.25) - 1
-                t = int(t // 1)
+                t = t // 1
                 subType = cls.subSwitcher[indexSubType] # If subtype, it will follow this syntax: "<type> <subtype>"
-            return cls.switcher[t] + " " + subType # Return the type
+            return cls.switcher[int(t)] + " " + subType # Return the type
         else:    
             return "The input is not valid" # If not valid input, return this
 

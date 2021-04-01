@@ -29,7 +29,8 @@ class DataSudoku():
     def __init__(self, typeData, cellsGiven=None, values=None, subType=None):
 
         if TH.TypeHandler.validType(typeData):
-            self.type = typeData
+            self.type = int(typeData)
+            self.subType = typeData // 0.25
         else:
             raise Exception("DataType not valid")
 
