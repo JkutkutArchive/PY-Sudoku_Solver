@@ -92,7 +92,6 @@ class TypeHandler():
     
     @classmethod
     def subTypeConversor(cls, st) -> str or int:
-        print(st)
         if type(st) is str: # If string given -> output a int
             if st in cls.subSwitcher:
                 return (cls.subSwitcher.index(st) + 1) * 0.25
