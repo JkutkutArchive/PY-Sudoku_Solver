@@ -1,6 +1,6 @@
 import Classes.sudoku
-import Classes.dataSudoku as DataSudoku
-import Classes.typeHandler as TypeHandler
+import Classes.dataSudoku as DS
+import Classes.typeHandler as TH
 
 class Cell():
     def __init__(self, r, c, parentSudoku=None):
@@ -46,13 +46,13 @@ class Cell():
         }
         '''
         self.data = { # Here all the conclusions made by the algo will be stored here to dispay it later
-            "therefore": DataSudoku(TypeHandler.therefore()),
+            "therefore": DS.DataSudoku(TH.TypeHandler.therefore()),
             "basic": { 
-                "row":  DataSudoku(TypeHandler.basic(), subType = TypeHandler.subrow()),
-                "col":  DataSudoku(TypeHandler.basic(), subType = TypeHandler.subcol()),
-                "3by3": DataSudoku(TypeHandler.basic(), subType = TypeHandler.sub3by3())
+                "row":  DS.DataSudoku(TH.TypeHandler.basic(), subType = TH.TypeHandler.subrow()),
+                "col":  DS.DataSudoku(TH.TypeHandler.basic(), subType = TH.TypeHandler.subcol()),
+                "3by3": DS.DataSudoku(TH.TypeHandler.basic(), subType = TH.TypeHandler.sub3by3())
             },
-            "unique": DataSudoku(TypeHandler.unique()),
+            "unique": DS.DataSudoku(TH.TypeHandler.unique()),
             "pairs": set(),
             "pairs_two": set(),
             "delPair_set_value": set(),
@@ -361,7 +361,7 @@ class Cell():
             "swordFish": set(DataSudoku)
         }
         '''
-        if not type(data) is DataSudoku:
+        if not type(data) is DS.DataSudoku:
             raise Exception("The data must be contained on a DataSudoku object")
         
         dataTypeName = data.getTypeName()

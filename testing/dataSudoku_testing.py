@@ -49,8 +49,6 @@ class TestStringMethods(unittest.TestCase):
             DataSudoku(len(TypeHandler.switcher) - 0.25, subType=0.25)
             self.assertEqual(exception, context.exception)
         
-        
-
     def test_initdataValid(self):
         testValid = [
             [TypeHandler.therefore(), self.cell, set([1,2])],
@@ -71,7 +69,21 @@ class TestStringMethods(unittest.TestCase):
         except:
             raise Exception("Special creation failed")
         
-        
+    def test_getIndexType(self):
+        indices = [
+            [0, None],
+            [0, 0.25],
+        ]
+        for case in indices:
+            d = DataSudoku(case[0], subType=case[1])
+            
+            self.assertEqual(d.getType(), case[0])
+            
+            if case[1] == None:
+                case[1] = 0.0
+            self.assertEqual(d.getSubType(), case[1])
+            self.assertEqual(d.getFullType(), sum(case))
+
 
 
 

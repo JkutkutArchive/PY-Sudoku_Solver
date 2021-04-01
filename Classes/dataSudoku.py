@@ -1,4 +1,4 @@
-import Classes.typeHandler as TypeHandler
+import Classes.typeHandler as TH
 import Classes.cell
 
 # ["therefore"]
@@ -28,13 +28,13 @@ import Classes.cell
 class DataSudoku():
     def __init__(self, typeData, cellsGiven=None, values=None, subType=None):
 
-        if TypeHandler.validType(typeData):
+        if TH.TypeHandler.validType(typeData):
             self.type = typeData
         else:
             raise Exception("DataType not valid")
 
         if subType != None:
-            if subType > 0 and subType < 1 and TypeHandler.validType(self.type + subType):
+            if subType > 0 and subType < 1 and TH.TypeHandler.validType(self.type + subType):
                 self.subType = subType
             else:
                 raise Exception("Subtype not valid")
@@ -81,19 +81,19 @@ class DataSudoku():
         '''
         Returns: Full name of the Type as a string
         '''
-        return TypeHandler.typeConversor(self.getFullType())
+        return TH.TypeHandler.typeConversor(self.getFullType())
     
     def getTypeName(self) -> str:
         '''
         Returns: Name of the Type as a string
         '''
-        return TypeHandler.typeConversor(self.getType())
+        return TH.TypeHandler.typeConversor(self.getType())
     
     def getSubTypeName(self) -> str:
         '''
         Returns: name of the subType as a string
         '''
-        return TypeHandler.subTypeConversor(self.getSubType())
+        return TH.TypeHandler.subTypeConversor(self.getSubType())
     
     def getCells(self):
         '''
