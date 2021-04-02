@@ -165,6 +165,52 @@ class TestStringMethods(unittest.TestCase):
                 result = easyS.solver_basic_rowCol3by3(tests[i], j)
                 self.assertEqual(espected[i][j], result)
         # easyS.print()
+
+    def test_solver_unique(self):
+        self.sudoku.fillBoard(input.unique())
+        board = self.sudoku.toList()
+        print()
+        self.sudoku.print()
+
+        tests = [
+            board[4][5],
+            board[6][4],
+            board[1][2]
+        ]
+        expectedType = [
+            0,
+            1,
+            2
+        ]
+        expectedValue = [
+            6,
+            2,
+            6
+        ]
+
+        # r, c = 3, 3
+        # # for i in range(r, r + 3):
+        # #     for j in range(c, c + 3):
+        # #         print(board[i][j].toString())
+
+        # c = 4
+        # for i in range(9):
+        #     print(board[i][c].toString())
+
+        for i in range(len(tests)):
+            for j in range(3):
+                t = self.sudoku.solver_unique_rowCol3by3(tests[i], j)
+                if expectedType[i] == j:
+                    # print("---------")
+                    # print(tests[i].toString())
+                    # print(f"type: {expectedType[i]}, expectedValue: {expectedValue[i]}, got: {t}")
+                    # print("---------")
+                    self.assertEqual(t, expectedValue[i])
+                else:
+                    # print("++++")
+                    # print(j)
+                    # print("++++")
+                    self.assertIsNone(t)
         
 
 if __name__ == '__main__':

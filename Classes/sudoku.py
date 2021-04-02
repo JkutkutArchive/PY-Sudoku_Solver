@@ -274,7 +274,6 @@ class Sudoku():
         
         # ----------    BASIC   ----------
         values = [] # Values in row, col, 3by3
-        tipos = ["row", "col", "3by3"]
 
         for i in range(3):
             values = self.solver_basic_rowCol3by3(cell, i) # All values this cell can not be and they are posValues of the cell
@@ -328,8 +327,72 @@ class Sudoku():
             print("type not valid")
         return valuesToRemove
 
-    def solver_basic_unique(self):
-        pass
+    def solver_unique(self, cell, setValue=True) -> bool:
+        '''
+        This code tries to find values of the cell using basic scanning techniques.
+        
+        Return: whenever the value of the cell was discovered
+        '''
+        if cell.getValue() != 0: return False # if this cell got it's value defined, do not continue
+
+        for i in range(3):
+            values = self.solver_unique_rowCol3by3(cell, i) # All values this cell can not be and they are posValues of the cell
+            if len(values) == 0: # If none, go to the next one
+                continue
+            
+            data = Classes.dataSudoku.DataSudoku(self.typeHandler.unique(), subType=0.25 * (i + 1), values=values)
+            cell.removePosVal(values)
+            cell.addData(data)
+
+            if setValue and len(cell.getPosVal()) == 1: # We got the value
+                cell.setValue(list(cell.getPosVal())[0])
+                return True # Exit the loop
+        return False
+
+    def solver_unique_rowCol3by3(self, cell, type):
+        board = self.toList()
+        unique = set([i for i in range(1, 10, 1)]) # unique row, col or 3by3
+        if type == 0 or type == "row":
+            for i in range(9): # For each row
+                # Rows (r=cte) -- If not the same cell
+                if i != cell.gC():
+                    if board[cell.gR()][i].getValue() == 0:
+                        valuesToFilter = board[cell.gR()][i].getPosVal()
+                    else:
+                        valuesToFilter = set([board[cell.gR()][i].getValue()])
+                    unique = unique.difference(valuesToFilter) # All common are not unique => del them
+        
+        elif type == 1 or type == "col":
+            for i in range(9): # For each col
+                # Cols (c=cte) -- If not the same cell
+                if i != cell.gR():
+                    if board[i][cell.gC()].getValue() == 0:
+                        valuesToFilter = board[i][cell.gC()].getPosVal()
+                    else:
+                        valuesToFilter = set([board[i][cell.gC()].getValue()])
+                    unique = unique.difference(valuesToFilter) # All common are not unique => del them
+        
+        elif type == 2 or type == "3by3":    
+            for i in range(9): # For each 3by3    
+                # 3 by 3 -- If not the same cell
+                r = (cell.gR() // 3) * 3 + (i // 3)
+                c = (cell.gC() // 3) * 3 + (i % 3)
+                if cell.gR() != r or cell.gC() != c: # If not same cell
+                    if board[r][c].getValue() == 0:
+                        valuesToFilter = board[r][c].getPosVal()
+                    else:
+                        valuesToFilter = set([board[r][c].getValue()])
+                    unique = unique.difference(valuesToFilter) # All common are not unique => del them
+        else:
+            raise Exception("type not valid")
+        
+        if len(unique) == 1:
+            uniqueValue = list(unique)[0]
+            if uniqueValue in cell.getPosVal(): # if this value is a possible one, make it the value of the cell (This should always be true)
+                return uniqueValue
+            else:
+                raise Exception("ERROR at unique")
+        return None
         # ----------    UNIQUE   ----------
         # unique = [set([i for i in range(1, 10, 1)]) for i in range(3)] # unique row, col, 3by3
         # for i in range(9):
