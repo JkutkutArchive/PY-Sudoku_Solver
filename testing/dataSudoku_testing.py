@@ -54,7 +54,7 @@ class TestStringMethods(unittest.TestCase):
             [TypeHandler.therefore(), self.cell, set([1,2])],
             [1, set([self.cell, self.cell]), set([1,2])],
             [1.25, set([self.cell, self.cell]), 3],
-            [1.75]
+            [0.0]
         ]
 
         for t in range(len(testValid)):
