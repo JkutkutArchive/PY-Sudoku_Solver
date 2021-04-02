@@ -62,15 +62,15 @@ class DataSudoku():
         string = [f"DataSudoku:"]
         string.append(f"\t{self.getFullTypeName()} -> {self.getFullType()}")
         if full:
-            string.append(f"\t{self.getTypeName()} -> {self.getType()}")
-            string.append(f"\t{self.getSubTypeName()} -> {self.getSubType()}")
+            string.append(f"Type: {self.getTypeName()} -> {self.getType()}")
+            string.append(f"SubType: {self.getSubTypeName()} -> {self.getSubType()}")
         
         if self.CELLs != None:
-            string.append(f"\tCells:")
+            string.append(f"Cells:")
             if type(self.CELLs) is Classes.cell.Cell:
                 string.append(self.CELLs.toString())
             else:
-                string.append([c.toString() for c in self.CELLs])
+                string.append("\n".join([c.toString() for c in self.CELLs]))
         if self.VALUEs != None:
             string.append(f"Values:\n{self.VALUEs}")
         return "\n".join(string)
@@ -121,6 +121,8 @@ class DataSudoku():
         '''
         Returns: the subType as a int float
         '''
+        if self.subType == 0:
+            return None
         return self.subType
     
     def getFullTypeName(self) -> str:
@@ -139,6 +141,8 @@ class DataSudoku():
         '''
         Returns: name of the subType as a string
         '''
+        if self.getSubType() == None:
+            return None
         return TH.TypeHandler.subTypeConversor(self.getSubType())
     
     def getCells(self):
