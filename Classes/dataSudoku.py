@@ -58,6 +58,25 @@ class DataSudoku():
             raise Exception("Values given not valid")
             # raise Exception("Values given not valid" + str(values)) # Debug
 
+    def __str__(self, full=False) -> str:
+        string = [f"DataSudoku:"]
+        string.append(f"\t{self.getFullTypeName()} -> {self.getFullType()}")
+        if full:
+            string.append(f"\t{self.getTypeName()} -> {self.getType()}")
+            string.append(f"\t{self.getSubTypeName()} -> {self.getSubType()}")
+        
+        if self.CELLs != None:
+            string.append(f"\tCells:")
+            if type(self.CELLs) is Classes.cell.Cell:
+                string.append(self.CELLs.toString())
+            else:
+                string.append([c.toString() for c in self.CELLs])
+        if self.VALUEs != None:
+            string.append(f"Values:\n{self.VALUEs}")
+        return "\n".join(string)
+        
+
+
     def __eq__(self, other) -> bool:
         if not type(other) is DataSudoku:
             return False
