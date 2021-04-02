@@ -175,18 +175,63 @@ class TestStringMethods(unittest.TestCase):
         tests = [
             board[4][5],
             board[6][4],
-            board[1][2]
+            board[1][2],
+
+            board[6][7],
+            board[7][1],
+            board[1][6]
         ]
         expectedType = [
             0,
             1,
+            2,
+
+            1,
+            0,
             2
         ]
         expectedValue = [
             6,
             2,
-            6
+            6,
+
+            3,
+            4,
+            1
         ]
+
+
+        cells2Modify = [
+            board[2][7],
+            board[7][7],
+
+            board[7][3],
+            # board[7][7]
+
+            board[0][6],
+            board[0][8],
+            board[1][8],
+            board[2][8],
+            board[2][7],
+            board[2][6],
+        ]
+        posVal2Remove = [
+            [3],
+            [3, 4],
+
+            [4],
+            # [4]
+            
+            [1],
+            [1],
+            [1],
+            [1],
+            [1],
+            [1]
+        ]
+
+        for c in range(len(cells2Modify)):
+            cells2Modify[c].removePosVal(set(posVal2Remove[c]))
 
         # r, c = 3, 3
         # # for i in range(r, r + 3):
@@ -194,17 +239,20 @@ class TestStringMethods(unittest.TestCase):
         # #         print(board[i][j].toString())
 
         # c = 4
+        # r = 7
         # for i in range(9):
-        #     print(board[i][c].toString())
+        # #     print(board[i][c].toString())
+        #     print(board[r][i].toString())
 
         for i in range(len(tests)):
             for j in range(3):
                 t = self.sudoku.solver_unique_rowCol3by3(tests[i], j)
                 if expectedType[i] == j:
-                    # print("---------")
-                    # print(tests[i].toString())
-                    # print(f"type: {expectedType[i]}, expectedValue: {expectedValue[i]}, got: {t}")
-                    # print("---------")
+                    # if i == 4:
+                    #     print("---------")
+                    #     print(tests[i].toString())
+                    #     print(f"type: {expectedType[i]}, expectedValue: {expectedValue[i]}, got: {t}")
+                    #     print("---------")
                     self.assertEqual(t, expectedValue[i])
                 else:
                     # print("++++")
