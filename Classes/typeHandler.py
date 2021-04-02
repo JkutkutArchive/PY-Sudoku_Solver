@@ -87,7 +87,7 @@ class TypeHandler():
                 subType = " " + cls.subSwitcher[indexSubType] # If subtype, it will follow this syntax: "<type> <subtype>"
             return cls.switcher[int(t)] + subType # Return the type
         else:    
-            return "The input is not valid" # If not valid input, return this
+            return f"The input is not valid: {t}" # If not valid input, return this
 
     
     @classmethod
@@ -100,4 +100,4 @@ class TypeHandler():
         elif cls.validSubType(st): # If valid integer given -> output str
             return cls.subSwitcher[int(st // 0.25) - 1]
         else:
-            raise Exception("The input is not valid")
+            raise Exception(f"The input is not valid: {st}")
