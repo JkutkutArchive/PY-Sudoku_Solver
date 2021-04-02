@@ -279,10 +279,9 @@ class Sudoku():
             if len(values) == 0: # If none, go to the next one
                 continue
             
-            data = Classes.dataSudoku.DataSudoku(self.typeHandler.basic() + 0.25 * i, values)
-            
+            data = Classes.dataSudoku.DataSudoku(self.typeHandler.basic(), subType=0.25 * (i + 1), values=values)
             cell.removePosVal(values)
-            # cell.addData(data)
+            cell.addData(data)
 
             if len(cell.getPosVal()) == 1: # We got the value
                 cell.setValue(list(cell.getPosVal())[0])
