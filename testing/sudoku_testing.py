@@ -50,6 +50,7 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(self.sudoku.print(returnAsString=True), espected)
 
         self.sudoku.fillBoard(input.medium())
+        self.assertNotEqual(self.sudoku.print(returnAsString=True), espected)
         self.assertEqual(self.sudoku.print(arr=input.easy(), returnAsString=True), espected)
         # self.assertIsNone(self.sudoku.print())
 
@@ -137,7 +138,7 @@ class TestStringMethods(unittest.TestCase):
         
         somethingDone = self.sudoku.solver_basic_loop()
         self.assertTrue(somethingDone)
-        self.sudoku.print()
+        # self.sudoku.print()
 
     def test_solver_basic_rowCol3by3(self):
         # Easy sudoku
