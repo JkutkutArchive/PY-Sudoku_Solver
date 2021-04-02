@@ -60,7 +60,7 @@ class DataSudoku():
 
     def __str__(self, full=False) -> str:
         string = [f"DataSudoku:"]
-        string.append(f"\t{self.getFullTypeName()} -> {self.getFullType()}")
+        string.append(f"FullType: {self.getFullTypeName()} -> {self.getFullType()}")
         if full:
             string.append(f"Type: {self.getTypeName()} -> {self.getType()}")
             string.append(f"SubType: {self.getSubTypeName()} -> {self.getSubType()}")
