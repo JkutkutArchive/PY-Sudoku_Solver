@@ -12,6 +12,8 @@ class Sudoku():
 
         self.getRemainingCells(forced=True)
         self.typeHandler = Classes.typeHandler.TypeHandler
+
+        self.cellsSolved = [] # Cells that started with it's value not defined and now has it defined
     
     def fillBoard(self, data):
         '''
@@ -222,7 +224,7 @@ class Sudoku():
                 return False
         return True
 
-    def findSolutionWithSteps(self):
+    def findSolutionWithSteps(self, setValues=True):
         correctSolution = self.getSolutions()
         if len(correctSolution) > 1: # If more than one possible solutions
             raise Exception("There are more than one possible solution.")
@@ -231,10 +233,10 @@ class Sudoku():
         
         iteration = 0
         while True:
-            print("Iteration nº" + str(iteration))
+            # print("Iteration nº" + str(iteration))
             iteration = iteration + 1
 
-            if self.solver_basic_loop():
+            if self.solver_basic_loop(setValues=setValues):
                 continue
             # if self.solver_unique():
             #     continue
@@ -242,11 +244,11 @@ class Sudoku():
             # If here, either we have solve it or we can not solve it
             break
         
-        print("exit at iteration nº" + str(iteration - 1))
+        # print("exit at iteration nº" + str(iteration - 1))
         return self.validSolution()
 
 
-    def solver_basic_loop(self) -> bool:
+    def solver_basic_loop(self, setValues=True) -> bool:
         '''
         Tries to find the values of the remaining cells using basic scanning techniques.
 
@@ -258,10 +260,10 @@ class Sudoku():
         '''
         cellWithValueDefined = False
         for cell in self.getRemainingCells():
-            cellWithValueDefined = cellWithValueDefined or self.solver_basic(cell)
+            cellWithValueDefined = cellWithValueDefined or self.solver_basic(cell, setValue=setValues)
         return cellWithValueDefined
 
-    def solver_basic(self, cell) -> bool:
+    def solver_basic(self, cell, setValue=True) -> bool:
         '''
         This code tries to find values of the cell using basic scanning techniques.
 
@@ -283,7 +285,7 @@ class Sudoku():
             cell.removePosVal(values)
             cell.addData(data)
 
-            if len(cell.getPosVal()) == 1: # We got the value
+            if setValue and len(cell.getPosVal()) == 1: # We got the value
                 cell.setValue(list(cell.getPosVal())[0])
                 return True # Exit the loop
         return False
