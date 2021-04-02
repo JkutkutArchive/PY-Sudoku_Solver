@@ -125,9 +125,9 @@ class TestStringMethods(unittest.TestCase):
             
             self.assertTrue(exceptions[t] in str(context.exception))
 
-    # def test_findSolutionWithSteps_easy(self):
-    #     self.sudoku.fillBoard(input.easy())
-    #     self.assertTrue(self.sudoku.findSolutionWithSteps())
+    def test_findSolutionWithSteps_easy(self):
+        self.sudoku.fillBoard(input.easy())
+        self.assertTrue(self.sudoku.findSolutionWithSteps())
 
     def test_solver_basic_easy(self):
         self.sudoku.fillBoard(input.easy())
@@ -138,7 +138,6 @@ class TestStringMethods(unittest.TestCase):
         
         somethingDone = self.sudoku.solver_basic_loop()
         self.assertTrue(somethingDone)
-        # self.sudoku.print()
 
     def test_solver_basic_rowCol3by3(self):
         # Easy sudoku
