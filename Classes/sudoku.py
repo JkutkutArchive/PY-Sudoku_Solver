@@ -271,10 +271,6 @@ class Sudoku():
         '''
         if cell.getValue() != 0: return False # if this cell got it's value defined, do not continue
 
-        
-        # ----------    BASIC   ----------
-        values = [] # Values in row, col, 3by3
-
         for i in range(3):
             values = self.solver_basic_rowCol3by3(cell, i) # All values this cell can not be and they are posValues of the cell
             if len(values) == 0: # If none, go to the next one
