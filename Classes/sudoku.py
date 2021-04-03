@@ -289,8 +289,10 @@ class Sudoku():
                 return True # Exit the loop
         return False
     
-
     def solver_basic_rowCol3by3(self, cell, type):
+        # board = self.toList()
+        # valuesToRemove = set()
+
         board = self.toList()
         valuesToRemove = set()
         if type == 0 or type == "row":
@@ -352,7 +354,44 @@ class Sudoku():
     def solver_unique_rowCol3by3(self, cell, type):
         board = self.toList()
         unique = set([i for i in range(1, 10, 1)]) # unique row, col or 3by3
-        itera = None # this will become a set of cells to analyce
+        itera = self.getSectorCells(cell, type)
+        # itera = None # this will become a set of cells to analyze
+
+        # if type == 0 or type == "row":
+        #     # Rows (r=cte) -- If not the same cell
+        #     itera = board[cell.gR()][:]
+        # elif type == 1 or type == "col":
+        #     # Cols (c=cte) -- If not the same cell
+        #     itera = [board[i][cell.gC()] for i in range(9)]
+        # elif type == 2 or type == "3by3":
+        #     startR = (cell.gR() // 3) * 3
+        #     startC = (cell.gC() // 3) * 3
+        #     itera = [board[i][j] for i in range(startR, startR + 3) for j in range(startC, startC + 3)]
+        # else:
+        #     raise Exception("type not valid")
+
+        # itera = set(itera)
+        # itera.remove(cell) # cell is inside this set, remove it
+
+        for otherCell in itera: # for each cell to check
+            if otherCell.getValue() == 0: # if value not defined
+                valuesToFilter = otherCell.getPosVal()
+            else:
+                valuesToFilter = set([otherCell.getValue()])
+            unique = unique.difference(valuesToFilter) # All common values are not unique => del them            
+
+        if len(unique) == 1: # if only one, this cell is this value
+            uniqueValue = unique.pop() # get the value
+            if uniqueValue in cell.getPosVal(): # if this value is a possible one, make it the value of the cell (This should always be true)
+                return uniqueValue
+            else:
+                raise Exception("ERROR at unique: imposible situation")
+        return None
+
+    
+    def getSectorCells(self, cell, type):
+        board = self.toList()
+        itera = None # this will become a set of cells to analyze
 
         if type == 0 or type == "row":
             # Rows (r=cte) -- If not the same cell
@@ -369,21 +408,7 @@ class Sudoku():
 
         itera = set(itera)
         itera.remove(cell) # cell is inside this set, remove it
-
-        for otherCell in itera: # for each cell to check
-            if otherCell.getValue() == 0: # if value not defined
-                valuesToFilter = otherCell.getPosVal()
-            else:
-                valuesToFilter = set([otherCell.getValue()])
-            unique = unique.difference(valuesToFilter) # All common values are not unique => del them            
-
-        if len(unique) == 1: # if only one, this cell is this value
-            uniqueValue = unique.pop() # get the value
-            if uniqueValue in cell.getPosVal(): # if this value is a possible one, make it the value of the cell (This should always be true)
-                return uniqueValue
-            else:
-                raise Exception("ERROR at unique: imposible situation")
-        return None
+        return itera
 
 if __name__ == "__main__":
     a = Sudoku()
