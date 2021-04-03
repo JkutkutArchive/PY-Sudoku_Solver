@@ -336,16 +336,16 @@ class Sudoku():
         if cell.getValue() != 0: return False # if this cell got it's value defined, do not continue
 
         for i in range(3):
-            values = self.solver_unique_rowCol3by3(cell, i) # All values this cell can not be and they are posValues of the cell
-            if len(values) == 0: # If none, go to the next one
+            value = self.solver_unique_rowCol3by3(cell, i) # All values this cell can not be and they are posValues of the cell
+            if value == None: # If none, go to the next one
                 continue
             
-            data = Classes.dataSudoku.DataSudoku(self.typeHandler.unique(), subType=0.25 * (i + 1), values=values)
-            cell.removePosVal(values)
+            data = Classes.dataSudoku.DataSudoku(self.typeHandler.unique(), subType=0.25 * (i + 1), values=value)
+            cell.removePosVal(value)
             cell.addData(data)
 
-            if setValue and len(cell.getPosVal()) == 1: # We got the value
-                cell.setValue(list(cell.getPosVal())[0])
+            if setValue: # We got the value
+                cell.setValue(value)
                 return True # Exit the loop
         return False
 

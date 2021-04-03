@@ -233,32 +233,17 @@ class TestStringMethods(unittest.TestCase):
         for c in range(len(cells2Modify)):
             cells2Modify[c].removePosVal(set(posVal2Remove[c]))
 
-        # r, c = 3, 3
-        # # for i in range(r, r + 3):
-        # #     for j in range(c, c + 3):
-        # #         print(board[i][j].toString())
-
-        # c = 4
-        # r = 7
-        # for i in range(9):
-        # #     print(board[i][c].toString())
-        #     print(board[r][i].toString())
-
         for i in range(len(tests)):
             for j in range(3):
                 t = self.sudoku.solver_unique_rowCol3by3(tests[i], j)
                 if expectedType[i] == j:
-                    # if i == 4:
-                    #     print("---------")
-                    #     print(tests[i].toString())
-                    #     print(f"type: {expectedType[i]}, expectedValue: {expectedValue[i]}, got: {t}")
-                    #     print("---------")
                     self.assertEqual(t, expectedValue[i])
                 else:
-                    # print("++++")
-                    # print(j)
-                    # print("++++")
                     self.assertIsNone(t)
+
+            self.assertTrue(self.sudoku.solver_unique(tests[i]))
+            self.assertEqual(tests[i].data["unique"].getValues(), expectedValue[i])
+            self.assertEqual(tests[i].getValue(), expectedValue[i])
         
 
 if __name__ == '__main__':
