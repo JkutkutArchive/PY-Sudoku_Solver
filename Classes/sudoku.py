@@ -352,7 +352,6 @@ class Sudoku():
         return False
 
     def solver_unique_rowCol3by3(self, cell, type):
-        board = self.toList()
         unique = set([i for i in range(1, 10, 1)]) # unique row, col or 3by3
         itera = self.getSectorCells(cell, type)
         # itera = None # this will become a set of cells to analyze
@@ -389,7 +388,16 @@ class Sudoku():
         return None
 
     
-    def getSectorCells(self, cell, type):
+    def getSectorCells(self, cell, type) -> set:
+        '''
+        Enables to get the cells on a row, col or 3by3 of the desired cell as a set
+
+        cell (Cell): desired cell
+
+        type (int|str): desired type of sector to get
+
+        Returns (set): set of cells on the desired sector (input cell removed)
+        '''
         board = self.toList()
         itera = None # this will become a set of cells to analyze
 
