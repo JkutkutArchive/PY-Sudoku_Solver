@@ -354,23 +354,6 @@ class Sudoku():
     def solver_unique_rowCol3by3(self, cell, type):
         unique = set([i for i in range(1, 10, 1)]) # unique row, col or 3by3
         itera = self.getSectorCells(cell, type)
-        # itera = None # this will become a set of cells to analyze
-
-        # if type == 0 or type == "row":
-        #     # Rows (r=cte) -- If not the same cell
-        #     itera = board[cell.gR()][:]
-        # elif type == 1 or type == "col":
-        #     # Cols (c=cte) -- If not the same cell
-        #     itera = [board[i][cell.gC()] for i in range(9)]
-        # elif type == 2 or type == "3by3":
-        #     startR = (cell.gR() // 3) * 3
-        #     startC = (cell.gC() // 3) * 3
-        #     itera = [board[i][j] for i in range(startR, startR + 3) for j in range(startC, startC + 3)]
-        # else:
-        #     raise Exception("type not valid")
-
-        # itera = set(itera)
-        # itera.remove(cell) # cell is inside this set, remove it
 
         for otherCell in itera: # for each cell to check
             if otherCell.getValue() == 0: # if value not defined
