@@ -290,43 +290,15 @@ class Sudoku():
         return False
     
     def solver_basic_rowCol3by3(self, cell, type):
-        # board = self.toList()
-        # valuesToRemove = set()
-
-        board = self.toList()
         valuesToRemove = set()
-        if type == 0 or type == "row":
-            for i in range(9): # For each row, col and 3by3
-                # Rows (r=cte) -- If not the same cell
-                if i != cell.gC():
-                    otherValue = board[cell.gR()][i].getValue()
-                    # if otherCell has it's value defined and that value is possible value of Cell
-                    if otherValue != 0 and (otherValue in cell.getPosVal()):                        
-                        # Add the othervalue to the list of values to remove
-                        # valuesToRemove.append(otherValue)
-                        valuesToRemove.add(otherValue)
-        
-        elif type == 1 or type == "col":
-            for i in range(9): # For each col
-                # Cols (c=cte) -- If not the same cell
-                if i != cell.gR(): 
-                    otherValue = board[i][cell.gC()].getValue()
-                    if otherValue != 0 and (otherValue in cell.getPosVal()):
-                        # valuesToRemove.append(otherValue)
-                        valuesToRemove.add(otherValue)
-        
-        elif type == 2 or type == "3by3":    
-            for i in range(9): # For each 3by3    
-                # 3 by 3 -- If not the same cell
-                r = (cell.gR() // 3) * 3 + (i // 3)
-                c = (cell.gC() // 3) * 3 + (i % 3)
-                if cell.gR() != r or cell.gC() != c: # If not same cell
-                    otherValue = board[r][c].getValue()
-                    if otherValue != 0 and (otherValue in cell.getPosVal()):
-                        # valuesToRemove.append(otherValue)
-                        valuesToRemove.add(otherValue)
-        else:
-            print("type not valid")
+        itera = self.getSectorCells(cell, type)
+
+        for otherCell in itera:
+            otherValue = otherCell.getValue()
+            # if otherCell has it's value defined and that value is possible value of Cell
+            if otherValue != 0 and (otherValue in cell.getPosVal()):                        
+                # Add the othervalue to the list of values to remove
+                valuesToRemove.add(otherValue)
         return valuesToRemove
 
     def solver_unique(self, cell, setValue=True) -> bool:
