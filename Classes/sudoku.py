@@ -238,8 +238,8 @@ class Sudoku():
 
             if self.solver_basic_loop(setValues=setValues):
                 continue
-            # if self.solver_unique():
-            #     continue
+            if self.solver_unique(setValues=setValues):
+                continue
 
             # If here, either we have solve it or we can not solve it
             break
@@ -371,7 +371,6 @@ class Sudoku():
 
 if __name__ == "__main__":
     a = Sudoku()
-    a.fillBoard([])
     data = [ # hard
         [0, 0, 7, 0, 0, 0, 3, 0, 2],
         [2, 0, 0, 0, 0, 5, 0, 1, 0],
