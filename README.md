@@ -1,4 +1,4 @@
-# PY-Sudoku-Solver:
+# PY-Sudoku_Solver:
 
 This proyect makes easy to find the solution of a sudoku, show the steps to follow in order to solve it and even show all possible solutions of a multiple solution sudoku.
 
